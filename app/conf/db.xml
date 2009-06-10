@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<db>
+ <driver>MySQLi</driver>
+
+ <host>localhost</host>
+ <user>testuser</user>
+ <pass>testpass</pass>
+ <name>test_blog</name>
+</db>

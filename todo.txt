@@ -1,0 +1,13 @@
+- Figure out routing for URLs - not to use the same structure as the config object
+
+- Add some third party libraries
+ - phpmailer
+
+- Library files to include:
+ - Captcha
+ - Pagination
+ - iDate
+
+- Finish Base_Model class
+
+Improve the way config class detects if a node has children - checking if it is empty is unreliable

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<paths>
+ <controllers>controllers/</controllers>
+ <dbdrivers>dbdrivers/</dbdrivers>
+ <lib>lib/</lib>
+ <libresources>lib/res/</libresources>
+ <thirdparty>lib/thirdparty/</thirdparty>
+ <models>models/</models>
+ <schemas>schemas/</schemas>
+ <templates>templates/</templates>
+ <views>views/</views>
+</paths>
