@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<table name="blog_posts">
+ <fields>
+  <field name="blog_id">
+   <title>ID</title>
+   <type>int</type>
+   <primary_key>yes</primary_key>
+   <autonumber>yes</autonumber>
+  </field>
+
+  <field name="blog_title">
+   <title>Title</title>
+   <type>varchar</type>
+   <length>255</length>
+  </field>
+
+  <field name="blog_body">
+   <title>Body</title>
+   <type>text</type>
+  </field>
+
+  <field name="added_date">
+   <title>Added Date</title>
+   <type>date</type>
+   <default>NOW()</default>
+  </field>
+
+  <field name="deleted_date">
+   <title>Deleted Date</title>
+   <type>date</type>
+   <null>yes</null>
+   <default>NULL</default>
+  </field>
+
+  <field name="available">
+   <title>Available</title>
+   <type>tinyint</type>
+   <length>1</length>
+   <default>1</default>
+  </field>
+ </fields>
+</table>

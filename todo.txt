@@ -1,4 +1,4 @@
-- Figure out routing for URLs - not to use the same structure as the config object
+- Figure out routing for URLs - not to use the same structure as the config object
 
 - Add some third party libraries
  - phpmailer
@@ -8,6 +8,6 @@
  - Pagination
  - iDate
 
-- Finish Base_Model class
+- Finish BaseModel class
 
-Improve the way config class detects if a node has children - checking if it is empty is unreliable
+Improve the way config class detects if a node has children - checking if it is empty isn't great

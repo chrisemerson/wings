@@ -7,4 +7,5 @@
  <user>testuser</user>
  <pass>testpass</pass>
  <name>test_blog</name>
+ <prefix>test_</prefix>
 </db>
