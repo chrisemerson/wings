@@ -128,7 +128,6 @@
 
   private function loadConfig () {
    $objCaptchaConfig = Config::get('captcha');
-   $objPathsConfig = Config::get('paths');
 
    $this->strAllowedCharacters          =       $objCaptchaConfig->allowedcharacters;
    $this->intLength                     = (int) $objCaptchaConfig->captchalength;
@@ -141,8 +140,8 @@
    $this->intHeightVariation            = (int) $objCaptchaConfig->spacing->heightvariation;
    $this->intFontTilt                   = (int) $objCaptchaConfig->text->fonttilt;
    $this->intFontSize                   = (int) $objCaptchaConfig->text->fontsize;
-   $this->strFontDirectory              =       APP_BASE_PATH . $objPathsConfig->libresources . $objCaptchaConfig->text->fontdirectory;
-   $this->strBackgroundImagesDirectory  =       APP_BASE_PATH . $objPathsConfig->libresources . $objCaptchaConfig->image->backgroundimagesdirectory;
+   $this->strFontDirectory              =       APP_BASE_PATH . "lib/res/" . $objCaptchaConfig->text->fontdirectory;
+   $this->strBackgroundImagesDirectory  =       APP_BASE_PATH . "lib/res/" . $objCaptchaConfig->image->backgroundimagesdirectory;
    $this->intDarkestColor               = (int) $objCaptchaConfig->color->darkestcolor;
    $this->intLightestColor              = (int) $objCaptchaConfig->color->lightestcolor;
    $this->intNumberOfColors             = (int) $objCaptchaConfig->color->numberofcolors;

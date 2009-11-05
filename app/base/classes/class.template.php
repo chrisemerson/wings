@@ -26,11 +26,8 @@
   /********************************/
 
   public function __construct($strTemplateName) {
-   $objPathsConfig = Config::get('paths');
-   $strTemplateDirectory = APP_BASE_PATH . $objPathsConfig->templates;
-
    $this->strTemplateName = $strTemplateName;
-   $strTemplateFile = $strTemplateDirectory . str_replace(".", "/", $strTemplateName) . ".tpl";
+   $strTemplateFile = APP_BASE_PATH . "templates/" . str_replace(".", "/", $strTemplateName) . ".tpl";
 
    if (!file_exists($strTemplateFile)) {
     throw new TemplateNotFoundException();

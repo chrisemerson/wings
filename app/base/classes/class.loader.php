@@ -16,13 +16,12 @@
   }//function
 
   public function load () {
-   $objPathConfig = Config::get('paths');
-   //DB Drivers, Views, Models, Controllers, Lib
+   //Priority: DB Drivers, Views, Models, Controllers, Lib
 
-   if (strtolower(substr($this->strClassName, -10)) == 'controller') {
-    $strFileToLoad = APP_BASE_PATH . $objPathConfig->controller . 'controller.' . strtolower(substr($this->strClassName, 0, -10)) . '.php';
+   if (strtolower(substr($this->strClassName, -10)) == "controller") {
+    $strFileToLoad = APP_BASE_PATH . "controllers/controller." . strtolower(substr($this->strClassName, 0, -10)) . ".php";
    } else if (strtolower(substr($this->strClassName, -6)) == 'driver') {
-    $strFileToLoad = APP_BASE_PATH . $objPathConfig->dbdrivers . 'db.' . strtolower(substr($this->strClassName, 0, -6)) . '.php';
+    $strFileToLoad = APP_BASE_PATH . "dbdrivers/db." . strtolower(substr($this->strClassName, 0, -6)) . ".php";
    }//if
 
    require_once $strFileToLoad;

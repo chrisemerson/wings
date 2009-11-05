@@ -26,8 +26,7 @@
   }//function
 
   private function loadSchema () {
-   $objPathsConfig = Config::get('paths');
-   $strSchemaFile = APP_BASE_PATH . $objPathsConfig->schemas . strtolower($this->strSchema) . ".xml";
+   $strSchemaFile = APP_BASE_PATH . "schemas/" . strtolower($this->strSchema) . ".xml";
    $arrSchemaFile = simplexml_load_file($strSchemaFile);
 
    //Table Name
