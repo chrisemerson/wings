@@ -11,7 +11,7 @@
   private   $dbConn;
 
   private   $strTableName;
-  private   $arrFields = array();
+  private   $arrColumns = array();
   private   $arrCurrentData = array();
   private   $arrNewData = array();
 
@@ -21,6 +21,10 @@
    $objDBConfig = Config::get('db');
    $strClassName = $objDBConfig->driver . "Driver";
    $this->dbConn = new $strClassName($objDBConfig->host, $objDBConfig->user, $objDBConfig->pass, $objDBConfig->name);
+
+   if (empty($this->strSchema)) {
+    $this->strSchema = strtolower(get_class($this));
+   }//if
 
    $this->loadSchema();
   }//function
@@ -33,33 +37,32 @@
    $this->strTableName = (string) $arrSchemaFile['name'];
 
    //Fields
-   foreach ($arrSchemaFile->fields->field as $objField) {
-    $arrField = array();
-    $arrField['title'] = (string) $objField->title;
-    $arrField['type'] = (string) $objField->type;
+   foreach ($arrSchemaFile->columns->column as $objColumn) {
+    $arrColumn = array();
+    $arrColumn['type'] = (string) $objColumn->type;
 
-    if (isset($objField->length)) {
-     $arrField['length'] = (int) $objField->length;
+    if (isset($objColumn->size)) {
+     $arrColumn['size'] = (int) $objColumn->length;
     }//if
 
-    if (isset($objField->default)) {
-     $arrField['default'] = (string) $objField->default;
+    if (isset($objColumn->default)) {
+     $arrColumn['default'] = (string) $objColumn->default;
     }//if
 
-    if (isset($objField->null)) {
-     $arrField['null'] = (strtolower((string) $objField->null) == "yes");
+    if (isset($objColumn->null)) {
+     $arrColumn['null'] = (strtolower((string) $objColumn->null) == "yes");
     }//if
 
-    if (isset($objField->primary_key)) {
-     $arrField['PK'] = (strtolower((string) $objField->primary_key) == "yes");
+    if (isset($objColumn->primary_key)) {
+     $arrColumn['PK'] = (strtolower((string) $objColumn->primary_key) == "yes");
     }//if
 
-    if (isset($objField->autonumber)) {
-     $arrField['Autonumber'] = (strtolower((string) $objField->autonumber) == "yes");
+    if (isset($objColumn->autonumber)) {
+     $arrColumn['Autonumber'] = (strtolower((string) $objColumn->autonumber) == "yes");
     }//if
 
-    $this->arrFields[(string) $objField['name']] = $arrField;
-    $this->arrCurrentData[(string) $objField['name']] = null;
+    $this->arrColumns[(string) $objColumn['title']] = $arrColumn;
+    $this->arrCurrentData[(string) $objColumn['name']] = null;
    }//foreach
 
    $this->arrNewData = $this->arrCurrentData;
@@ -92,8 +95,6 @@
     }//if
    }//foreach
   }//function
-
-
  }//class
 
  //Exceptions

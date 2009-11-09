@@ -8,6 +8,8 @@
  /*******************************************/
 
  class BaseController {
-
+  public function index () {
+   echo "Default Text Here";
+  }//function
  }//class
 ?>

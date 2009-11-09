@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<routes>
+ <route>
+  <url>test1/</url>
+  <controller>TestController</controller>
+ </route>
+
+ <route>
+  <url>test2/</url>
+  <controller>TestController</controller>
+  <method>TestMethod</method>
+ </route>
+
+ <route>
+  <url>test3/</url>
+  <controller>TestController</controller>
+  <method>TestMethod2</method>
+  <params>
+   <param>Chris Emerson</param>
+  </params>
+ </route>
+
+ <route>
+  <url>test4/</url>
+  <redirect>test1/</redirect>
+ </route>
+</routes>

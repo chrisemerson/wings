@@ -17,7 +17,7 @@
    } else if (is_file($mixConfigData)) {
     $this->arrConfigData = $this->getConfigDataFromXML(simplexml_load_file($mixConfigData));
    } else {
-    $strConfigFilename = dirname(__FILE__) . "/../../conf/" . $mixConfigData . ".xml";
+    $strConfigFilename = dirname(__FILE__) . "/../../config/" . $mixConfigData . ".xml";
     $this->arrConfigData = $this->getConfigDataFromXML(simplexml_load_file($strConfigFilename));
    }//if
   }//function
@@ -44,10 +44,10 @@
      throw new ConfigSettingAlreadyExistsException;
     }//if
 
-    if (trim($strElementValue) === "") {
+    if (count($objElement) > 0) {
      $arrData[$strElementName] = $this->getConfigDataFromXML($objElement);
     } else {
-     $arrData[$strElementName] = $strElementValue;
+     $arrData[$strElementName] = trim((string) $objElement);
     }//if
    }//foreach
 

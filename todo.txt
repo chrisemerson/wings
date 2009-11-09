@@ -1,13 +1,9 @@
-- Figure out routing for URLs - not to use the same structure as the config object
-
-- Add some third party libraries
- - phpmailer
+- Write dispatcher and finish off routing
+- Write ORM/BaseModel class
 
 - Library files to include:
- - Captcha
- - Pagination
- - iDate
+ - Page Manager
 
 - Finish BaseModel class
 
-Improve the way config class detects if a node has children - checking if it is empty isn't great
+- General Error conditions - ie missing controller, model etc and default error displays

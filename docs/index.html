@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+ <head>
+  <title>Framework Documentation</title>
+ </head>
+
+ <body>
+  <h1>Folder Structure</h1>
+
+  <ul>
+   <li>
+    <strong>app/</strong> - Application Folder
+
+    <ul>
+     <li>
+      <strong>base/</strong> - Base application classes and files. Automatically included by the framework.
+
+      <ul>
+       <li><strong>classes/</strong> - Base classes - contains the base controller, base model, base view, dispatcher, loader, template class, config class</li>
+       <li><strong>inc/</strong> - General files to include - 'Bootstrap' files. Contains magic quotes fix, session start, __autoload() function and constants dfns.</li>
+       <li><strong>interfaces/</strong> - Interface files, for defining DB drivers etc</li>
+      </ul>
+     </li>
+
+     <li><strong>cache/</strong> - Cache folder - should be writable</li>
+     <li><strong>config/</strong> - Folder for config files, all of which should be xml. For use with the config class.</li>
+     <li><strong>controllers/</strong> - Controllers reside here. Should be called controller.&lt;name&gt;.php</li>
+     <li><strong>cron/</strong> - Cron task scripts go in here</li>
+     <li><strong>data/</strong> - Generic data files can go here for use by anything else - text, xml, image files, uploads etc</li>
+     <li><strong>dbdrivers/</strong> - DB driver files - common interfaces for different database types, db.&lt;name&gt;.php</li>
+     <li><strong>lib/</strong> - Library, contains helper classes and modules, like Captcha, Session, Date, Page Manager etc - class.&lt;name&gt;.php</li>
+
+      <ul>
+       <li><strong>res/</strong> - Library resources - eg Backgrounds and fonts for captcha</li>
+       <li><strong>thirdparty/</strong> - Third party classes and software, eg phpmailer, included files configured by thirdparty.xml config file</li>
+      </ul>
+     </li>
+
+     <li><strong>logs/</strong> - Log files for the application</li>
+     <li><strong>models/</strong> - model files, model.&lt;name&gt;.php - eg Student, Book, Product etc.</li>
+     <li><strong>schemas/</strong> - .xml Schema files, defining the database structure for different objects</li>
+     <li><strong>templates/</strong> - .tpl template files, for use with the template class.</li>
+     <li><strong>tools/</strong> - One off tool files for, eg, clearing the database, updating a schema, gathering data etc</li>
+     <li><strong>views/</strong> - View helper files, called view.&lt;name&gt;.php</li>
+    </ul>
+   </li>
+
+   <li><strong>docs/</strong> - This Folder - Documentation</li>
+   <li><strong>httpdocs/</strong> - Publically Accessible folder - Apache should serve from here.</li>
+  </ul>
+ </body>
+</html>
