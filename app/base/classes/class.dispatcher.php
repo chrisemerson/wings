@@ -175,7 +175,7 @@
      $strRedirectURI = Application::getBaseURI($blnSecure) . $arrAction['redirect']['route'];
 
      //Could be redirecting to a file, so do basic checks to make sure before adding the slash - saves a lot of unnecessary redirects
-     if (!file_exists(Application::getBasePath() . $arrAction['redirect']['route']) && !preg_match('|/[^/]+\.[^/]+/$|', $arrAction['redirect']['route'])) {
+     if (!file_exists(Application::getBasePath() . $arrAction['redirect']['route']) && !preg_match('|[^/]+\.[^/]+$|', $arrAction['redirect']['route'])) {
       $strRedirectURI .= '/';
      }//if
     } else {
@@ -187,7 +187,7 @@
     //Execute - combination of Controller, Action and Params
 
     //Now we know we aren't redirecting, add the trailing slash if needed
-    if ($this->blnAddTrailingSlash) {
+    if ($this->blnAddTrailingSlash && !file_exists(Application::getBasePath() . $this->strURI) && !preg_match('|[^/]+\.[^/]+$|', $this->strURI)) {
      Application::redirect(Application::getBaseURI(Application::isSecure()) . $this->strURI . '/');
     }//if
 
