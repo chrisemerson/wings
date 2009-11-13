@@ -9,7 +9,7 @@
 
  class Config {
   private static $arrConfigObjects = array();
-  private        $arrConfigData = array();
+  private $arrConfigData = array();
 
   private function __construct ($mixConfigData) {
    if (is_array($mixConfigData)) {

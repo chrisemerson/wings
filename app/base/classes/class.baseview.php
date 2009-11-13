@@ -8,6 +8,7 @@
  /*************************************/
 
  class BaseView {
-
+  public function render () {
+  }//function
  }//class
 ?>

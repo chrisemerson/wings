@@ -8,5 +8,4 @@
  <pass>testpass</pass>
  <name>test_blog</name>
  <prefix>blog_</prefix>
- <test><asd>test</asd></test>
 </db>

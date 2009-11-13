@@ -16,10 +16,10 @@
   private $arrBlockInformation = array();
 
   /* RegEx Constants */
-  const   RE_BLOCK_START = "/^\\s*<!--\\s*\\[\\s*([a-z0-9_-]+)\\s*(\\|\\s*([\\w,]+)\\s*)?\\]\\s*-->\\s*\$/i";
-  const   RE_BLOCK_END = "/^\\s*<!--\\s*\\[\\s*\\/([a-z0-9_-]+)\\s*\\]\\s*-->\\s*\$/i";
-  const   RE_INCLUDE = "/^(\\s*)<!--\\s*{\\s*([a-z0-9._-]+)\\s*}\\s*-->\\s*\$/i";
-  const   RE_INCLUDE_VARIABLE = "/^(\\s*)<!--\\s*{\\s*{([a-z0-9._-]+)}\\s*}\\s*-->\\s*\$/i";
+  const RE_BLOCK_START = "/^\\s*<!--\\s*\\[\\s*([a-z0-9_-]+)\\s*(\\|\\s*([\\w,]+)\\s*)?\\]\\s*-->\\s*\$/i";
+  const RE_BLOCK_END = "/^\\s*<!--\\s*\\[\\s*\\/([a-z0-9_-]+)\\s*\\]\\s*-->\\s*\$/i";
+  const RE_INCLUDE = "/^(\\s*)<!--\\s*{\\s*([a-z0-9._-]+)\\s*}\\s*-->\\s*\$/i";
+  const RE_INCLUDE_VARIABLE = "/^(\\s*)<!--\\s*{\\s*{([a-z0-9._-]+)}\\s*}\\s*-->\\s*\$/i";
 
   /********************************/
   /* Constructor & Initialisation */
@@ -27,7 +27,7 @@
 
   public function __construct($strTemplateName) {
    $this->strTemplateName = $strTemplateName;
-   $strTemplateFile = APP_BASE_PATH . "templates/" . str_replace(".", "/", $strTemplateName) . ".tpl";
+   $strTemplateFile = Application::getBasePath() . "templates/" . str_replace(".", "/", $strTemplateName) . ".tpl";
 
    if (!file_exists($strTemplateFile)) {
     throw new TemplateNotFoundException();

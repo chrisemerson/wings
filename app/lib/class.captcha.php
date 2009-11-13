@@ -140,8 +140,8 @@
    $this->intHeightVariation            = (int) $objCaptchaConfig->spacing->heightvariation;
    $this->intFontTilt                   = (int) $objCaptchaConfig->text->fonttilt;
    $this->intFontSize                   = (int) $objCaptchaConfig->text->fontsize;
-   $this->strFontDirectory              =       APP_BASE_PATH . "lib/res/" . $objCaptchaConfig->text->fontdirectory;
-   $this->strBackgroundImagesDirectory  =       APP_BASE_PATH . "lib/res/" . $objCaptchaConfig->image->backgroundimagesdirectory;
+   $this->strFontDirectory              =       Application::getBasePath() . "lib/res/" . $objCaptchaConfig->text->fontdirectory;
+   $this->strBackgroundImagesDirectory  =       Application::getBasePath() . "lib/res/" . $objCaptchaConfig->image->backgroundimagesdirectory;
    $this->intDarkestColor               = (int) $objCaptchaConfig->color->darkestcolor;
    $this->intLightestColor              = (int) $objCaptchaConfig->color->lightestcolor;
    $this->intNumberOfColors             = (int) $objCaptchaConfig->color->numberofcolors;

@@ -1,10 +1,10 @@
 <?php
  class TestController extends BaseController {
-  public function TestMethod () {
-   echo "Got To TestMethod";
+  public function TestAction () {
+   echo "Got To TestAction";
   }//function
 
-  public function TestMethod2 ($strText) {
+  public function TestAction2 ($strText) {
    echo $strText;
   }//function
  }//class

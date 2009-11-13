@@ -1,28 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <routes>
- <route>
-  <url>test1/</url>
-  <controller>TestController</controller>
+ <index>
+  <execute controller="HomeController" action="index" secure="no" />
+ </index>
+
+ <notfound>
+  <execute controller="ErrorController" action="Error404" />
+ </notfound>
+
+ <route match="test1">
+  <execute controller="TestController" />
  </route>
 
- <route>
-  <url>test2/</url>
-  <controller>TestController</controller>
-  <method>TestMethod</method>
+ <route match="test2">
+  <execute controller="TestController" action="TestAction" />
  </route>
 
- <route>
-  <url>test3/</url>
-  <controller>TestController</controller>
-  <method>TestMethod2</method>
-  <params>
-   <param>Chris Emerson</param>
-  </params>
+ <route match="test3">
+  <execute controller="TestController" action="TestAction2" secure="yes" />
+
+  <param>Chris Emerson</param>
  </route>
 
- <route>
-  <url>test4/</url>
-  <redirect>test1/</redirect>
+ <route match="test3/{string}">
+  <execute controller="TestController" action="TestAction2" />
+
+  <param>%1</param>
+ </route>
+
+ <route match="test4">
+  <redirect route="test1" secure="no" />
+ </route>
+
+ <route match="test5">
+  <redirect uri="http://www.nugc.net" />
  </route>
 </routes>

@@ -30,14 +30,14 @@
   }//function
 
   private function loadSchema () {
-   $strSchemaFile = APP_BASE_PATH . "schemas/" . strtolower($this->strSchema) . ".xml";
-   $arrSchemaFile = simplexml_load_file($strSchemaFile);
+   $strSchemaFilename = Application::getBasePath() . "schemas/" . strtolower($this->strSchema) . ".xml";
+   $objSchemaFile = simplexml_load_file($strSchemaFilename);
 
    //Table Name
    $this->strTableName = (string) $arrSchemaFile['name'];
 
    //Fields
-   foreach ($arrSchemaFile->columns->column as $objColumn) {
+   foreach ($objSchemaFile->columns->column as $objColumn) {
     $arrColumn = array();
     $arrColumn['type'] = (string) $objColumn->type;
 
