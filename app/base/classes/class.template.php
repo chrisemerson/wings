@@ -43,7 +43,6 @@
       $this->initialiseBlock();
     }//function
 
-
     private function applyMasterTemplate () {
       try {
         $objAppConfig = Config::get('app');
