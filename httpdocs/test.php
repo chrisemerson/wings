@@ -1,9 +1,8 @@
 <?php
- require_once dirname(__FILE__) . "/../app/inc.framework.php";
- require_once dirname(__FILE__) . "/../app/models/model.post.php";
+  require_once dirname(__FILE__) . "/../app/inc.framework.php";
 
- $objBlogPost = new Post();
- echo "<pre>";
- print_r($objBlogPost);
- echo "</pre>";
+  $objBlogPost = new Post();
+  echo "<pre>";
+  print_r($objBlogPost);
+  echo "</pre>";
 ?>
