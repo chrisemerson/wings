@@ -382,7 +382,7 @@
       }//foreach
 
       //Remove any switches that weren't used
-      $strTemplateContent = preg_replace("/\{\[[a-z0-9_-]+\|(.+?)\]\}/i", "", $strTemplateContent);
+      $strTemplateContent = preg_replace("/\{\[[a-z0-9._-]+\|(.+?)\]\}/i", "", $strTemplateContent);
 
       return $strTemplateContent;
     }//function
