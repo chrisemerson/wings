@@ -378,7 +378,11 @@
 
       foreach ($arrVariables as $strTag => $strContent) {
         $strTemplateContent = str_ireplace("{" . $strTag . "}", $strContent, $strTemplateContent);
+        $strTemplateContent = preg_replace("/\{\[" . $strTag . "\|(.+?)\]\}/i", "\\1", $strTemplateContent);
       }//foreach
+
+      //Remove any switches that weren't used
+      $strTemplateContent = preg_replace("/\{\[[a-z0-9_-]+\|(.+?)\]\}/i", "", $strTemplateContent);
 
       return $strTemplateContent;
     }//function
