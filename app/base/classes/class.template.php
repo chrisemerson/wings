@@ -222,7 +222,7 @@
     /* Block Parsing */
     /*****************/
 
-    public function parse ($strBlockName = "") {
+    public function parse ($strBlockName = "", $blnResetVars = true) {
       while (!isset($this->arrBlockInformation[$strBlockName])) {
         $strBlockNameForLoop = $strBlockName;
 
@@ -265,7 +265,9 @@
         }//if
       }//for
 
-      $this->clearAllVars();
+      if ($blnResetVars) {
+        $this->clearAllVars();
+      }//if
     }//function
 
     /********************/
