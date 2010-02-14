@@ -1,55 +1,70 @@
 <?php
- class Application {
-  public static function getCurrentPageURI () {
-   $strCurrentPageURI = 'http';
+  class Application {
+    public static function getCurrentPageURI () {
+      $strCurrentPageURI = 'http';
 
-   if (self::isSecure()) {
-    $strCurrentPageURI .= 's';
-   }//if
+      if (self::isSecure()) {
+        $strCurrentPageURI .= 's';
+      }//if
 
-   $strCurrentPageURI .= '://';
+      $strCurrentPageURI .= '://';
 
-   if ($_SERVER['SERVER_PORT'] != '80') {
-    $strCurrentPageURI .= $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'];
-   } else {
-    $strCurrentPageURI .= $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-   }//if
+      if ($_SERVER['SERVER_PORT'] != '80') {
+        $strCurrentPageURI .= $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'];
+      } else {
+        $strCurrentPageURI .= $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+      }//if
 
-   return $strCurrentPageURI;
-  }//function
+      return $strCurrentPageURI;
+    }//function
 
-  public static function getBaseURI ($blnSecure = false) {
-   $objAppConfig = Config::get('app');
+    public static function getBaseURI ($blnSecure = false) {
+      $objAppConfig = Config::get('app');
+      $objEnvConfig = Config::get('environment');
 
-   $strAppBaseURI = 'http';
+      $strCurrentEnvironment = self::getEnvironment();
 
-   if ($blnSecure) {
-    $strAppBaseURI .= 's';
-   }//if
+      $strAppBaseURI = 'http';
 
-   $strAppBaseURI .= '://';
+      if ($blnSecure) {
+        $strAppBaseURI .= 's';
+      }//if
 
-   if ($_SERVER['SERVER_PORT'] != '80') {
-    $strAppBaseURI .= $objAppConfig->uri->host . ':' . $_SERVER['SERVER_PORT'] . '/' . trim($objAppConfig->uri->path, '/') . '/';
-   } else {
-    $strAppBaseURI .= $objAppConfig->uri->host . '/' . trim($objAppConfig->uri->path, '/') . '/';
-   }//if
+      $strAppBaseURI .= '://';
 
-   return $strAppBaseURI;
-  }//function
+      $strPath = $objEnvConfig->uri->path;
 
-  public static function getBasePath () {
-   return realpath(dirname(__FILE__) . '/../../') . '/';
-  }//function
+      if (!empty($strPath)) {
+        $strPath = trim($strPath, '/') . '/';
+      }//if
 
-  public static function isSecure () {
-   return ($_SERVER['HTTPS'] == 'on');
-  }//function
+      if ($_SERVER['SERVER_PORT'] != '80') {
+        $strAppBaseURI .= $objEnvConfig->uri->host . ':' . $_SERVER['SERVER_PORT'] . '/' . $strPath;
+      } else {
+        $strAppBaseURI .= $objEnvConfig->uri->host . '/' . $strPath;
+      }//if
 
-  public static function redirect ($strURL) {
-   header('Location: ' . $strURL);
-   session_write_close();
-   exit();
-  }//function
- }//class
+      return $strAppBaseURI;
+    }//function
+
+    public static function getBasePath () {
+      return realpath(dirname(__FILE__) . '/../../') . '/';
+    }//function
+
+    public static function isSecure () {
+     return ($_SERVER['HTTPS'] == 'on');
+    }//function
+
+    public static function redirect ($strURL) {
+      header('Location: ' . $strURL);
+      session_write_close();
+      exit();
+    }//function
+
+    public static function getEnvironment () {
+      $objAppConfig = Config::get('app');
+
+      return $_SERVER[$objAppConfig->environmentvar];
+    }//function
+  }//class
 ?>

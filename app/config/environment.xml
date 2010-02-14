@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<environments>
+  <dev>
+    <uri>
+      <host>dev</host>
+      <path>appframework/httpdocs</path>
+    </uri>
+  </dev>
+
+  <test>
+    <uri>
+      <host></host>
+      <path></path>
+    </uri>
+  </test>
+
+  <live>
+    <uri>
+      <host></host>
+      <path></path>
+    </uri>
+  </live>
+</environments>

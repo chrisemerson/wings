@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <app>
-  <uri>
-    <host>dev</host>
-    <path>appframework/httpdocs</path>
-  </uri>
-
   <template>
     <mastertemplate>master</mastertemplate>
   </template>
+
+  <environmentvar>APP_ENVIRONMENT</environmentvar>
 </app>

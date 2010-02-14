@@ -31,7 +31,14 @@
     self::$arrConfigObjects[$mixConfigData] = new Config($mixConfigData);
    }//if
 
-   return self::$arrConfigObjects[$mixConfigData];
+   if (preg_match('/^environment$/', $mixConfigData)) {
+     $objConfig = self::$arrConfigObjects[$mixConfigData];
+     $strCurrentEnvironment = Application::getEnvironment();
+
+     return $objConfig->$strCurrentEnvironment;
+   } else {
+     return self::$arrConfigObjects[$mixConfigData];
+   }//if
   }//function
 
   private function getConfigDataFromXML ($objXMLData) {

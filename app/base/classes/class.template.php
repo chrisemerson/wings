@@ -415,6 +415,16 @@
               unset($arrBlockLines[$intLastArrayElement]);
             }//if
             break;
+
+          case 'tlc':
+            $intLastArrayElement = count($arrBlockLines) - 1;
+            $arrBlockLines[$intLastArrayElement] = substr($arrBlockLines[$intLastArrayElement], 0, -1);
+            $arrBlockLines[$intLastArrayElement] = preg_replace('/^(.*).(\\s*)$/s', '$1$2' . PHP_EOL, $arrBlockLines[$intLastArrayElement]);
+            break;
+
+          case 'tfc':
+            $arrBlockLines[0] = preg_replace('/^(\\s*).(.*)$/', '$1$2', $arrBlockLines[0]);
+            break;
         }//switch
       }//foreach
 
