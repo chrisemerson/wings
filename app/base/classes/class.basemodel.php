@@ -1,103 +1,117 @@
 <?php
- /**************************************/
- /* BaseModel Class - by Chris Emerson */
- /* http://www.cemerson.co.uk/         */
- /*                                    */
- /* Version 0.1                        */
- /* 23rd May 2009                      */
- /**************************************/
+  /**************************************/
+  /* BaseModel Class - by Chris Emerson */
+  /* http://www.cemerson.co.uk/         */
+  /*                                    */
+  /* Version 0.1                        */
+  /* 23rd May 2009                      */
+  /**************************************/
 
- class BaseModel {
-  private   $dbConn;
+  class BaseModel {
+    private   $dbConn;
 
-  private   $strTableName;
-  private   $arrColumns = array();
-  private   $arrCurrentData = array();
-  private   $arrNewData = array();
+    private   $strTableName;
+    private   $arrColumns = array();
+    private   $arrCurrentData = array();
+    private   $arrNewData = array();
 
-  protected $strSchema;
+    private   $blnSaved = false;
 
-  public function __construct () {
-   $objDBConfig = Config::get('db');
-   $strClassName = $objDBConfig->driver . "Driver";
-   $this->dbConn = new $strClassName($objDBConfig->host, $objDBConfig->user, $objDBConfig->pass, $objDBConfig->name);
+    protected $strSchema;
 
-   if (empty($this->strSchema)) {
-    $this->strSchema = strtolower(get_class($this));
-   }//if
+    public function __construct () {
+      $objDBConfig = Config::get('db');
+      $strClassName = $objDBConfig->driver . "Driver";
+      $this->dbConn = new $strClassName($objDBConfig->host, $objDBConfig->user, $objDBConfig->pass, $objDBConfig->name);
 
-   $this->loadSchema();
-  }//function
+      if (empty($this->strSchema)) {
+        $this->strSchema = strtolower(get_class($this));
+      }//if
 
-  private function loadSchema () {
-   $strSchemaFilename = Application::getBasePath() . "schemas/" . strtolower($this->strSchema) . ".xml";
-   $objSchemaFile = simplexml_load_file($strSchemaFilename);
+      $this->loadSchema();
+    }//function
 
-   //Table Name
-   $this->strTableName = (string) $arrSchemaFile['name'];
+    private function loadSchema () {
+      $strSchemaFilename = Application::getBasePath() . "schemas/" . strtolower($this->strSchema) . ".xml";
+      $objSchemaFile = simplexml_load_file($strSchemaFilename);
 
-   //Fields
-   foreach ($objSchemaFile->columns->column as $objColumn) {
-    $arrColumn = array();
-    $arrColumn['type'] = (string) $objColumn->type;
+      //Table Name
+      $this->strTableName = (string) $arrSchemaFile['name'];
 
-    if (isset($objColumn->size)) {
-     $arrColumn['size'] = (int) $objColumn->length;
-    }//if
+      //Fields
+      foreach ($objSchemaFile->columns->column as $objColumn) {
+        $arrColumn = array();
+        $arrColumn['type'] = (string) $objColumn->type;
 
-    if (isset($objColumn->default)) {
-     $arrColumn['default'] = (string) $objColumn->default;
-    }//if
+        if (isset($objColumn->size)) {
+          $arrColumn['size'] = (int) $objColumn->length;
+        }//if
 
-    if (isset($objColumn->null)) {
-     $arrColumn['null'] = (strtolower((string) $objColumn->null) == "yes");
-    }//if
+        if (isset($objColumn->default)) {
+          $arrColumn['default'] = (string) $objColumn->default;
+        }//if
 
-    if (isset($objColumn->primary_key)) {
-     $arrColumn['PK'] = (strtolower((string) $objColumn->primary_key) == "yes");
-    }//if
+        if (isset($objColumn->null)) {
+          $arrColumn['null'] = (strtolower((string) $objColumn->null) == "yes");
+        }//if
 
-    if (isset($objColumn->autonumber)) {
-     $arrColumn['Autonumber'] = (strtolower((string) $objColumn->autonumber) == "yes");
-    }//if
+        if (isset($objColumn->primary_key)) {
+          $arrColumn['PK'] = (strtolower((string) $objColumn->primary_key) == "yes");
+        }//if
 
-    $this->arrColumns[(string) $objColumn['title']] = $arrColumn;
-    $this->arrCurrentData[(string) $objColumn['name']] = null;
-   }//foreach
+        if (isset($objColumn->autonumber)) {
+          $arrColumn['Autonumber'] = (strtolower((string) $objColumn->autonumber) == "yes");
+        }//if
 
-   $this->arrNewData = $this->arrCurrentData;
-  }//function
+        $this->arrColumns[(string) $objColumn['title']] = $arrColumn;
+        $this->arrCurrentData[(string) $objColumn['name']] = null;
+      }//foreach
 
-  public function __get ($strFieldName) {
-   if (isset($this->arrNewData[$strFieldName])) {
-    return $this->arrNewData[$strFieldName];
-   } else {
-    throw new FieldNotFoundException;
-   }//if
-  }//function
+      $this->arrNewData = $this->arrCurrentData;
+    }//function
 
-  public function __set ($strFieldName, $strValue) {
-   if (isset($this->arrNewData[$strFieldName])) {
-    $this->arrNewData[$strFieldName] = $strValue;
-   } else {
-    throw new FieldNotFoundException;
-   }//if
-  }//function
+    public function __get ($strFieldName) {
+      if (isset($this->arrNewData[$strFieldName])) {
+        return $this->arrNewData[$strFieldName];
+      } else {
+        throw new FieldNotFoundException;
+      }//if
+    }//function
 
-  public function save () {
+    public function __set ($strFieldName, $strValue) {
+      if (isset($this->arrNewData[$strFieldName])) {
+        $this->arrNewData[$strFieldName] = $strValue;
+      } else {
+        throw new FieldNotFoundException;
+      }//if
+    }//function
 
-  }//function
+    public function save () {
+      if ($this->blnSaved) {
+        $this->updateDB();
+      } else {
+        $this->insertIntoDB();
+      }//if
+    }//function
 
-  public function loadFromPOST () {
-   foreach ($this->arrFields as $strFieldName => $strFieldInfo) {
-    if (isset($_POST[$strFieldName])) {
-     $this->$strFieldName = $_POST[$strFieldName];
-    }//if
-   }//foreach
-  }//function
- }//class
+    public function loadFromPOST () {
+      foreach ($this->arrFields as $strFieldName => $strFieldInfo) {
+        if (isset($_POST[$strFieldName])) {
+          $this->$strFieldName = $_POST[$strFieldName];
+        }//if
+      }//foreach
+    }//function
 
- //Exceptions
+    private function insertIntoDB () {
 
- class FieldNotFoundException extends Exception {}
+    }//function
+
+    private function updateDB () {
+
+    }//function
+  }//class
+
+  //Exceptions
+
+  class FieldNotFoundException extends Exception {}
 ?>
