@@ -11,7 +11,6 @@
     private   $dbConn;
 
     private   $strTableName;
-    private   $arrColumns = array();
     private   $arrCurrentData = array();
     private   $arrNewData = array();
 
@@ -103,7 +102,18 @@
     }//function
 
     private function insertIntoDB () {
+      $strSQL = "INSERT INTO `" . $this->strTableName . "`";
 
+      $arrColumns = array();
+      $arrValues = array();
+
+      $arrNewData = $this->arrNewData;
+
+      foreach ($arrNewData as $arrData) {
+
+      }//foreach
+
+      return $strSQL;
     }//function
 
     private function updateDB () {
