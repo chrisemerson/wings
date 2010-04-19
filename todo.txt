@@ -1,4 +1,3 @@
-- Write dispatcher and finish off routing
 - Write ORM/BaseModel class
 
 - Library files to include:
