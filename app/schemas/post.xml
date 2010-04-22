@@ -11,7 +11,7 @@
   </columns>
 
   <relationships>
-    <relationship type="onetomany" foreigntable="comments">
+    <relationship model="Comment" type="onetomany">
       <column local="post_id" foreign="post_id" />
     </relationship>
   </relationships>

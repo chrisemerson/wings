@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <table name="comments">
- <columns>
-  <column name="comment_id" type="int" primary_key="true" auto_number="true" />
-  <column name="post_id" type="int" />
-  <column name="comment_title" type="varchar" size="255" />
-  <column name="comment_body" type="text" />
-  <column name="added_date" type="date" default="NOW()" />
-  <column name="deleted_date" type="date" nullable="yes" default="NULL" />
-  <column name="available" type="tinyint" size="1" default_value="1" />
- </columns>
+  <columns>
+    <column name="comment_id" type="int" primary_key="yes" auto_number="yes" />
+    <column name="post_id" type="int" />
+    <column name="comment_title" type="varchar" size="255" />
+    <column name="comment_body" type="text" />
+    <column name="added_date" type="datetime" default="NOW()" />
+    <column name="deleted_date" type="datetime" nullable="yes" />
+    <column name="available" type="tinyint" size="1" default="1" />
+  </columns>
 
- <relationships>
-  <relationship type="manytoone" foreigntable="posts">
-   <column local="post_id" foreign="post_id" />
-  </relationship>
- </relationships>
+  <relationships>
+    <relationship model="Post" type="manytoone">
+      <column local="post_id" foreign="post_id" />
+    </relationship>
+  </relationships>
 </table>

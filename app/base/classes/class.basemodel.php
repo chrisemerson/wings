@@ -13,8 +13,11 @@
 
     private   $strTableName;
     private   $arrColumns;
+
     private   $arrCurrentData = array();
     private   $arrNewData = array();
+
+    private   $arrRelationships = array();
 
     private   $blnSaved = false;
 
@@ -86,6 +89,22 @@
         $this->arrCurrentData[(string) $objColumn['name']] = null;
       }//foreach
 
+      foreach ($objSchemaFile->relationships->relationship as $objRelationship) {
+        $arrRelationship = array();
+
+        $arrRelationship['type'] = (string) $objRelationship['type'];
+
+        $arrColumns = array();
+
+        foreach ($objRelationship->column as $objColumn) {
+          $arrColumns[(string) $objColumn['local']] = (string) $objColumn['foreign'];
+        }//foreach
+
+        $arrRelationship['columns'] = $arrColumns;
+
+        $this->arrRelationships[(string) $objRelationship['with']] = $arrRelationship;
+      }//foreach
+
       $this->arrNewData = $this->arrCurrentData;
     }//function
 
@@ -103,6 +122,15 @@
       } else {
         throw new FieldNotFoundException;
       }//if
+    }//function
+
+    public function __call ($strMethodName, $arrArguments) {
+      if (preg_match("/^get([A-Za-z_-]+)s\$/", $strMethodName, $arrMatches)) {
+        $strChildModel = $arrMatches[1];
+
+        $objChildComments = new Collection($strChildModel);
+      }//if
+
     }//function
 
     public function save () {
@@ -125,7 +153,7 @@
       $this->arrNewData = $this->arrCurrentData;
     }//function
 
-    public function loadFromPK ($mixPK) {
+    private function loadFromPK ($mixPK) {
       $strSQL = "SELECT * FROM `" . $this->strTablePrefix . $this->strTableName . "` WHERE ";
 
       $arrColumns = $this->arrColumns;
@@ -270,6 +298,37 @@
       }//foreach
 
       $this->loadFromPK($arrPKData);
+    }//function
+
+    public function delete () {
+      if ($this->blnSaved) {
+        $arrColumns = $this->arrColumns;
+        $arrCurrentData = $this->arrCurrentData;
+        $arrPKData = array();
+
+        foreach ($arrColumns as $strFieldName => $arrColumnInfo) {
+          if ($arrColumnInfo['PK']) {
+            $arrPKData[] = $strFieldName;
+          }//if
+        }//foreach
+
+        $strSQL = "DELETE FROM `" . $this->strTablePrefix . $this->strTableName . "` WHERE ";
+
+        foreach ($arrPKData as $strFieldName) {
+          $arrWhereStrings[] = "`" . $strFieldName . "` = ". $this->prepareData($arrCurrentData[$strFieldName], $strFieldName);
+        }//foreach
+
+        $strSQL .= implode(" AND ", $arrWhereStrings) . ";";
+
+        $this->dbConn->query($strSQL);
+      } else {
+        throw new NoDataFoundException;
+      }//if
+
+    }//function
+
+    public function getTableName () {
+      return $this->strTableName;
     }//function
 
     private function prepareData ($strData, $strFieldName) {
