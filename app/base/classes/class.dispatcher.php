@@ -81,7 +81,7 @@
    $objRoutesFile = simplexml_load_file($strRoutesFilename);
 
    if (!isset($objRoutesFile->index)) {
-    throw new NoIndexActionDefinedException;
+    throw new NoIndexRouteDefinedException;
    }//if
 
    $this->arrIndexAction = $this->parseRoute($objRoutesFile->index);
