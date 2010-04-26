@@ -11,17 +11,13 @@
     private   $dbConn;
     private   $strTablePrefix;
 
-    private   $strTableName;
-    private   $arrColumns;
-
     private   $arrCurrentData = array();
     private   $arrNewData = array();
-
-    private   $arrRelationships = array();
 
     private   $blnSaved = false;
 
     protected $strSchema;
+    protected $objSchema;
 
     public function __construct ($mixPK = null) {
       $objDBConfig = Config::get('db');
@@ -34,82 +30,17 @@
         $this->strSchema = strtolower(get_class($this));
       }//if
 
-      $this->loadSchema();
+      $this->objSchema = new Schema($this->strSchema);
+      $this->arrCurrentData = $this->objSchema->getEmptyDataArray();
+      $this->arrNewData = $this->objSchema->getEmptyDataArray();
 
       if (!is_null($mixPK)) {
         $this->loadFromPK($mixPK);
       }//if
     }//function
 
-    private function loadSchema () {
-      $strSchemaFilename = Application::getBasePath() . "schemas/" . strtolower($this->strSchema) . ".xml";
-      $objSchemaFile = simplexml_load_file($strSchemaFilename);
-
-      //Table Name
-      $this->strTableName = (string) $objSchemaFile['name'];
-
-      //Fields
-      foreach ($objSchemaFile->columns->column as $objColumn) {
-        $arrColumn = array();
-        $arrColumn['type'] = (string) $objColumn['type'];
-
-        if (isset($objColumn['size'])) {
-          $arrColumn['size'] = (int) $objColumn['size'];
-        }//if
-
-        if (isset($objColumn['default'])) {
-          $arrColumn['default'] = (string) $objColumn['default'];
-        }//if
-
-        if (isset($objColumn['function'])) {
-          $arrColumn['function'] = (string) $objColumn['function'];
-        }//if
-
-        if (isset($objColumn['nullable'])) {
-          $arrColumn['nullable'] = (strtolower((string) $objColumn['nullable']) == "yes");
-        }//if
-
-        if (isset($objColumn['primary_key'])) {
-          $arrColumn['PK'] = (strtolower((string) $objColumn['primary_key']) == "yes");
-
-          if (isset($objColumn['default'])) {
-            throw new InvalidSchemaException;
-          }//if
-        }//if
-
-        if (isset($objColumn['auto_number'])) {
-          $arrColumn['autonumber'] = (strtolower((string) $objColumn['auto_number']) == "yes");
-
-          if (!isset($objColumn['primary_key'])) {
-            throw new InvalidSchemaException;
-          }//if
-        }//if
-
-        $this->arrColumns[(string) $objColumn['name']] = $arrColumn;
-        $this->arrCurrentData[(string) $objColumn['name']] = null;
-      }//foreach
-
-      foreach ($objSchemaFile->relationships->relationship as $objRelationship) {
-        $arrRelationship = array();
-
-        $arrRelationship['type'] = (string) $objRelationship['type'];
-
-        $arrColumns = array();
-
-        foreach ($objRelationship->column as $objColumn) {
-          $arrColumns[(string) $objColumn['local']] = (string) $objColumn['foreign'];
-        }//foreach
-
-        $arrRelationship['columns'] = $arrColumns;
-
-        $this->arrRelationships[(string) $objRelationship['with']] = $arrRelationship;
-      }//foreach
-
-      $this->arrNewData = $this->arrCurrentData;
-    }//function
-
     public function __get ($strFieldName) {
-      if (isset($this->arrColumns[$strFieldName])) {
+      if ($this->objSchema->isColumn($strFieldName)) {
         return $this->arrNewData[$strFieldName];
       } else {
         throw new FieldNotFoundException;
@@ -117,7 +48,7 @@
     }//function
 
     public function __set ($strFieldName, $strValue) {
-      if (isset($this->arrColumns[$strFieldName])) {
+      if ($this->objSchema->isColumn($strFieldName)) {
         $this->arrNewData[$strFieldName] = $strValue;
       } else {
         throw new FieldNotFoundException;
@@ -127,8 +58,6 @@
     public function __call ($strMethodName, $arrArguments) {
       if (preg_match("/^get([A-Za-z_-]+)s\$/", $strMethodName, $arrMatches)) {
         $strChildModel = $arrMatches[1];
-
-        $objChildComments = new Collection($strChildModel);
       }//if
 
     }//function
@@ -143,7 +72,7 @@
 
     public function loadFromArray ($arrData) {
       foreach ($arrData as $strColumn => $mixData) {
-        if (isset($this->arrColumns[$strColumn])) {
+        if ($this->objSchema->isColumn($strColumn)) {
           $this->arrCurrentData[$strColumn] = $mixData;
         } else {
           throw new FieldNotFoundException;
@@ -154,16 +83,9 @@
     }//function
 
     private function loadFromPK ($mixPK) {
-      $strSQL = "SELECT * FROM `" . $this->strTablePrefix . $this->strTableName . "` WHERE ";
+      $strSQL = "SELECT * FROM `" . $this->strTablePrefix . $this->objSchema->getTableName() . "` WHERE ";
 
-      $arrColumns = $this->arrColumns;
-      $arrPKs = array();
-
-      foreach ($arrColumns as $strFieldName => $arrColumnInfo) {
-        if ($arrColumnInfo['PK']) {
-          $arrPKs[] = $strFieldName;
-        }//if
-      }//foreach
+      $arrPKs = $this->objSchema->getPrimaryKeys();
 
       $arrWhereData = array();
 
@@ -203,7 +125,7 @@
     }//function
 
     private function insertIntoDB () {
-      $strSQL = "INSERT INTO `" . $this->strTablePrefix . $this->strTableName . "` ";
+      $strSQL = "INSERT INTO `" . $this->strTablePrefix . $this->objSchema->getTableName() . "` ";
 
       $arrNewData = $this->arrNewData;
 
@@ -218,19 +140,21 @@
 
       //Don't include any autonumbered fields!
       foreach ($arrNewData as $strFieldName => $strData) {
+        $arrColumnInfo = $this->objSchema->getColumnInfo($strFieldName);
+
         if (!empty($strData)) {
           $strDataToInsert = $this->prepareData($strData, $strFieldName);
-        } else if (isset($this->arrColumns[$strFieldName]['default'])) {
-          $strDataToInsert = $this->prepareData($this->arrColumns[$strFieldName]['default'], $strFieldName);
-        } else if (isset($this->arrColumns[$strFieldName]['function'])) {
-          $strDataToInsert = $this->arrColumns[$strFieldName]['function'];
-        } else if ($this->arrColumns[$strFieldName]['nullable'] == true) {
+        } else if (isset($arrColumnInfo['default'])) {
+          $strDataToInsert = $this->prepareData($arrColumnInfo['default'], $strFieldName);
+        } else if (isset($arrColumnInfo['function'])) {
+          $strDataToInsert = $arrColumnInfo['function'];
+        } else if ($arrColumnInfo['nullable'] == true) {
           $strDataToInsert = 'NULL';
-        } else if ($this->arrColumns[$strFieldName]['autonumber'] != true) {
+        } else if ($arrColumnInfo['autonumber'] != true) {
           throw new DataMissingException;
         }//if
 
-        if ($this->arrColumns[$strFieldName]['autonumber'] != true) {
+        if ($arrColumnInfo['autonumber'] != true) {
           $arrColumns[] = $strFieldName;
           $arrData[] = $strDataToInsert;
         }//if
@@ -240,10 +164,12 @@
 
       $this->dbConn->query($strSQL);
 
-      $arrColumns = $this->arrColumns;
+      $arrColumns = $this->objSchema->getColumnList();
       $arrPKData = array();
 
-      foreach ($arrColumns as $strFieldName => $arrColumnInfo) {
+      foreach ($arrColumns as $strFieldName) {
+        $arrColumnInfo = $this->objSchema->getColumnInfo($strFieldName);
+
         if ($arrColumnInfo['PK'] && $arrColumnInfo['autonumber']) {
           $arrPKData[$strFieldName] = $this->dbConn->insert_id;
         } else if ($arrColumnInfo['PK']) {
@@ -256,7 +182,7 @@
     }//function
 
     private function updateDB () {
-      $strSQL = "UPDATE `" . $this->strTablePrefix . $this->strTableName . "` SET";
+      $strSQL = "UPDATE `" . $this->strTablePrefix . $this->objSchema->getTableName() . "` SET";
 
       $arrNewData = $this->arrNewData;
       $arrCurrentData = $this->arrCurrentData;
@@ -267,14 +193,7 @@
         }//if
       }//foreach
 
-      $arrColumns = $this->arrColumns;
-      $arrPKs = array();
-
-      foreach ($arrColumns as $strFieldName => $arrColumnInfo) {
-        if ($arrColumnInfo['PK']) {
-          $arrPKs[] = $strFieldName;
-        }//if
-      }//foreach
+      $arrPKs = $this->objSchema->getPrimaryKeys();
 
       $arrWhereStrings = array();
 
@@ -288,10 +207,12 @@
 
       $this->dbConn->query($strSQL);
 
-      $arrColumns = $this->arrColumns;
+      $arrColumns = $this->objSchema->getColumnList();
       $arrPKData = array();
 
-      foreach ($arrColumns as $strFieldName => $arrColumnInfo) {
+      foreach ($arrColumns as $strFieldName) {
+        $arrColumnInfo = $this->objSchema->getColumnInfo($strFieldName);
+
         if ($arrColumnInfo['PK']) {
           $arrPKData[$strFieldName] = $arrNewData[$strFieldName];
         }//if
@@ -302,17 +223,10 @@
 
     public function delete () {
       if ($this->blnSaved) {
-        $arrColumns = $this->arrColumns;
         $arrCurrentData = $this->arrCurrentData;
-        $arrPKData = array();
+        $arrPKData = $this->objSchema->getPrimaryKeys();
 
-        foreach ($arrColumns as $strFieldName => $arrColumnInfo) {
-          if ($arrColumnInfo['PK']) {
-            $arrPKData[] = $strFieldName;
-          }//if
-        }//foreach
-
-        $strSQL = "DELETE FROM `" . $this->strTablePrefix . $this->strTableName . "` WHERE ";
+        $strSQL = "DELETE FROM `" . $this->strTablePrefix . $this->objSchema->getTableName() . "` WHERE ";
 
         foreach ($arrPKData as $strFieldName) {
           $arrWhereStrings[] = "`" . $strFieldName . "` = ". $this->prepareData($arrCurrentData[$strFieldName], $strFieldName);
@@ -324,15 +238,10 @@
       } else {
         throw new NoDataFoundException;
       }//if
-
-    }//function
-
-    public function getTableName () {
-      return $this->strTableName;
     }//function
 
     private function prepareData ($strData, $strFieldName) {
-      $strDataType = $this->arrColumns[$strFieldName]['type'];
+      $strDataType = $this->objSchema->getDataType($strFieldName);
 
       switch ($strDataType) {
         case 'int':

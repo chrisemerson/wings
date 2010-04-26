@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <routes>
- <index>
-  <execute controller="HomeController" action="index" secure="no" />
- </index>
+  <index>
+    <execute controller="HomeController" action="index" secure="no" />
+  </index>
 
- <notfound>
-  <execute controller="ErrorController" action="Error404" />
- </notfound>
+  <notfound>
+    <execute controller="ErrorController" action="Error404" />
+  </notfound>
 
- <route match="test1">
-  <execute controller="TestController" />
- </route>
+  <route match="test1">
+    <execute controller="TestController" />
+  </route>
 
  <route match="test2">
   <execute controller="TestController" action="TestAction" />

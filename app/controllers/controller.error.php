@@ -10,7 +10,6 @@
 
   public function ErrorActionNotFound () {
    echo "Action Not Found";
-
   }//function
 
   public function ErrorViewNotFound () {
