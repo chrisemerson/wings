@@ -21,7 +21,7 @@
       $this->strTablePrefix = $objDBConfig->prefix;
     }//function
 
-    public function get ($arrWhere = array()) {
+    public function fetch ($arrWhere = array()) {
       $strModelName = $this->strModelName;
 
       $strSQL = "SELECT * FROM `" . $this->strTablePrefix . $this->objSchema->getTableName() . "`";
@@ -55,6 +55,10 @@
 
     public function getMembers () {
       return $this->arrMembers;
+    }//function
+
+    public function getMemberCount () {
+      return count($this->arrMembers);
     }//function
   }//class
 ?>

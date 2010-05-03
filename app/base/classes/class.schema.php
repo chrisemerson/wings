@@ -60,21 +60,23 @@
         $this->arrEmptyDataArray[(string) $objColumn['name']] = null;
       }//foreach
 
-      foreach ($objSchemaFile->relationships->relationship as $objRelationship) {
-        $arrRelationship = array();
+      if (isset($objSchemaFile->relationships->relationship)) {
+        foreach ($objSchemaFile->relationships->relationship as $objRelationship) {
+          $arrRelationship = array();
 
-        $arrRelationship['type'] = (string) $objRelationship['type'];
+          $arrRelationship['type'] = (string) $objRelationship['type'];
 
-        $arrColumns = array();
+          $arrColumns = array();
 
-        foreach ($objRelationship->column as $objColumn) {
-          $arrColumns[(string) $objColumn['local']] = (string) $objColumn['foreign'];
+          foreach ($objRelationship->column as $objColumn) {
+            $arrColumns[(string) $objColumn['local']] = (string) $objColumn['foreign'];
+          }//foreach
+
+          $arrRelationship['columns'] = $arrColumns;
+
+          $this->arrRelationships[(string) $objRelationship['model']] = $arrRelationship;
         }//foreach
-
-        $arrRelationship['columns'] = $arrColumns;
-
-        $this->arrRelationships[(string) $objRelationship['with']] = $arrRelationship;
-      }//foreach
+      }//if
     }//function
 
     public function getTableName () {
@@ -119,6 +121,14 @@
       }//foreach
 
       return $arrColumnList;
+    }//function
+
+    public function getRelationshipInfo ($strModelName) {
+      if (isset($this->arrRelationships[$strModelName])) {
+        return $this->arrRelationships[$strModelName];
+      } else {
+        return false;
+      }//if
     }//function
   }//class
 ?>

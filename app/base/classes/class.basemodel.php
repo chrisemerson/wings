@@ -58,8 +58,36 @@
     public function __call ($strMethodName, $arrArguments) {
       if (preg_match("/^get([A-Za-z_-]+)s\$/", $strMethodName, $arrMatches)) {
         $strChildModel = $arrMatches[1];
-      }//if
+        $arrRelationshipInfo = $this->objSchema->getRelationshipInfo($strChildModel);
 
+        if ($arrRelationshipInfo && ($arrRelationshipInfo['type'] == 'onetomany' || $arrRelationshipInfo['type'] == 'manytomany')) {
+          $objCollection = new Collection($strChildModel);
+
+          $arrWhere = array();
+
+          foreach ($arrRelationshipInfo['columns'] as $strLocalColumn => $strForeignColumn) {
+            $arrWhere[$strForeignColumn] = $this->$strLocalColumn;
+          }//foreach
+
+          $objCollection->fetch($arrWhere);
+          return $objCollection;
+        }//if
+      } else if (preg_match("/^get([A-Za-z_-]+)\$/", $strMethodName, $arrMatches)) {
+        $strParentModel = $arrMatches[1];
+        $arrRelationshipInfo = $this->objSchema->getRelationshipInfo($strParentModel);
+
+        if ($arrRelationshipInfo && $arrRelationshipInfo['type'] == 'manytoone') {
+          $arrWhere = array();
+
+          foreach ($arrRelationshipInfo['columns'] as $strLocalColumn => $strForeignColumn) {
+            $arrWhere[$strForeignColumn] = $this->$strLocalColumn;
+          }//foreach
+
+          $objParentModel = new $strParentModel($arrWhere);
+
+          return $objParentModel;
+        }//if
+      }//if
     }//function
 
     public function save () {
@@ -73,13 +101,11 @@
     public function loadFromArray ($arrData) {
       foreach ($arrData as $strColumn => $mixData) {
         if ($this->objSchema->isColumn($strColumn)) {
-          $this->arrCurrentData[$strColumn] = $mixData;
+          $this->arrNewData[$strColumn] = $mixData;
         } else {
           throw new FieldNotFoundException;
         }//if
       }//foreach
-
-      $this->arrNewData = $this->arrCurrentData;
     }//function
 
     private function loadFromPK ($mixPK) {
@@ -117,6 +143,7 @@
       if ($dbResults->num_rows != 0) {
         $arrResult = $dbResults->fetch_assoc();
         $this->loadFromArray($arrResult);
+        $this->arrCurrentData = $this->arrNewData;
       } else {
         throw new NoDataFoundException;
       }//if
@@ -142,7 +169,7 @@
       foreach ($arrNewData as $strFieldName => $strData) {
         $arrColumnInfo = $this->objSchema->getColumnInfo($strFieldName);
 
-        if (!empty($strData)) {
+        if (!is_null($strData)) {
           $strDataToInsert = $this->prepareData($strData, $strFieldName);
         } else if (isset($arrColumnInfo['default'])) {
           $strDataToInsert = $this->prepareData($arrColumnInfo['default'], $strFieldName);
@@ -246,6 +273,7 @@
       switch ($strDataType) {
         case 'int':
         case 'tinyint':
+        case 'decimal':
           return $strData;
           break;
 
