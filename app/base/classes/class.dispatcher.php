@@ -96,6 +96,8 @@
     foreach ($objRoutesFile->route as $objRoute) {
      $this->arrRoutes[] = $this->parseRoute($objRoute);
     }//foreach
+   } else {
+    $this->arrRoutes = array();
    }//if
   }//function
 
