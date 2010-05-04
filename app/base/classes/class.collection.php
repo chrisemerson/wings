@@ -1,4 +1,7 @@
 <?php
+  define('ORDER_BY_ASC', 1);
+  define('ORDER_BY_DESC', 2);
+
   class Collection {
     private $dbConn;
     private $strTablePrefix;
@@ -6,6 +9,9 @@
     private $strModelName;
 
     private $objSchema;
+
+    private $arrWhere = array();
+    private $arrOrderBy = array();
 
     private $arrMembers;
 
@@ -21,7 +27,10 @@
       $this->strTablePrefix = $objDBConfig->prefix;
     }//function
 
-    public function fetch ($arrWhere = array()) {
+    public function fetch () {
+      $arrWhere = $this->arrWhere;
+      $arrOrderBy = $this->arrOrderBy;
+
       $strModelName = $this->strModelName;
 
       $strSQL = "SELECT * FROM `" . $this->strTablePrefix . $this->objSchema->getTableName() . "`";
@@ -38,6 +47,26 @@
         $strSQL .= implode(" AND ", $arrWhereStrings);
       }//if
 
+      if (count($arrOrderBy) > 0) {
+        $strSQL .= " ORDER BY ";
+
+        $arrOrderByStrings = array();
+
+        foreach ($arrOrderBy as $arrOrderByInfo) {
+          $strOrderByString = $arrOrderByInfo['field'] . " ";
+
+          if ($arrOrderByInfo['dir'] == ORDER_BY_ASC) {
+            $strOrderByString .= "ASC";
+          } else if ($arrOrderByInfo['dir'] == ORDER_BY_DESC) {
+            $strOrderByString .= "DESC";
+          }//if
+
+          $arrOrderByStrings[] = $strOrderByString;
+        }//foreach
+
+        $strSQL .= implode(", ", $arrOrderByStrings);
+      }//if
+
       $strSQL .= ";";
 
       $dbResults = $this->dbConn->query($strSQL);
@@ -51,6 +80,14 @@
       }//while
 
       $this->arrMembers = $arrMembers;
+    }//function
+
+    public function addCondition ($strField, $mixValue) {
+      $this->arrWhere[$strField] = $mixValue;
+    }//function
+
+    public function addOrderBy ($strField, $conDirection = ORDER_BY_ASC) {
+      $this->arrOrderBy[] = array('field' => $strField, 'dir' => $conDirection);
     }//function
 
     public function getMembers () {

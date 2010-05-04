@@ -55,7 +55,7 @@
     }//function
 
     protected function formatDBDate ($strDBDate, $strFormat) {
-      if (empty($strDBDate)) {
+      if (empty($strDBDate) || $strDBDate == '0000-00-00') {
         return '';
       }//if
 
@@ -63,6 +63,14 @@
       $objDate->loadFromDBFormat($strDBDate);
 
       return $objDate->format($strFormat);
+    }//function
+
+    protected function ifEmptyInsertContent ($mixVariable, $strContent = "&nbsp;") {
+      if (empty($mixVariable)) {
+        return $strContent;
+      } else {
+        return $mixVariable;
+      }//if
     }//function
   }//class
 ?>

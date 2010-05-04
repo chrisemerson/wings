@@ -63,13 +63,11 @@
         if ($arrRelationshipInfo && ($arrRelationshipInfo['type'] == 'onetomany' || $arrRelationshipInfo['type'] == 'manytomany')) {
           $objCollection = new Collection($strChildModel);
 
-          $arrWhere = array();
-
           foreach ($arrRelationshipInfo['columns'] as $strLocalColumn => $strForeignColumn) {
-            $arrWhere[$strForeignColumn] = $this->$strLocalColumn;
+            $objCollection->addCondition($strForeignColumn, $this->$strLocalColumn);
           }//foreach
 
-          $objCollection->fetch($arrWhere);
+          $objCollection->fetch();
           return $objCollection;
         }//if
       } else if (preg_match("/^get([A-Za-z_-]+)\$/", $strMethodName, $arrMatches)) {
