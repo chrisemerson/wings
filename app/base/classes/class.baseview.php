@@ -22,9 +22,9 @@
       $this->template = new Template($strTemplateName, $blnIgnoreMasterTemplateSetting);
     }//function
 
-    public function addData ($mixNameOrArray, $strValue = "") {
+    public function loadData ($mixNameOrArray, $strValue = "") {
       if (is_array($mixNameOrArray)) {
-        array_map(array($this, 'addData'), array_keys($mixNameOrArray), array_values($mixNameOrArray));
+        array_map(array($this, 'loadData'), array_keys($mixNameOrArray), array_values($mixNameOrArray));
       } else {
         $this->arrData[$mixNameOrArray] = $strValue;
       }//if
@@ -62,7 +62,11 @@
       $objDate = new IDate();
       $objDate->loadFromDBFormat($strDBDate);
 
-      return $objDate->format($strFormat);
+      if ($objDate->isValid()) {
+        return $objDate->format($strFormat);
+      }//if
+
+      return '';
     }//function
 
     protected function ifEmptyInsertContent ($mixVariable, $strContent = "&nbsp;") {
@@ -71,6 +75,20 @@
       } else {
         return $mixVariable;
       }//if
+    }//function
+
+    protected function coalesce () {
+      $intMax = func_num_args();
+
+      for ($i = 0; $i < $intMax - 1; $i++) {
+        $mixValue = func_get_arg($i);
+
+        if (!empty($mixValue)) {
+          return $mixValue;
+        }//if
+      }//for
+
+      return func_get_arg($intMax - 1);
     }//function
   }//class
 ?>

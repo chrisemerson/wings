@@ -14,7 +14,7 @@
     private   $arrCurrentData = array();
     private   $arrNewData = array();
 
-    private   $blnSaved = false;
+    protected $blnSaved = false;
 
     protected $strSchema;
     protected $objSchema;
@@ -67,6 +67,18 @@
             $objCollection->addCondition($strForeignColumn, $this->$strLocalColumn);
           }//foreach
 
+          if (isset($arrArguments[0]['orderby'])) {
+            $arrOrderBy = $arrArguments[0]['orderby'];
+
+            foreach ($arrOrderBy as $strFieldName => $conOrderDirection) {
+              $objCollection->addOrderBy($strFieldName, $conOrderDirection);
+            }//foreach
+          }//if
+
+          if (isset($arrArguments[0]['limit'])) {
+            $objCollection->setLimit($arrArguments[0]['limit']);
+          }//if
+
           $objCollection->fetch();
           return $objCollection;
         }//if
@@ -86,6 +98,8 @@
           return $objParentModel;
         }//if
       }//if
+
+      return null;
     }//function
 
     public function save () {
@@ -104,6 +118,12 @@
           throw new FieldNotFoundException;
         }//if
       }//foreach
+    }//function
+
+    public function loadFromDBArray ($arrData) {
+      $this->loadFromArray($arrData);
+      $this->arrCurrentData = $this->arrNewData;
+      $this->blnSaved = true;
     }//function
 
     private function loadFromPK ($mixPK) {
@@ -263,6 +283,10 @@
       } else {
         throw new NoDataFoundException;
       }//if
+    }//function
+
+    public function isSavedData () {
+      return $this->blnSaved;
     }//function
 
     private function prepareData ($strData, $strFieldName) {

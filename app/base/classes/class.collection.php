@@ -12,6 +12,7 @@
 
     private $arrWhere = array();
     private $arrOrderBy = array();
+    private $intLimit = 0;
 
     private $arrMembers;
 
@@ -67,6 +68,10 @@
         $strSQL .= implode(", ", $arrOrderByStrings);
       }//if
 
+      if ($this->intLimit != 0) {
+        $strSQL .= " LIMIT " . $this->intLimit;
+      }//if
+
       $strSQL .= ";";
 
       $dbResults = $this->dbConn->query($strSQL);
@@ -75,7 +80,7 @@
 
       while ($arrResult = $dbResults->fetch_assoc()) {
         $objModel = new $strModelName;
-        $objModel->loadFromArray($arrResult);
+        $objModel->loadFromDBArray($arrResult);
         $arrMembers[] = $objModel;
       }//while
 
@@ -88,6 +93,10 @@
 
     public function addOrderBy ($strField, $conDirection = ORDER_BY_ASC) {
       $this->arrOrderBy[] = array('field' => $strField, 'dir' => $conDirection);
+    }//function
+
+    public function setLimit ($intLimit) {
+      $this->intLimit = $intLimit;
     }//function
 
     public function getMembers () {
