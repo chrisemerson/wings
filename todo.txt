@@ -7,8 +7,6 @@
 
 - Error bin class, error handling functions etc
 
-- Make Collection class implement Iterator
-
 - Allow updating of any variable in Collection class - to propagate through all member objects
 
 - Schemas to come directly from DB info rather than manual XML files. Perhaps use MySQL relationships as well?

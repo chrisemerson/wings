@@ -2,7 +2,7 @@
   define('ORDER_BY_ASC', 1);
   define('ORDER_BY_DESC', 2);
 
-  class Collection {
+  class Collection implements Iterator, Countable {
     private $dbConn;
     private $strTablePrefix;
 
@@ -16,6 +16,7 @@
     private $intLimit = 0;
 
     private $arrMembers = array();
+    private $intPosition = 0;
 
     public function __construct ($strModelName) {
       $this->strModelName = $strModelName;
@@ -119,14 +120,6 @@
       $this->arrMembers[] = $objModel;
     }//function
 
-    public function getMembers () {
-      return $this->arrMembers;
-    }//function
-
-    public function getMemberCount () {
-      return count($this->arrMembers);
-    }//function
-
     private function prepareData ($strData, $strFieldName) {
       $strDataType = $this->objSchema->getDataType($strFieldName);
 
@@ -144,6 +137,38 @@
           return "'" . $this->dbConn->escape_string($strData) . "'";
           break;
       }//switch
+    }//function
+
+    /************************************/
+    /* Abstract Methods from Interfaces */
+    /************************************/
+
+    /* Iterator */
+
+    public function current () {
+      return $this->arrMembers[$this->intPosition];
+    }//function
+
+    public function key () {
+      return $this->intPosition;
+    }//function
+
+    public function next () {
+      ++$this->intPosition;
+    }//function
+
+    public function rewind () {
+      $this->intPosition = 0;
+    }//function
+
+    public function valid () {
+      return (isset($this->arrMembers[$this->intPosition]));
+    }//function
+
+    /* Countable */
+
+    public function count () {
+      return count($this->arrMembers);
     }//function
   }//class
 ?>
