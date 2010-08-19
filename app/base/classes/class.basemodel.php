@@ -20,7 +20,14 @@
     protected $objSchema;
 
     public function __construct ($mixPK = null) {
-      $objDBConfig = Config::get('db');
+      $objEnvConfig = Config::get('environment');
+
+      try {
+        $objDBConfig = Config::get($objEnvConfig->dbconfig);
+      } catch (ConfigSettingNotFoundException $exException) {
+        $objDBConfig = Config::get('db');
+      }//try
+
       $strClassName = $objDBConfig->driver . "Driver";
       $this->dbConn = new $strClassName($objDBConfig->host, $objDBConfig->user, $objDBConfig->pass, $objDBConfig->name);
 
@@ -301,6 +308,7 @@
 
         case 'date':
         case 'datetime':
+        case 'time':
         case 'text':
         case 'varchar':
           return "'" . $this->dbConn->escape_string($strData) . "'";

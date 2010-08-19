@@ -8,8 +8,10 @@
  /*******************************************/
 
  class BaseController {
-  public function index () {
-   echo "Default Text Here";
-  }//function
+   public $view = null;
+
+   public function index () {
+     echo "Default Text Here";
+   }//function
  }//class
 ?>

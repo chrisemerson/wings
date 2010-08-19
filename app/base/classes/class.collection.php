@@ -11,16 +11,23 @@
     private $objSchema;
 
     private $arrWhere = array();
+    private $arrNulls = array();
     private $arrOrderBy = array();
     private $intLimit = 0;
 
-    private $arrMembers;
+    private $arrMembers = array();
 
     public function __construct ($strModelName) {
       $this->strModelName = $strModelName;
       $this->objSchema = new Schema(strtolower($strModelName));
 
-      $objDBConfig = Config::get('db');
+      $objEnvConfig = Config::get('environment');
+
+      try {
+        $objDBConfig = Config::get($objEnvConfig->dbconfig);
+      } catch (ConfigSettingNotFoundException $exException) {
+        $objDBConfig = Config::get('db');
+      }//try
 
       $strClassName = $objDBConfig->driver . "Driver";
       $this->dbConn = new $strClassName($objDBConfig->host, $objDBConfig->user, $objDBConfig->pass, $objDBConfig->name);
@@ -30,6 +37,7 @@
 
     public function fetch () {
       $arrWhere = $this->arrWhere;
+      $arrNulls = $this->arrNulls;
       $arrOrderBy = $this->arrOrderBy;
 
       $strModelName = $this->strModelName;
@@ -42,7 +50,11 @@
         $arrWhereStrings = array();
 
         foreach ($arrWhere as $strFieldName => $mixData) {
-          $arrWhereStrings[] .= "`" . $strFieldName . "` = " . $mixData;
+          $arrWhereStrings[] .= "`" . $strFieldName . "` = " . $this->prepareData($mixData, $strFieldName);
+        }//foreach
+
+        foreach ($arrNulls as $strFieldName) {
+          $arrWhereStrings[] .= "`" . $strFieldName . "` IS NULL";
         }//foreach
 
         $strSQL .= implode(" AND ", $arrWhereStrings);
@@ -88,7 +100,11 @@
     }//function
 
     public function addCondition ($strField, $mixValue) {
-      $this->arrWhere[$strField] = $mixValue;
+      if (is_null($mixValue)) {
+        $this->arrNulls[] = $strField;
+      } else {
+        $this->arrWhere[$strField] = $mixValue;
+      }//if
     }//function
 
     public function addOrderBy ($strField, $conDirection = ORDER_BY_ASC) {
@@ -99,12 +115,35 @@
       $this->intLimit = $intLimit;
     }//function
 
+    public function addModel ($objModel) {
+      $this->arrMembers[] = $objModel;
+    }//function
+
     public function getMembers () {
       return $this->arrMembers;
     }//function
 
     public function getMemberCount () {
       return count($this->arrMembers);
+    }//function
+
+    private function prepareData ($strData, $strFieldName) {
+      $strDataType = $this->objSchema->getDataType($strFieldName);
+
+      switch ($strDataType) {
+        case 'int':
+        case 'tinyint':
+        case 'decimal':
+          return $strData;
+          break;
+
+        case 'date':
+        case 'datetime':
+        case 'text':
+        case 'varchar':
+          return "'" . $this->dbConn->escape_string($strData) . "'";
+          break;
+      }//switch
     }//function
   }//class
 ?>

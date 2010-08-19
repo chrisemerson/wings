@@ -57,14 +57,18 @@
 
     public static function redirect ($strURL) {
       header('Location: ' . $strURL);
-      session_write_close();
-      exit();
+      self::exitApp();
     }//function
 
     public static function getEnvironment () {
       $objAppConfig = Config::get('app');
 
       return $_SERVER[$objAppConfig->environmentvar];
+    }//function
+
+    public static function exitApp ($strMessage = "") {
+      session_write_close();
+      exit($strMessage);
     }//function
   }//class
 ?>

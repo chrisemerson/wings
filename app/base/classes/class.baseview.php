@@ -11,8 +11,6 @@
     protected $template;
 
     private   $arrData;
-    private   $arrCollections;
-    private   $arrModels;
 
     public function render () {
       $this->template->out();
@@ -35,45 +33,6 @@
         return $this->arrData[$strName];
       } else {
         return false;
-      }//if
-    }//function
-
-    public function loadCollection ($objCollection, $strName) {
-      $this->arrCollections[$strName] = $objCollection;
-    }//function
-
-    protected function getCollection ($strName) {
-      return $this->arrCollections[$strName];
-    }//function
-
-    public function loadModel ($objModel, $strName) {
-      $this->arrModels[$strName] = $objModel;
-    }//function
-
-    protected function getModel ($strName) {
-      return $this->arrModels[$strName];
-    }//function
-
-    protected function formatDBDate ($strDBDate, $strFormat) {
-      if (empty($strDBDate) || $strDBDate == '0000-00-00') {
-        return '';
-      }//if
-
-      $objDate = new IDate();
-      $objDate->loadFromDBFormat($strDBDate);
-
-      if ($objDate->isValid()) {
-        return $objDate->format($strFormat);
-      }//if
-
-      return '';
-    }//function
-
-    protected function ifEmptyInsertContent ($mixVariable, $strContent = "&nbsp;") {
-      if (empty($mixVariable)) {
-        return $strContent;
-      } else {
-        return $mixVariable;
       }//if
     }//function
 
