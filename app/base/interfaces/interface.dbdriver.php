@@ -9,7 +9,6 @@
 
  interface iDBDriver {
   public function __construct ($strHost = "localhost", $strUser = "", $strPass = "", $strDBName = "", $intPort = 3306);
-  public function __destruct ();
   public function query ($strQuery);
   public function escape_string ($strStringToEscape);
   public function close ();

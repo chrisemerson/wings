@@ -1,91 +1,91 @@
 <?php
- /**************************************************/
- /* MySQL Improved Driver Class - by Chris Emerson */
- /* http://www.cemerson.co.uk/                     */
- /*                                                */
- /* Version 0.1                                    */
- /* 28th May 2009                                  */
- /**************************************************/
+  /**************************************************/
+  /* MySQL Improved Driver Class - by Chris Emerson */
+  /* http://www.cemerson.co.uk/                     */
+  /*                                                */
+  /* Version 0.1                                    */
+  /* 28th May 2009                                  */
+  /**************************************************/
 
- class MySQLiDriver implements iDBDriver {
-  private        $resConnection;
-  private static $intQueryCount;
+  class MySQLiDriver implements iDBDriver {
+    private static $arrConnections;
+    private        $strConnectionHash;
 
-  public         $affected_rows;
-  public         $insert_id;
-  public         $connect_errno;
-  public         $connect_error;
-  public         $errno;
-  public         $error;
+    private static $intQueryCount;
 
-  /****************************/
-  /* DB Abstraction Functions */
-  /****************************/
+    public         $affected_rows;
+    public         $insert_id;
+    public         $connect_errno;
+    public         $connect_error;
+    public         $errno;
+    public         $error;
 
-  public function __construct ($strHost = "localhost", $strUser = "", $strPass = "", $strDBName = "", $intPort = 3306) {
-   $this->resConnection = new mysqli($strHost, $strUser, $strPass, $strDBName, $intPort);
+    /****************************/
+    /* DB Abstraction Functions */
+    /****************************/
 
-   $this->connect_errno = $this->resConnection->connect_errno;
-   $this->connect_error = $this->resConnection->connect_error;
-  }//function
+    public function __construct ($strHost = "localhost", $strUser = "", $strPass = "", $strDBName = "", $intPort = 3306) {
+      $this->strConnectionHash = md5($strHost . $strUser . $strPass . $strDBName . $intPort);
 
-  public function __destruct () {
-   $this->close();
-  }//function
+      if (!isset(self::$arrConnections[$this->strConnectionHash])) {
+        self::$arrConnections[$this->strConnectionHash] = new mysqli($strHost, $strUser, $strPass, $strDBName, $intPort);
 
-  public function query ($strQuery) {
-   $dbResults = $this->resConnection->query($strQuery);
+        $this->connect_errno = self::$arrConnections[$this->strConnectionHash]->connect_errno;
+        $this->connect_error = self::$arrConnections[$this->strConnectionHash]->connect_error;
+      }//if
+    }//function
 
-   $this->affected_rows = $this->resConnection->affected_rows;
-   $this->errno = $this->resConnection->errno;
-   $this->error = $this->resConnection->error;
-   $this->insert_id = $this->resConnection->insert_id;
+    public function query ($strQuery) {
+      $dbResults = self::$arrConnections[$this->strConnectionHash]->query($strQuery);
 
-   $this->intQueryCount++;
+      $this->affected_rows = self::$arrConnections[$this->strConnectionHash]->affected_rows;
+      $this->errno = self::$arrConnections[$this->strConnectionHash]->errno;
+      $this->error = self::$arrConnections[$this->strConnectionHash]->error;
+      $this->insert_id = self::$arrConnections[$this->strConnectionHash]->insert_id;
 
-   return new mySQLiResult($dbResults);
-  }//function
+      self::$intQueryCount++;
 
-  public function escape_string ($strStringToEscape) {
-   return $this->resConnection->escape_string($strStringToEscape);
-  }//function
+      return new mySQLiResult($dbResults);
+    }//function
 
-  public function close () {
-   return $this->resConnection->close();
-  }//function
+    public function escape_string ($strStringToEscape) {
+      return self::$arrConnections[$this->strConnectionHash]->escape_string($strStringToEscape);
+    }//function
 
-  /*******************/
-  /* Other Functions */
-  /*******************/
+    public function close () {
+      return self::$arrConnections[$this->strConnectionHash]->close();
+    }//function
 
-  public function getQueryCount () {
-   return $this->intQueryCount;
-  }//function
- }//class
+    /*******************/
+    /* Other Functions */
+    /*******************/
 
+    public function getQueryCount () {
+      return self::$intQueryCount;
+    }//function
+  }//class
 
+  class mySQLiResult implements iDBResult {
+    private $dbResults;
 
- class mySQLiResult implements iDBResult {
-  private $dbResults;
+    public  $num_rows;
 
-  public  $num_rows;
+    /****************************/
+    /* DB Abstraction Functions */
+    /****************************/
 
-  /****************************/
-  /* DB Abstraction Functions */
-  /****************************/
+    public function __construct ($dbResults) {
+      $this->dbResults = $dbResults;
 
-  public function __construct ($dbResults) {
-   $this->dbResults = $dbResults;
+      $this->num_rows = $this->dbResults->num_rows;
+    }//function
 
-   $this->num_rows = $this->dbResults->num_rows;
-  }//function
+    public function fetch_assoc () {
+      return $this->dbResults->fetch_assoc();
+    }//function
 
-  public function fetch_assoc () {
-   return $this->dbResults->fetch_assoc();
-  }//function
-
-  public function free () {
-   $this->dbResults->free();
-  }//function
- }//class
+    public function free () {
+      $this->dbResults->free();
+    }//function
+  }//class
 ?>
