@@ -136,4 +136,3 @@
       return Application::getBasePath() . "lib/thirdparty/" . $objThirdPartyConfig->$strName;
     }//function
   }//class
-?>

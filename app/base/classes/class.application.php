@@ -52,7 +52,7 @@
     }//function
 
     public static function isSecure () {
-     return ($_SERVER['HTTPS'] == 'on');
+     return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on');
     }//function
 
     public static function redirect ($strURL) {
@@ -63,7 +63,15 @@
     public static function getEnvironment () {
       $objAppConfig = Config::get('app');
 
-      return $_SERVER[$objAppConfig->environmentvar];
+      if (isset($_SERVER[$objAppConfig->environmentvar])) {
+        $strEnvironment = $_SERVER[$objAppConfig->environmentvar];
+
+        if (!empty($strEnvironment)) {
+          return $strEnvironment;
+        }//if
+      }//if
+
+      return 'default';
     }//function
 
     public static function exitApp ($strMessage = "") {
@@ -71,4 +79,3 @@
       exit($strMessage);
     }//function
   }//class
-?>

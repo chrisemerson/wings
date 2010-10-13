@@ -45,7 +45,11 @@
 
       self::$intQueryCount++;
 
-      return new mySQLiResult($dbResults);
+      if ($dbResults === true || $dbResults === false) {
+        return $dbResults;
+      } else {
+        return new mySQLiResult($dbResults);
+      }//if
     }//function
 
     public function escape_string ($strStringToEscape) {
@@ -88,4 +92,3 @@
       $this->dbResults->free();
     }//function
   }//class
-?>

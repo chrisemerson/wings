@@ -44,23 +44,24 @@
       }//switch
     }//function
 
-    private function getField ($strFieldName, $strRegex) {
+    private function getField ($strFieldName, $strRegex, $strFriendlyName = '') {
       $strInput = trim($this->arrInput[$strFieldName]);
 
       if (!isset($strInput) || (empty($strInput) && ($strInput !== 0) && ($strInput !== "0"))) {
         if ($this->blnRequired) {
-          $this->addError($strFieldName, INPUT_ERROR_REQUIRED_FIELD_NOT_PASSED, $strInput);
+          $this->addError($strFieldName, INPUT_ERROR_REQUIRED_FIELD_NOT_PASSED, $strInput, $strFriendlyName);
         }//if
       } else if (!preg_match($strRegex, $strInput)) {
-        $this->addError($strFieldName, INPUT_ERROR_INVALID_FORMAT, $strInput);
+        $this->addError($strFieldName, INPUT_ERROR_INVALID_FORMAT, $strInput, $strFriendlyName);
       }//if
 
       return $strInput;
     }//function
 
-    private function addError ($strFieldName, $conError, $strValue = '') {
+    private function addError ($strFieldName, $conError, $strValue = '', $strFriendlyName = '') {
       $arrError = array('error' => $conError,
-                        'value' => $strValue);
+                        'value' => $strValue,
+                        'name'  => $strFriendlyName);
 
       $this->arrErrors[$strFieldName] = $arrError;
     }//function
@@ -85,24 +86,23 @@
       $this->blnRequired = $blnRequired;
     }//function
 
-    public function getInteger ($strFieldName) {
-      return $this->getField($strFieldName, self::INPUT_FORMAT_INTEGER);
+    public function getInteger ($strFieldName, $strFriendlyName = '') {
+      return $this->getField($strFieldName, self::INPUT_FORMAT_INTEGER, $strFriendlyName);
     }//function
 
-    public function getDecimal ($strFieldName) {
-      return $this->getField($strFieldName, self::INPUT_FORMAT_DECIMAL);
+    public function getDecimal ($strFieldName, $strFriendlyName = '') {
+      return $this->getField($strFieldName, self::INPUT_FORMAT_DECIMAL, $strFriendlyName);
     }//function
 
-    public function getString ($strFieldName) {
-      return $this->getField($strFieldName, self::INPUT_FORMAT_STRING);
+    public function getString ($strFieldName, $strFriendlyName = '') {
+      return $this->getField($strFieldName, self::INPUT_FORMAT_STRING, $strFriendlyName);
     }//function
 
-    public function getDate ($strFieldName) {
-      return $this->getField($strFieldName, self::INPUT_FORMAT_DATE);
+    public function getDate ($strFieldName, $strFriendlyName = '') {
+      return $this->getField($strFieldName, self::INPUT_FORMAT_DATE, $strFriendlyName);
     }//if
 
-    public function getEmailAddress ($strFieldName) {
-      return $this->getField($strFieldName, self::INPUT_FORMAT_EMAIL);
+    public function getEmailAddress ($strFieldName, $strFriendlyName = '') {
+      return $this->getField($strFieldName, self::INPUT_FORMAT_EMAIL, $strFriendlyName);
     }//function
   }//class
-?>

@@ -96,7 +96,7 @@
       $arrPKs = array();
 
       foreach ($arrColumns as $strFieldName => $arrColumnInfo) {
-        if ($arrColumnInfo['PK']) {
+        if (isset($arrColumnInfo['PK']) && $arrColumnInfo['PK']) {
           $arrPKs[] = $strFieldName;
         }//if
       }//foreach
@@ -131,4 +131,3 @@
       }//if
     }//function
   }//class
-?>

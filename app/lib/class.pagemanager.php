@@ -10,4 +10,3 @@
  class PageManager {
 
  }//class
-?>

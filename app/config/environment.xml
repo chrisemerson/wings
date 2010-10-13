@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <environments>
+  <default>
+    <uri>
+      <host>dev</host>
+      <path>appframework/httpdocs</path>
+    </uri>
+  </default>
+  
   <dev>
     <uri>
       <host>dev</host>

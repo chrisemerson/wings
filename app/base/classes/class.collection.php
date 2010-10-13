@@ -2,7 +2,7 @@
   define('ORDER_BY_ASC', 1);
   define('ORDER_BY_DESC', 2);
 
-  class Collection implements Iterator, Countable {
+  class Collection implements Iterator, Countable, ArrayAccess {
     private $dbConn;
     private $strTablePrefix;
 
@@ -17,6 +17,7 @@
 
     private $arrMembers = array();
     private $intPosition = 0;
+    private $blnJustUnsetCurrent = false;
 
     public function __construct ($strModelName) {
       $this->strModelName = $strModelName;
@@ -120,6 +121,10 @@
       $this->arrMembers[] = $objModel;
     }//function
 
+    public function asArray () {
+      return $this->arrMembers;
+    }//function
+
     private function prepareData ($strData, $strFieldName) {
       $strDataType = $this->objSchema->getDataType($strFieldName);
 
@@ -146,23 +151,28 @@
     /* Iterator */
 
     public function current () {
-      return $this->arrMembers[$this->intPosition];
+      return current($this->arrMembers);
     }//function
 
     public function key () {
-      return $this->intPosition;
+      return key($this->arrMembers);
     }//function
 
     public function next () {
-      ++$this->intPosition;
+      if ($this->blnJustUnsetCurrent) {
+        $this->blnJustUnsetCurrent = false;
+        return current($this->arrMembers);
+      } else {
+        return next($this->arrMembers);
+      }//if
     }//function
 
     public function rewind () {
-      $this->intPosition = 0;
+      return reset($this->arrMembers);
     }//function
 
     public function valid () {
-      return (isset($this->arrMembers[$this->intPosition]));
+      return (isset($this->arrMembers[$this->key()]));
     }//function
 
     /* Countable */
@@ -170,5 +180,30 @@
     public function count () {
       return count($this->arrMembers);
     }//function
+
+    /* ArrayAccess */
+
+    public function offsetSet ($mixOffset, $mixValue) {
+      if (is_null($mixOffset)) {
+        $this->addModel($mixValue);
+      } else {
+        $this->arrMembers[$mixOffset] = $mixValue;
+      }//if
+    }//function
+
+    public function offsetExists ($mixOffset) {
+      return isset($this->arrMembers[$mixOffset]);
+    }//function
+
+    public function offsetUnset ($mixOffset) {
+      if ($this->key() == $mixOffset) {
+        $this->blnJustUnsetCurrent = true;
+      }//if
+
+      unset($this->arrMembers[$mixOffset]);
+    }//function
+
+    public function offsetGet ($mixOffset) {
+      return $this->arrMembers[$mixOffset];
+    }//function
   }//class
-?>

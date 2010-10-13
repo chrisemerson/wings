@@ -319,17 +319,16 @@
     }//function
 
     private function getFilesInDirectory ($strDirectoryName, $arrExceptions = array()) {
-    $arrFiles = array();
+      $arrFiles = array();
 
-    $dirDirectoryHandle = opendir($strDirectoryName);
+      $dirDirectoryHandle = opendir($strDirectoryName);
 
-    while (false !== ($strFilename = readdir($dirDirectoryHandle))) {
-      if (($strFilename != '.') && ($strFilename != '..') && !in_array($strFilename, $arrExceptions)) {
-        $arrFiles[] = $strDirectoryName . $strFilename;
-      }//if
-    }//while
+      while (false !== ($strFilename = readdir($dirDirectoryHandle))) {
+        if (($strFilename != '.') && ($strFilename != '..') && !in_array($strFilename, $arrExceptions)) {
+          $arrFiles[] = $strDirectoryName . $strFilename;
+        }//if
+      }//while
 
-    return $arrFiles;
-  }//function
+      return $arrFiles;
+    }//function
   }//class
-?>

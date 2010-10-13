@@ -10,14 +10,38 @@
   class BaseView {
     protected $template;
 
-    private   $arrData;
+    private   $arrData = array();
+    private   $arrBaseTemplateVars = array();
 
-    public function render () {
-      $this->template->out();
-    }//function
+    /* Template Handling */
 
     public function loadTemplate ($strTemplateName, $blnIgnoreMasterTemplateSetting = false) {
       $this->template = new Template($strTemplateName, $blnIgnoreMasterTemplateSetting);
+    }//function
+
+    /* Output */
+
+    public function render () {
+      $this->template->parse();
+      $this->template->out();
+    }//function
+
+    /* Variables */
+
+    public function __get ($strName) {
+      if (isset($this->arrData[$strName])) {
+        return $this->arrData[$strName];
+      } else {
+        return false;
+      }//if
+    }//function
+
+    public function __set ($strName, $mixValue) {
+      $this->arrData[$strName] = $mixValue;
+    }//function
+
+    public function __isset ($strName) {
+      return isset($this->arrData[$strName]);
     }//function
 
     public function loadData ($mixNameOrArray, $strValue = "") {
@@ -28,13 +52,7 @@
       }//if
     }//function
 
-    protected function getData ($strName) {
-      if (isset($this->arrData[$strName])) {
-        return $this->arrData[$strName];
-      } else {
-        return false;
-      }//if
-    }//function
+    /* Helper Functions */
 
     protected function coalesce () {
       $intMax = func_num_args();
@@ -50,4 +68,3 @@
       return func_get_arg($intMax - 1);
     }//function
   }//class
-?>

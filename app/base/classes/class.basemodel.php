@@ -206,7 +206,7 @@
           throw new DataMissingException;
         }//if
 
-        if ($arrColumnInfo['autonumber'] != true) {
+        if (!isset($arrColumnInfo['autonumber']) || !$arrColumnInfo['autonumber']) {
           $arrColumns[] = $strFieldName;
           $arrData[] = $strDataToInsert;
         }//if
@@ -222,9 +222,9 @@
       foreach ($arrColumns as $strFieldName) {
         $arrColumnInfo = $this->objSchema->getColumnInfo($strFieldName);
 
-        if ($arrColumnInfo['PK'] && $arrColumnInfo['autonumber']) {
+        if ((isset($arrColumnInfo['PK']) && $arrColumnInfo['PK']) && (isset($arrColumnInfo['autonumber']) && $arrColumnInfo['autonumber'])) {
           $arrPKData[$strFieldName] = $this->dbConn->insert_id;
-        } else if ($arrColumnInfo['PK']) {
+        } else if (isset($arrColumnInfo['PK']) && $arrColumnInfo['PK']) {
           $arrPKData[$strFieldName] = $arrNewData[$strFieldName];
         }//if
       }//foreach
@@ -324,4 +324,3 @@
   class InvalidDataException extends Exception {}
   class InvalidSchemaException extends Exception {}
   class NoDataFoundException extends Exception {}
-?>

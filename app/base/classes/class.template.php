@@ -222,7 +222,7 @@
     /* Block Parsing */
     /*****************/
 
-    public function parse ($strBlockName = "", $blnResetVars = true) {
+    public function parse ($strBlockName = "", $blnResetVars = false) {
       while (!isset($this->arrBlockInformation[$strBlockName])) {
         $strBlockNameForLoop = $strBlockName;
 
@@ -387,7 +387,7 @@
       }//foreach
 
       //Remove any switches that weren't used
-      $strTemplateContent = preg_replace("/\{\[[a-z0-9._-]+\|(.+?)\]\}/i", "", $strTemplateContent);
+      $strTemplateContent = preg_replace("/\{\[[a-z0-9._-]+\|(.*?)\]\}/i", "", $strTemplateContent);
 
       return $strTemplateContent;
     }//function
@@ -438,4 +438,3 @@
   class BlockNotFoundException extends Exception {}
   class InvalidIncludeRecursionException extends Exception {}
   class TemplateNotFoundException extends Exception {}
-?>

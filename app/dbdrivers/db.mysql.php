@@ -50,7 +50,11 @@
 
    $this->intQueryCount++;
 
-   return new mySQLResult($dbResults);
+   if ($dbResults === true || $dbResults === false) {
+     return $dbResults;
+   } else {
+     return new mySQLResult($dbResults);
+   }//if
   }//function
 
   public function escape_string ($strStringToEscape) {
@@ -95,4 +99,3 @@
    mysql_free_result($this->dbResults);
   }//function
  }//class
-?>
