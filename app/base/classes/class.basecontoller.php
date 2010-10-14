@@ -8,11 +8,18 @@
  /*******************************************/
 
  class BaseController {
-   public $view = null;
-   protected $session;
+   protected $view = null;
 
-   public function __construct () {
-     $this->session = new Session();
+   private $arrInbuiltClasses = array('errors' => 'ErrorHandler',
+                                      'input' => 'InputFilter',
+                                      'session' => 'Session');
+
+   public function __get ($strName) {
+     if (isset($this->arrInbuiltClasses[$strName])) {
+       $this->$strName = new $this->arrInbuiltClasses[$strName];
+     }//if
+
+     return $this->$strName;
    }//function
 
    public function index () {
