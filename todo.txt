@@ -1,8 +1,6 @@
 - Library files to include:
  - Page Manager
 
-- Finish BaseModel class
-
 - General Error conditions - ie missing controller, model etc and default error displays
 
 - Error bin class, error handling functions etc

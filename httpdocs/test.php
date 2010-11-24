@@ -1,14 +1,11 @@
 <?php
   require_once dirname(__FILE__) . "/../app/inc.framework.php";
 
-  try {
-    $objPosts = new Collection('Post');
-    $objPosts->get(array('available' => 1));
+  $filter = new ResultFilter();
 
-    foreach ($objPosts->getMembers() as $objPost) {
-      echo $objPost->post_title . "\n";
-    }//foreach
-  } catch (Exception $exException) {
-    showException($exException);
-  }//try
-?>
+  $filter->start(10)
+         ->limit(10)
+         ->orderby('field', ORDER_BY_ASC)
+         ->conditions('(test1 > 50 AND test5 < 60) OR ((test3 = 5 && test4 = 6) AND (testq >= qwerty))');
+
+  print_r($filter);
