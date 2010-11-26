@@ -23,7 +23,7 @@
       while ($arrResult = $dbResults->fetch_assoc()) {
         print_r($arrResult);
       }//while
-exit();
+
       $strSchemaFilename = Application::getBasePath() . "schemas/" . strtolower($this->strSchema) . ".xml";
       $objSchemaFile = simplexml_load_file($strSchemaFilename);
 

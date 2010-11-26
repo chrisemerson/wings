@@ -1,4 +1,3 @@
 <?php
- class Post extends BaseModel {
- }//class
-?>
+  class Post extends BaseModel {
+  }//class

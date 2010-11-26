@@ -1,4 +1,3 @@
 <?php
- class Comment extends BaseModel {
- }//class
-?>
+  class Comment extends BaseModel {
+  }//class
