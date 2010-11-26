@@ -1,7 +1,5 @@
 <?php
   class Collection extends Schema implements Iterator, Countable, ArrayAccess {
-    private $strTablePrefix;
-
     private $strModelName;
     private $objResultsFilter;
 
@@ -19,8 +17,6 @@
       $this->openDBConn();
 
       $this->objResultsFilter->setDBConn($this->dbConn);
-
-      $this->strTablePrefix = $objDBConfig->prefix;
 
       $this->fetch();
     }//function

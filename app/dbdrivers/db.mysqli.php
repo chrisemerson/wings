@@ -7,7 +7,7 @@
   /* 28th May 2009                                  */
   /**************************************************/
 
-  class MySQLiDriver implements iDBDriver {
+  class MysqliDriver implements iDBDriver {
     private static $arrConnections;
     private        $strConnectionHash;
 

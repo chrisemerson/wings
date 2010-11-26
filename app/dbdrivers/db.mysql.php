@@ -7,7 +7,7 @@
  /* 28th May 2009                         */
  /*****************************************/
 
- class MySQLDriver implements iDBDriver {
+ class MysqlDriver implements iDBDriver {
   private        $resConnection;
   private static $intQueryCount;
 

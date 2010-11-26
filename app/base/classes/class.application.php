@@ -78,4 +78,8 @@
       session_write_close();
       exit($strMessage);
     }//function
+
+    public static function showError ($strErrorType) {
+
+    }//function
   }//class

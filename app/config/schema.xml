@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <schema>
+  <models>
+    <model name="User">
+      <table>users</table>
+    </model>
+
+    <model name="NewsItem">
+      <table>news_items</table>
+    </model>
+  </models>
+
+  <relationships>
+    <relationship>
+      <local model="User" column="user_id">
+      <foreign model="NewsItem" column="user_id">
+    </relationship>
+  </relationships>
 </schema>

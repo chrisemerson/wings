@@ -1,7 +1,5 @@
 <?php
   class BaseModel extends Schema {
-    private   $strTablePrefix;
-
     private   $arrCurrentData = array();
     private   $arrNewData = array();
 
@@ -12,8 +10,6 @@
 
     public function __construct ($mixPK = null) {
       $this->openDBConn();
-
-      $this->strTablePrefix = $objDBConfig->prefix;
 
       if (empty($this->strSchema)) {
         $this->strSchema = strtolower(get_class($this));

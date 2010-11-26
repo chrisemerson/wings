@@ -1,16 +1,21 @@
 <?php
   class Database {
     protected $dbConn;
+    protected $strTablePrefix;
 
     protected function openDBConn () {
       if (empty($this->dbConn)) {
         $objEnvConfig = Config::get('environment');
 
         try {
-          $objDBConfig = Config::get($objEnvConfig->dbconfig);
+          $objDBConfig = Config::get($objEnvConfig->db);
         } catch (ConfigSettingNotFoundException $exException) {
-          $objDBConfig = Config::get('db');
+          //Database Connection Error
+          Application::showError('database');
         }//try
+
+        $strDBURI = $objDBConfig->uri;
+        $this->strTablePrefix = $objDBConfig->prefix;
 
         $strClassName = $objDBConfig->driver . "Driver";
         $this->dbConn = new $strClassName($objDBConfig->host, $objDBConfig->user, $objDBConfig->pass, $objDBConfig->name);

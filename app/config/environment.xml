@@ -6,13 +6,23 @@
       <host>dev</host>
       <path>appframework/httpdocs</path>
     </uri>
+
+    <db>
+      <uri>mysqli://testuser:testpass@localhost/test</uri>
+      <prefix>test_</prefix>
+    </db>
   </default>
-  
+
   <dev>
     <uri>
       <host>dev</host>
       <path>appframework/httpdocs</path>
     </uri>
+
+    <db>
+      <uri>mysqli://testuser:testpass@localhost/test</uri>
+      <prefix>test_</prefix>
+    </db>
   </dev>
 
   <test>
@@ -20,6 +30,11 @@
       <host></host>
       <path></path>
     </uri>
+
+    <db>
+      <uri></uri>
+      <prefix></prefix>
+    </db>
   </test>
 
   <live>
@@ -27,5 +42,10 @@
       <host></host>
       <path></path>
     </uri>
+
+    <db>
+      <uri></uri>
+      <prefix></prefix>
+    </db>
   </live>
 </environments>
