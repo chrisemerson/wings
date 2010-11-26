@@ -1,0 +1,18 @@
+class.application.php
+class.basecontroller.php
+class.baseview.php
+class.config.php
+class.dispatcher.php
+class.loader.php
+class.resultfilter.php
+class.template.php
+
+#Database class
+class.database.php
+
+#Schema, depends on Database
+class.schema.php
+
+#BaseModel and Collection, depend on Schema
+class.basemodel.php
+class.collection.php

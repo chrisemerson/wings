@@ -6,6 +6,6 @@
  <host>localhost</host>
  <user>testuser</user>
  <pass>testpass</pass>
- <name>test_blog</name>
- <prefix>blog_</prefix>
+ <name>test</name>
+ <prefix>test</prefix>
 </db>

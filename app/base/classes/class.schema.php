@@ -9,14 +9,21 @@
 
     public function __construct ($strSchema) {
       $this->strSchema = $strSchema;
+
+      $this->openDBConn();
+
       $this->load();
     }//function
 
     private function load () {
-      $strQuery = "SELECT * FROM information_schema;";
+      $strQuery = "SELECT * FROM `information_schema`.`COLUMNS` WHERE TABLE_SCHEMA = 'test';";
 
-      $this->dbConn;
+      $dbResults = $this->dbConn->query($strQuery);
 
+      while ($arrResult = $dbResults->fetch_assoc()) {
+        print_r($arrResult);
+      }//while
+exit();
       $strSchemaFilename = Application::getBasePath() . "schemas/" . strtolower($this->strSchema) . ".xml";
       $objSchemaFile = simplexml_load_file($strSchemaFilename);
 

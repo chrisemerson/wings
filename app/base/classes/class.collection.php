@@ -55,25 +55,6 @@
       $this->arrMembers[] = $objModel;
     }//function
 
-    private function prepareData ($strData, $strFieldName) {
-      $strDataType = $this->objSchema->getDataType($strFieldName);
-
-      switch ($strDataType) {
-        case 'int':
-        case 'tinyint':
-        case 'decimal':
-          return $strData;
-          break;
-
-        case 'date':
-        case 'datetime':
-        case 'text':
-        case 'varchar':
-          return "'" . $this->dbConn->escape_string($strData) . "'";
-          break;
-      }//switch
-    }//function
-
     /************************************/
     /* Abstract Methods from Interfaces */
     /************************************/

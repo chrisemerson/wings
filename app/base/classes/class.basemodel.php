@@ -277,26 +277,6 @@
     public function isSavedData () {
       return $this->blnSaved;
     }//function
-
-    private function prepareData ($strData, $strFieldName) {
-      $strDataType = $this->objSchema->getDataType($strFieldName);
-
-      switch ($strDataType) {
-        case 'int':
-        case 'tinyint':
-        case 'decimal':
-          return $strData;
-          break;
-
-        case 'date':
-        case 'datetime':
-        case 'time':
-        case 'text':
-        case 'varchar':
-          return "'" . $this->dbConn->escape_string($strData) . "'";
-          break;
-      }//switch
-    }//function
   }//class
 
   //Exceptions
