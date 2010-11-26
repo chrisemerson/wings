@@ -1,14 +1,5 @@
 <?php
-  /**************************************/
-  /* BaseModel Class - by Chris Emerson */
-  /* http://www.cemerson.co.uk/         */
-  /*                                    */
-  /* Version 0.1                        */
-  /* 23rd May 2009                      */
-  /**************************************/
-
-  class BaseModel {
-    private   $dbConn;
+  class BaseModel extends Schema {
     private   $strTablePrefix;
 
     private   $arrCurrentData = array();
@@ -20,16 +11,7 @@
     protected $objSchema;
 
     public function __construct ($mixPK = null) {
-      $objEnvConfig = Config::get('environment');
-
-      try {
-        $objDBConfig = Config::get($objEnvConfig->dbconfig);
-      } catch (ConfigSettingNotFoundException $exException) {
-        $objDBConfig = Config::get('db');
-      }//try
-
-      $strClassName = $objDBConfig->driver . "Driver";
-      $this->dbConn = new $strClassName($objDBConfig->host, $objDBConfig->user, $objDBConfig->pass, $objDBConfig->name);
+      $this->openDBConn();
 
       $this->strTablePrefix = $objDBConfig->prefix;
 

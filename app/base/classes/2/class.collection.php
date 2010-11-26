@@ -1,6 +1,5 @@
 <?php
-  class Collection implements Iterator, Countable, ArrayAccess {
-    private $dbConn;
+  class Collection extends Schema implements Iterator, Countable, ArrayAccess {
     private $strTablePrefix;
 
     private $strModelName;
@@ -17,16 +16,7 @@
       $this->strModelName = $this->objResultsFilter->getModelName();
       $this->objSchema = new Schema(strtolower($this->strModelName));
 
-      $objEnvConfig = Config::get('environment');
-
-      try {
-        $objDBConfig = Config::get($objEnvConfig->dbconfig);
-      } catch (ConfigSettingNotFoundException $exException) {
-        $objDBConfig = Config::get('db');
-      }//try
-
-      $strClassName = $objDBConfig->driver . "Driver";
-      $this->dbConn = new $strClassName($objDBConfig->host, $objDBConfig->user, $objDBConfig->pass, $objDBConfig->name);
+      $this->openDBConn();
 
       $this->objResultsFilter->setDBConn($this->dbConn);
 

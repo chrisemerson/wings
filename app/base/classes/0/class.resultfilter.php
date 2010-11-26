@@ -294,13 +294,3 @@
   }//class
 
   class InvalidConditionsException extends Exception {}
-
-  function dump ($var) {
-    if (is_array($var)) {
-      echo "<pre>\n";
-      print_r($var);
-      echo "</pre>";
-    } else {
-      var_dump($var);
-    }//if
-  }//function

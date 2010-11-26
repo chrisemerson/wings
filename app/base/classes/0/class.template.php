@@ -1,12 +1,4 @@
 <?php
-  /*************************************/
-  /* Template Class - by Chris Emerson */
-  /* http://www.cemerson.co.uk/        */
-  /*                                   */
-  /* Version 0.3                       */
-  /* 1st December 2009                 */
-  /*************************************/
-
   class Template {
     private $strTemplateName;
     private $arrOriginalTemplateLines = array();

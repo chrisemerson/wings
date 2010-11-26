@@ -1,5 +1,5 @@
 <?php
-  class Schema {
+  class Schema extends Database {
     private $strSchema;
 
     private $strTableName;
@@ -13,6 +13,10 @@
     }//function
 
     private function load () {
+      $strQuery = "SELECT * FROM information_schema;";
+
+      $this->dbConn;
+
       $strSchemaFilename = Application::getBasePath() . "schemas/" . strtolower($this->strSchema) . ".xml";
       $objSchemaFile = simplexml_load_file($strSchemaFilename);
 
