@@ -4,21 +4,18 @@
     private $strTablePrefix;
 
     private $strModelName;
+    private $objResultsFilter;
 
     private $objSchema;
-
-    private $arrWhere = array();
-    private $arrNulls = array();
-    private $arrOrderBy = array();
-    private $intLimit = 0;
 
     private $arrMembers = array();
     private $intPosition = 0;
     private $blnJustUnsetCurrent = false;
 
-    public function __construct ($strModelName) {
-      $this->strModelName = $strModelName;
-      $this->objSchema = new Schema(strtolower($strModelName));
+    public function __construct (ResultFilter $objResultsFilter) {
+      $this->objResultsFilter = $objResultsFilter;
+      $this->strModelName = $this->objResultsFilter->getModelName();
+      $this->objSchema = new Schema(strtolower($this->strModelName));
 
       $objEnvConfig = Config::get('environment');
 
@@ -31,59 +28,25 @@
       $strClassName = $objDBConfig->driver . "Driver";
       $this->dbConn = new $strClassName($objDBConfig->host, $objDBConfig->user, $objDBConfig->pass, $objDBConfig->name);
 
+      $this->objResultsFilter->setDBConn($this->dbConn);
+
       $this->strTablePrefix = $objDBConfig->prefix;
+
+      $this->fetch();
     }//function
 
-    public function fetch () {
-      $arrWhere = $this->arrWhere;
-      $arrNulls = $this->arrNulls;
-      $arrOrderBy = $this->arrOrderBy;
-
+    private function fetch () {
       $strModelName = $this->strModelName;
 
       $strSQL = "SELECT * FROM `" . $this->strTablePrefix . $this->objSchema->getTableName() . "`";
 
-      if (count($arrWhere) > 0) {
-        $strSQL .= " WHERE ";
-
-        $arrWhereStrings = array();
-
-        foreach ($arrWhere as $strFieldName => $mixData) {
-          $arrWhereStrings[] .= "`" . $strFieldName . "` = " . $this->prepareData($mixData, $strFieldName);
-        }//foreach
-
-        foreach ($arrNulls as $strFieldName) {
-          $arrWhereStrings[] .= "`" . $strFieldName . "` IS NULL";
-        }//foreach
-
-        $strSQL .= implode(" AND ", $arrWhereStrings);
-      }//if
-
-      if (count($arrOrderBy) > 0) {
-        $strSQL .= " ORDER BY ";
-
-        $arrOrderByStrings = array();
-
-        foreach ($arrOrderBy as $arrOrderByInfo) {
-          $strOrderByString = $arrOrderByInfo['field'] . " ";
-
-          if ($arrOrderByInfo['dir'] == ORDER_BY_ASC) {
-            $strOrderByString .= "ASC";
-          } else if ($arrOrderByInfo['dir'] == ORDER_BY_DESC) {
-            $strOrderByString .= "DESC";
-          }//if
-
-          $arrOrderByStrings[] = $strOrderByString;
-        }//foreach
-
-        $strSQL .= implode(", ", $arrOrderByStrings);
-      }//if
-
-      if ($this->intLimit != 0) {
-        $strSQL .= " LIMIT " . $this->intLimit;
-      }//if
+      $strSQL = trim($strSQL) . " " . $this->objResultsFilter->getConditionString();
+      $strSQL = trim($strSQL) . " " . $this->objResultsFilter->getOrderByString();
+      $strSQL = trim($strSQL) . " " . $this->objResultsFilter->getLimitString();
 
       $strSQL .= ";";
+
+      echo $strSQL;
 
       $dbResults = $this->dbConn->query($strSQL);
 
@@ -98,28 +61,8 @@
       $this->arrMembers = $arrMembers;
     }//function
 
-    public function addCondition ($strField, $mixValue) {
-      if (is_null($mixValue)) {
-        $this->arrNulls[] = $strField;
-      } else {
-        $this->arrWhere[$strField] = $mixValue;
-      }//if
-    }//function
-
-    public function addOrderBy ($strField, $conDirection = ORDER_BY_ASC) {
-      $this->arrOrderBy[] = array('field' => $strField, 'dir' => $conDirection);
-    }//function
-
-    public function setLimit ($intLimit) {
-      $this->intLimit = $intLimit;
-    }//function
-
-    public function addModel ($objModel) {
+    private function addModel ($objModel) {
       $this->arrMembers[] = $objModel;
-    }//function
-
-    public function asArray () {
-      return $this->arrMembers;
     }//function
 
     private function prepareData ($strData, $strFieldName) {

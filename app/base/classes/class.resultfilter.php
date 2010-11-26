@@ -6,7 +6,9 @@
     private $intStart;
     private $intLimit;
     private $arrOrderBy = array();
-    private $arrConditions = array();
+    private $strConditions = '';
+    private $strModel;
+    private $dbConn;
 
     public function start ($intStart = 0) {
       $this->intStart = $intStart;
@@ -28,10 +30,90 @@
     }//function
 
     public function conditions ($strConditionString = '') {
-      echo "<h2>Original String</h2>\n";
+      $this->strConditions = $strConditionString;
+    }//function
 
-      echo $strConditionString . "<br><br>\n\n";
+    public function model ($strModel = '') {
+      $this->strModel = $strModel;
 
+      return $this;
+    }//function
+
+    public function getConditionString () {
+      $arrTokens = $this->tokeniseString($this->strConditions);
+
+      //Replace all the field names with {fieldname} ready for replacement later on.
+      $arrSimpleOperators = array('=', '<', '>', '<=', '>=', 'LIKE', 'NOT LIKE', 'IS', 'IS NOT', '<>', '!=', '<=>');
+
+      do {
+        $arrNewTokens = $arrTokens;
+        $blnStillMatches = false;
+
+        foreach ($arrTokens as $intIndex => $strToken) {
+          if (preg_match('/^(.*?)\b(?<!\'|`|\\[)(?!AND\b|OR\b|BETWEEN\b|NULL\b)([A-Z_][A-Z0-9_-]+)\b(?!\\(|\'|`|\\[\\[)(.*)$/i', $strToken, $arrMatches)) {
+            $blnStillMatches = true;
+            $arrNewTokens[$intIndex] = $arrMatches[1] . $this->quoteFieldName($arrMatches[2]) . $arrMatches[3];
+          }//if
+        }//foreach
+
+        $arrTokens = $arrNewTokens;
+      } while ($blnStillMatches);//do
+
+      $strFinalConditionsString = $this->reconstructString($arrTokens);
+
+      if (empty($strFinalConditionsString)) {
+        return "";
+      } else {
+        return "WHERE " . $this->reconstructString($arrTokens);
+      }//if
+    }//function
+
+    public function getLimitString () {
+      $strLimitString = "LIMIT ";
+
+      if (!empty($this->intStart)) {
+        $strLimitString .= intval($this->intStart) . ", ";
+      }//if
+
+      if (!empty($this->intLimit)) {
+        $strLimitString .= intval($this->intLimit);
+        return $strLimitString;
+      }//if
+
+      return "";
+    }//function
+
+    public function getOrderByString () {
+      if (empty($this->arrOrderBy)) {
+        return "";
+      } else {
+        $strOrderByString = "ORDER BY ";
+
+        foreach ($this->arrOrderBy as $arrOrderByInfo) {
+          $strOrderByString .= "`" . $arrOrderByInfo['field'] . "` ";
+
+          switch ($arrOrderByInfo['order']) {
+            case ORDER_BY_ASC:
+              $strOrderByString .= "ASC";
+              break;
+
+            case ORDER_BY_DESC:
+              $strOrderByString .= "DESC";
+              break;
+          }//switch
+
+          $strOrderByString .= ", ";
+        }//foreach
+
+        return rtrim($strOrderByString, ", ");
+      }//if
+    }//function
+
+    public function getModelName () {
+      return $this->strModel;
+    }//function
+
+    private function tokeniseString ($strConditionString = '') {
       $arrBracketStarts = array();
       $strTokenisedString = $strConditionString;
       $arrTokens = array();
@@ -110,20 +192,19 @@
       } while ($blnStillMatches);//do
 
       //Before splitting on AND, need to find all BETWEEN operators, which also use AND, and tokenise those
-
       do {
         $blnStillMatches = false;
         $arrNewTokens = $arrTokens;
 
         foreach ($arrTokens as $intIndex => $strToken) {
-          if (preg_match('/^(.*\s+)(\S+\s+BETWEEN\s+\d+\s+AND\s+\d+)(.*)$/', $strToken, $arrMatches)) {
+          if (preg_match('/^(\s*.*\s+)(\S+(?:\s+NOT)?\s+BETWEEN\s+(?:\'?[^\']+\'|\S+)\s+AND\s+(?:\'?[^\']+\'|\S+))(.*)$/', $strToken, $arrMatches)) {
             $arrNewTokens[] = $arrMatches[2];
 
-            if (!isset($arrMatches[3])) {
-              $arrMatches[3] = "";
+            if (!isset($arrMatches[6])) {
+              $arrMatches[6] = "";
             }//if
 
-            $arrNewTokens[$intIndex] = $arrMatches[1] . "[[" . (count($arrNewTokens) - 1) . "]]" . $arrMatches[3];
+            $arrNewTokens[$intIndex] = $arrMatches[1] . "[[" . (count($arrNewTokens) - 1) . "]]" . $arrMatches[6];
           }//if
         }//foreach
 
@@ -170,21 +251,45 @@
         $arrTokens = $arrNewTokens;
       } while ($blnStillMatches);//do
 
-      echo "<h2>Tokens - After Tokenisation</h2>\n";
-      dump($arrTokens);
+      return $arrTokens;
+    }//function
 
-      echo "<h2>Tokens - Conditions</h2>\n";
+    private function reconstructString ($arrTokens) {
+      do {
+        $blnTokensStillExist = false;
 
-      //Now, go through the tokens and work out which ones are conditions, ready to be correctly formatted. Replace all the field names with {fieldname} ready for replacement later on.
-
-      $arrSimpleOperators = array('=', '<', '>', '<=', '>=', 'LIKE', 'IS', 'IS NOT', '<>', '!=');
-
-      foreach ($arrTokens as $intIndex => $strToken) {
-        //'Standard' 2 sided conditions
-        if (preg_match('/^\s*(\(?)\s*((\w+)\((.*?)\)|(.*?))\s+(' . implode("|", $arrSimpleOperators) . ')\s+(.*?)\s*(\)?)\s*$/', $strToken, $arrMatches)) {
-          dump($arrMatches);
+        if (preg_match('/\[\[(\d+)\]\]/', $arrTokens[0], $arrMatches)) {
+          $blnTokensStillExist = true;
+          $arrTokens[0] = str_replace('[[' . $arrMatches[1] . ']]', $arrTokens[$arrMatches[1]], $arrTokens[0]);
+          unset($arrTokens[$arrMatches[1]]);
         }//if
-      }//foreach
+      } while ($blnTokensStillExist);
+
+      return $arrTokens[0];
+    }//function
+
+    private function quoteFieldName ($strFieldName) {
+      $arrFields = array('test1',
+                         'test5',
+                         'test3',
+                         'test4',
+                         'test34',
+                         'testq',
+                         'test23');
+
+      if (in_array($strFieldName, $arrFields)) {
+        return "`" . $strFieldName . "`";
+      } else {
+        if (!empty($this->dbConn)) {
+          return "'" . $this->dbConn->escape_string($strFieldName) . "'";
+        } else {
+          return "'" . $strFieldName . "'";
+        }//if
+      }//if
+    }//function
+
+    public function setDBConn ($dbConn) {
+      $this->dbConn = $dbConn;
     }//function
   }//class
 
