@@ -3,7 +3,7 @@
 
   $filter = new ResultFilter();
 
-  $objCollection = new Collection($filter->model('post')
+  $objCollection = new Collection($filter->model('Test')
                                          ->start(10)
                                          ->limit(10)
-                                         ->orderby('field', ORDER_BY_ASC));
+                                         ->orderby('test_name', ORDER_BY_ASC));

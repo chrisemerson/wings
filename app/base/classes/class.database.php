@@ -3,22 +3,26 @@
     protected $dbConn;
     protected $strTablePrefix;
 
+    public function __construct () {
+      $this->openDBConn();
+    }//function
+
     protected function openDBConn () {
       if (empty($this->dbConn)) {
         $objEnvConfig = Config::get('environment');
 
         try {
-          $objDBConfig = Config::get($objEnvConfig->db);
+          $objDBConfig = $objEnvConfig->db;
         } catch (ConfigSettingNotFoundException $exException) {
           //Database Connection Error
           Application::showError('database');
         }//try
 
-        $strDBURI = $objDBConfig->uri;
+        $arrDBInfo = parse_url($objDBConfig->uri);
         $this->strTablePrefix = $objDBConfig->prefix;
 
-        $strClassName = $objDBConfig->driver . "Driver";
-        $this->dbConn = new $strClassName($objDBConfig->host, $objDBConfig->user, $objDBConfig->pass, $objDBConfig->name);
+        $strClassName = strtoupper($arrDBInfo['scheme']) . "Driver";
+        $this->dbConn = new $strClassName($arrDBInfo['host'], $arrDBInfo['user'], $arrDBInfo['pass'], trim($arrDBInfo['path'], "/\\"));
       }//if
 
       return $this->dbConn;

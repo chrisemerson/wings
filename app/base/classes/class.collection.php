@@ -1,9 +1,6 @@
 <?php
   class Collection extends Schema implements Iterator, Countable, ArrayAccess {
-    private $strModelName;
     private $objResultsFilter;
-
-    private $objSchema;
 
     private $arrMembers = array();
     private $intPosition = 0;
@@ -11,28 +8,34 @@
 
     public function __construct (ResultFilter $objResultsFilter) {
       $this->objResultsFilter = $objResultsFilter;
-      $this->strModelName = $this->objResultsFilter->getModelName();
-      $this->objSchema = new Schema(strtolower($this->strModelName));
 
-      $this->openDBConn();
+      parent::__construct($this->objResultsFilter->getModelName());
 
       $this->objResultsFilter->setDBConn($this->dbConn);
 
       $this->fetch();
     }//function
 
-    private function fetch () {
-      $strModelName = $this->strModelName;
+    public function __set ($strName, $strValue) {
+      foreach ($this->arrMembers as $objModel) {
+        $objModel->$strName = $strValue;
+      }//foreach
+    }//function
 
-      $strSQL = "SELECT * FROM `" . $this->strTablePrefix . $this->objSchema->getTableName() . "`";
+    public function save () {
+      foreach ($this->arrMembers as $objModel) {
+        $objModel->save();
+      }//foreach
+    }//function
+
+    private function fetch () {
+      $strSQL = "SELECT * FROM `" . $this->strTablePrefix . $this->getTableName() . "`";
 
       $strSQL = trim($strSQL) . " " . $this->objResultsFilter->getConditionString();
       $strSQL = trim($strSQL) . " " . $this->objResultsFilter->getOrderByString();
       $strSQL = trim($strSQL) . " " . $this->objResultsFilter->getLimitString();
 
       $strSQL .= ";";
-
-      echo $strSQL;
 
       $dbResults = $this->dbConn->query($strSQL);
 

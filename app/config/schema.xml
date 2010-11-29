@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <schema>
-  <models>
-    <model name="User">
-      <table>users</table>
-    </model>
+  <!-- Standard format is CamelCase Model, pluralised underscore_for_spaces for table name - eg ModelName => model_names -->
+  <!-- Any exceptions to this should be listed here -->
 
-    <model name="NewsItem">
-      <table>news_items</table>
-    </model>
-  </models>
+  <model name="User" table="users" />
 
   <relationships>
-    <relationship>
-      <local model="User" column="user_id">
-      <foreign model="NewsItem" column="user_id">
+    <relationship local="User" foreign="NewsItem" type="onetomany">
+      <column local="user_id" foreign="user_id" />
     </relationship>
   </relationships>
 </schema>

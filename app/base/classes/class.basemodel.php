@@ -5,19 +5,11 @@
 
     protected $blnSaved = false;
 
-    protected $strSchema;
-    protected $objSchema;
-
     public function __construct ($mixPK = null) {
-      $this->openDBConn();
+      parent::__construct(get_class($this));
 
-      if (empty($this->strSchema)) {
-        $this->strSchema = strtolower(get_class($this));
-      }//if
-
-      $this->objSchema = new Schema($this->strSchema);
-      $this->arrCurrentData = $this->objSchema->getEmptyDataArray();
-      $this->arrNewData = $this->objSchema->getEmptyDataArray();
+      $this->arrCurrentData = $this->getEmptyDataArray();
+      $this->arrNewData = $this->getEmptyDataArray();
 
       if (!is_null($mixPK)) {
         $this->loadFromPK($mixPK);
@@ -25,7 +17,7 @@
     }//function
 
     public function __get ($strFieldName) {
-      if ($this->objSchema->isColumn($strFieldName)) {
+      if ($this->isColumn($strFieldName)) {
         return $this->arrNewData[$strFieldName];
       } else {
         throw new FieldNotFoundException;
@@ -33,7 +25,7 @@
     }//function
 
     public function __set ($strFieldName, $strValue) {
-      if ($this->objSchema->isColumn($strFieldName)) {
+      if ($this->isColumn($strFieldName)) {
         $this->arrNewData[$strFieldName] = $strValue;
       } else {
         throw new FieldNotFoundException;
@@ -41,9 +33,11 @@
     }//function
 
     public function __call ($strMethodName, $arrArguments) {
+      //TODO: Change to to use new Results Filter class
+
       if (preg_match("/^get([A-Za-z_-]+)s\$/", $strMethodName, $arrMatches)) {
         $strChildModel = $arrMatches[1];
-        $arrRelationshipInfo = $this->objSchema->getRelationshipInfo($strChildModel);
+        $arrRelationshipInfo = $this->getRelationshipInfo($strChildModel);
 
         if ($arrRelationshipInfo && ($arrRelationshipInfo['type'] == 'onetomany' || $arrRelationshipInfo['type'] == 'manytomany')) {
           $objCollection = new Collection($strChildModel);
@@ -69,7 +63,7 @@
         }//if
       } else if (preg_match("/^get([A-Za-z_-]+)\$/", $strMethodName, $arrMatches)) {
         $strParentModel = $arrMatches[1];
-        $arrRelationshipInfo = $this->objSchema->getRelationshipInfo($strParentModel);
+        $arrRelationshipInfo = $this->getRelationshipInfo($strParentModel);
 
         if ($arrRelationshipInfo && $arrRelationshipInfo['type'] == 'manytoone') {
           $arrWhere = array();
@@ -97,7 +91,7 @@
 
     public function loadFromArray ($arrData) {
       foreach ($arrData as $strColumn => $mixData) {
-        if ($this->objSchema->isColumn($strColumn)) {
+        if ($this->isColumn($strColumn)) {
           $this->arrNewData[$strColumn] = $mixData;
         } else {
           throw new FieldNotFoundException;
@@ -112,9 +106,9 @@
     }//function
 
     private function loadFromPK ($mixPK) {
-      $strSQL = "SELECT * FROM `" . $this->strTablePrefix . $this->objSchema->getTableName() . "` WHERE ";
+      $strSQL = "SELECT * FROM `" . $this->strTablePrefix . $this->getTableName() . "` WHERE ";
 
-      $arrPKs = $this->objSchema->getPrimaryKeys();
+      $arrPKs = $this->getPrimaryKeys();
 
       $arrWhereData = array();
 
@@ -155,7 +149,7 @@
     }//function
 
     private function insertIntoDB () {
-      $strSQL = "INSERT INTO `" . $this->strTablePrefix . $this->objSchema->getTableName() . "` ";
+      $strSQL = "INSERT INTO `" . $this->strTablePrefix . $this->getTableName() . "` ";
 
       $arrNewData = $this->arrNewData;
 
@@ -170,7 +164,7 @@
 
       //Don't include any autonumbered fields!
       foreach ($arrNewData as $strFieldName => $strData) {
-        $arrColumnInfo = $this->objSchema->getColumnInfo($strFieldName);
+        $arrColumnInfo = $this->getColumnInfo($strFieldName);
 
         if (!is_null($strData)) {
           $strDataToInsert = $this->prepareData($strData, $strFieldName);
@@ -194,11 +188,11 @@
 
       $this->dbConn->query($strSQL);
 
-      $arrColumns = $this->objSchema->getColumnList();
+      $arrColumns = $this->getColumnList();
       $arrPKData = array();
 
       foreach ($arrColumns as $strFieldName) {
-        $arrColumnInfo = $this->objSchema->getColumnInfo($strFieldName);
+        $arrColumnInfo = $this->getColumnInfo($strFieldName);
 
         if ((isset($arrColumnInfo['PK']) && $arrColumnInfo['PK']) && (isset($arrColumnInfo['autonumber']) && $arrColumnInfo['autonumber'])) {
           $arrPKData[$strFieldName] = $this->dbConn->insert_id;
@@ -212,7 +206,7 @@
     }//function
 
     private function updateDB () {
-      $strSQL = "UPDATE `" . $this->strTablePrefix . $this->objSchema->getTableName() . "` SET";
+      $strSQL = "UPDATE `" . $this->strTablePrefix . $this->getTableName() . "` SET";
 
       $arrNewData = $this->arrNewData;
       $arrCurrentData = $this->arrCurrentData;
@@ -223,7 +217,7 @@
         }//if
       }//foreach
 
-      $arrPKs = $this->objSchema->getPrimaryKeys();
+      $arrPKs = $this->getPrimaryKeys();
 
       $arrWhereStrings = array();
 
@@ -237,11 +231,11 @@
 
       $this->dbConn->query($strSQL);
 
-      $arrColumns = $this->objSchema->getColumnList();
+      $arrColumns = $this->getColumnList();
       $arrPKData = array();
 
       foreach ($arrColumns as $strFieldName) {
-        $arrColumnInfo = $this->objSchema->getColumnInfo($strFieldName);
+        $arrColumnInfo = $this->getColumnInfo($strFieldName);
 
         if ($arrColumnInfo['PK']) {
           $arrPKData[$strFieldName] = $arrNewData[$strFieldName];
@@ -254,9 +248,9 @@
     public function delete () {
       if ($this->blnSaved) {
         $arrCurrentData = $this->arrCurrentData;
-        $arrPKData = $this->objSchema->getPrimaryKeys();
+        $arrPKData = $this->getPrimaryKeys();
 
-        $strSQL = "DELETE FROM `" . $this->strTablePrefix . $this->objSchema->getTableName() . "` WHERE ";
+        $strSQL = "DELETE FROM `" . $this->strTablePrefix . $this->getTableName() . "` WHERE ";
 
         foreach ($arrPKData as $strFieldName) {
           $arrWhereStrings[] = "`" . $strFieldName . "` = ". $this->prepareData($arrCurrentData[$strFieldName], $strFieldName);

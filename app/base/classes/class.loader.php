@@ -3,7 +3,7 @@
     private $strClassName;
 
     public function __construct ($strClassName) {
-     $this->strClassName = $strClassName;
+      $this->strClassName = $strClassName;
     }//function
 
     public function load () {

@@ -1,97 +1,102 @@
 <?php
   class Schema extends Database {
-    private $strSchema;
+    private $strModelName;
+
+    private static $arrSchemaInfo;
+    private static $arrRelationships;
+    private static $arrColumns;
 
     private $strTableName;
-    private $arrColumns;
     private $arrEmptyDataArray;
-    private $arrRelationships;
 
-    public function __construct ($strSchema) {
-      $this->strSchema = $strSchema;
+    public function __construct ($strModelName) {
+      $this->strModelName = $strModelName;
+      $this->loadAllSchemaInfo();
 
-      $this->openDBConn();
+      parent::__construct();
 
-      $this->load();
+      $this->loadColumnInfo($this->strModelName);
     }//function
 
-    private function load () {
-      $strQuery = "SELECT * FROM `information_schema`.`COLUMNS` WHERE TABLE_SCHEMA = 'test';";
+    private function loadAllSchemaInfo () {
+      if (empty(self::$arrSchemaInfo)) {
+        $objSchemaConfig = simplexml_load_file(Application::getBasePath() . "config/schema.xml");
 
-      $dbResults = $this->dbConn->query($strQuery);
+        foreach ($objSchemaConfig->model as $objModel) {
+          $strModelName = (string) $objModel['name'];
+          $strTableName = (string) $objModel['table'];
 
-      while ($arrResult = $dbResults->fetch_assoc()) {
-        print_r($arrResult);
-      }//while
+          self::$arrSchemaInfo[$strModelName]['table'] = $strTableName;
+        }//foreach
 
-      $strSchemaFilename = Application::getBasePath() . "schemas/" . strtolower($this->strSchema) . ".xml";
-      $objSchemaFile = simplexml_load_file($strSchemaFilename);
-
-      //Table Name
-      $this->strTableName = (string) $objSchemaFile['name'];
-
-      //Fields
-      foreach ($objSchemaFile->columns->column as $objColumn) {
-        $arrColumn = array();
-        $arrColumn['type'] = (string) $objColumn['type'];
-
-        if (isset($objColumn['size'])) {
-          $arrColumn['size'] = (int) $objColumn['size'];
-        }//if
-
-        if (isset($objColumn['default'])) {
-          $arrColumn['default'] = (string) $objColumn['default'];
-        }//if
-
-        if (isset($objColumn['function'])) {
-          $arrColumn['function'] = (string) $objColumn['function'];
-        }//if
-
-        if (isset($objColumn['nullable'])) {
-          $arrColumn['nullable'] = (strtolower((string) $objColumn['nullable']) == "yes");
-        }//if
-
-        if (isset($objColumn['primary_key'])) {
-          $arrColumn['PK'] = (strtolower((string) $objColumn['primary_key']) == "yes");
-
-          if (isset($objColumn['default'])) {
-            throw new InvalidSchemaException;
-          }//if
-        }//if
-
-        if (isset($objColumn['auto_number'])) {
-          $arrColumn['autonumber'] = (strtolower((string) $objColumn['auto_number']) == "yes");
-
-          if (!isset($objColumn['primary_key'])) {
-            throw new InvalidSchemaException;
-          }//if
-        }//if
-
-        $this->arrColumns[(string) $objColumn['name']] = $arrColumn;
-        $this->arrEmptyDataArray[(string) $objColumn['name']] = null;
-      }//foreach
-
-      if (isset($objSchemaFile->relationships->relationship)) {
-        foreach ($objSchemaFile->relationships->relationship as $objRelationship) {
+        foreach ($objSchemaConfig->relationships->relationship as $objRelationshipInfo) {
           $arrRelationship = array();
 
-          $arrRelationship['type'] = (string) $objRelationship['type'];
+          $arrRelationship['model'] = (string) $objRelationshipInfo['foreign'];
+          $arrRelationship['type'] = (string) $objRelationshipInfo['type'];
 
           $arrColumns = array();
 
-          foreach ($objRelationship->column as $objColumn) {
+          foreach ($objRelationshipInfo->column as $objColumn) {
             $arrColumns[(string) $objColumn['local']] = (string) $objColumn['foreign'];
           }//foreach
 
           $arrRelationship['columns'] = $arrColumns;
 
-          $this->arrRelationships[(string) $objRelationship['model']] = $arrRelationship;
+          self::$arrRelationships[(string) $objRelationshipInfo['local']] = $arrRelationship;
         }//foreach
       }//if
     }//function
 
+    private function loadColumnInfo ($strModelName) {
+      $strTableName = $this->convertModelNameToTableName($strModelName);
+
+      if (empty(self::$arrColumns)) {
+        $strQuery = "SHOW COLUMNS IN `" . $this->dbConn->escape_string($strTableName) . "`;";
+        $dbResults = $this->dbConn->query($strQuery);
+
+        while ($arrResult = $dbResults->fetch_assoc()) {
+          $arrColumn = array();
+
+          $strColumnName = $arrResult['Field'];
+
+          if (preg_match('/^([^\s(]+)(?:\(([^)]+)\))?$/', $arrResult['Type'], $arrMatches)) {
+            $arrColumn['type'] = $arrMatches[1];
+
+            if (isset($arrMatches[2])) {
+              $arrColumn['size'] = $arrMatches[2];
+            }//if
+          }//if
+
+          $arrColumn['default'] = $arrResult['Default'];
+          $arrColumn['nullable'] = (strtolower($arrResult['Null']) == 'YES');
+          $arrColumn['PK'] = (strtolower($arrResult['Key']) == 'PRI');
+          $arrColumn['autonumber'] = (strtolower($arrResult['Extra']) == 'auto_increment');
+
+          self::$arrColumns[$strColumnName] = $arrColumn;
+          $this->arrEmptyDataArray[$strColumnName] = null;
+        }//while
+      }//if
+    }//function
+
+    private function convertModelNameToTableName ($strModelName) {
+      $strTableName = "";
+
+      for ($i = 0; $i < strlen($strModelName); $i++) {
+        $strCharacter = $strModelName{$i};
+
+        if ($i > 0 && ord($strCharacter) >= 65 && ord($strCharacter) <= 90) {
+          $strTableName .= "_" . strtolower($strCharacter);
+        } else {
+          $strTableName .= strtolower($strCharacter);
+        }//if
+      }//for
+
+      return $strTableName;
+    }//function
+
     public function getTableName () {
-      return $this->strTableName;
+      return $this->strTablePrefix . $this->strTableName;
     }//function
 
     public function getEmptyDataArray () {
@@ -99,11 +104,11 @@
     }//function
 
     public function getDataType ($strFieldName) {
-      return $this->arrColumns[$strFieldName]['type'];
+      return self::$arrColumns[$strFieldName]['type'];
     }//function
 
     public function getPrimaryKeys () {
-      $arrColumns = $this->arrColumns;
+      $arrColumns = self::$arrColumns;
       $arrPKs = array();
 
       foreach ($arrColumns as $strFieldName => $arrColumnInfo) {
@@ -116,16 +121,16 @@
     }//function
 
     public function isColumn ($strColumn) {
-      return isset($this->arrColumns[$strColumn]);
+      return isset(self::$arrColumns[$strColumn]);
     }//function
 
     public function getColumnInfo ($strFieldName) {
-      return $this->arrColumns[$strFieldName];
+      return self::$arrColumns[$strFieldName];
     }//function
 
     public function getColumnList () {
       $arrColumnList = array();
-      $arrColumns = $this->arrColumns;
+      $arrColumns = self::$arrColumns;
 
       foreach ($arrColumns as $strFieldName => $arrColumnInfo) {
         $arrColumnList[] = $strFieldName;
@@ -135,8 +140,8 @@
     }//function
 
     public function getRelationshipInfo ($strModelName) {
-      if (isset($this->arrRelationships[$strModelName])) {
-        return $this->arrRelationships[$strModelName];
+      if (isset(self::$arrRelationships[$strModelName])) {
+        return self::$arrRelationships[$strModelName];
       } else {
         return false;
       }//if
