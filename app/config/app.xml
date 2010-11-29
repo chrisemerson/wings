@@ -16,7 +16,10 @@
       <prefix>test_</prefix>
     </db>
 
-    <showerrors>0</showerrors>
+    <errors>
+      <showerrors>0</showerrors>
+      <debugmode>0</debugmode>
+    </errors>
   </default>
 
   <dev>
@@ -34,7 +37,10 @@
       <prefix>test_</prefix>
     </db>
 
-    <showerrors>1</showerrors>
+    <errors>
+      <showerrors>0</showerrors>
+      <debugmode>0</debugmode>
+    </errors>
   </dev>
 
   <test>
@@ -52,7 +58,10 @@
       <prefix></prefix>
     </db>
 
-    <showerrors>0</showerrors>
+    <errors>
+      <showerrors>0</showerrors>
+      <debugmode>0</debugmode>
+    </errors>
   </test>
 
   <live>
@@ -70,6 +79,9 @@
       <prefix></prefix>
     </db>
 
-    <showerrors>0</showerrors>
+    <errors>
+      <showerrors>0</showerrors>
+      <debugmode>0</debugmode>
+    </errors>
   </live>
 </app>
