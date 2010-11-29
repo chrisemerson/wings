@@ -1,4 +1,2 @@
 - Library files to include:
  - Page Manager
-
-- Error bin class, error handling functions etc
