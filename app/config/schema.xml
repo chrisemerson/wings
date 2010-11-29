@@ -2,7 +2,7 @@
 
 <schema>
   <!-- Standard format is CamelCase Model, pluralised underscore_for_spaces for table name - eg ModelName => model_names -->
-  <!-- Any exceptions to this should be listed here -->
+  <!-- Any exceptions to this should be listed here, as these ones take precedence -->
 
   <model name="User" table="users" />
 

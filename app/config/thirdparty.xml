@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <thirdparty>
- <!-- Each child of the thirdparty root node should be the name of the class,
- and the value the file to be included, relative to the thirdparty folder -->
+  <!-- Each child of the thirdparty root node should be the name of the class,
+  and the value the file to be included, relative to the thirdparty folder -->
 
- <phpmailer>phpmailer/class.phpmailer.php</phpmailer>
+  <phpmailer>phpmailer/class.phpmailer.php</phpmailer>
 </thirdparty>

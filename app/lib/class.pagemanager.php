@@ -1,4 +1,4 @@
 <?php
- class PageManager {
+  class PageManager {
 
- }//class
+  }//class
