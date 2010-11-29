@@ -2,7 +2,7 @@
   define('ORDER_BY_ASC', 1);
   define('ORDER_BY_DESC', 2);
 
-  class ResultFilter {
+  class ResultsFilter {
     private $intStart;
     private $intLimit;
     private $arrOrderBy = array();

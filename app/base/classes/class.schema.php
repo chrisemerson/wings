@@ -6,7 +6,6 @@
     private static $arrRelationships;
     private static $arrColumns;
 
-    private $strTableName;
     private $arrEmptyDataArray;
 
     public function __construct ($strModelName) {
@@ -15,7 +14,7 @@
 
       parent::__construct();
 
-      $this->loadColumnInfo($this->strModelName);
+      $this->loadColumnInfo();
     }//function
 
     private function loadAllSchemaInfo () {
@@ -23,10 +22,7 @@
         $objSchemaConfig = simplexml_load_file(Application::getBasePath() . "config/schema.xml");
 
         foreach ($objSchemaConfig->model as $objModel) {
-          $strModelName = (string) $objModel['name'];
-          $strTableName = (string) $objModel['table'];
-
-          self::$arrSchemaInfo[$strModelName]['table'] = $strTableName;
+          self::$arrSchemaInfo[(string) $objModel['name']]['table'] = (string) $objModel['table'];
         }//foreach
 
         foreach ($objSchemaConfig->relationships->relationship as $objRelationshipInfo) {
@@ -44,12 +40,33 @@
           $arrRelationship['columns'] = $arrColumns;
 
           self::$arrRelationships[(string) $objRelationshipInfo['local']] = $arrRelationship;
+
+          //Inverse Relationship
+          $arrInverseRelationship = array();
+
+          $arrInverseRelationship['model'] = (string) $objRelationshipInfo['local'];
+
+          if ((string) $objRelationshipInfo['type'] == 'onetomany') {
+            $arrInverseRelationship['type'] = 'manytoone';
+          } else {
+            $arrInverseRelationship['type'] = 'manytomany';
+          }//if
+
+          $arrColumns = array();
+
+          foreach ($objRelationshipInfo->column as $objColumn) {
+            $arrColumns[(string) $objColumn['foreign']] = (string) $objColumn['local'];
+          }//foreach
+
+          $arrInverseRelationship['columns'] = $arrColumns;
+
+          self::$arrRelationships[(string) $objRelationshipInfo['foreign']] = $arrRelationship;
         }//foreach
       }//if
     }//function
 
-    private function loadColumnInfo ($strModelName) {
-      $strTableName = $this->convertModelNameToTableName($strModelName);
+    private function loadColumnInfo () {
+      $strTableName = $this->getTableName();
 
       if (empty(self::$arrColumns)) {
         $strQuery = "SHOW COLUMNS IN `" . $this->dbConn->escape_string($strTableName) . "`;";
@@ -96,7 +113,11 @@
     }//function
 
     public function getTableName () {
-      return $this->strTablePrefix . $this->strTableName;
+      if (isset(self::$arrSchemaInfo[$this->strModelName])) {
+        return $this->strTablePrefix . self::$arrSchemaInfo[$this->strModelName]['table'];
+      } else {
+        return $this->strTablePrefix . $this->convertModelNameToTableName($this->strModelName);
+      }//if
     }//function
 
     public function getEmptyDataArray () {

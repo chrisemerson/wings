@@ -1,7 +1,7 @@
 <?php
   require_once dirname(__FILE__) . "/../app/inc.framework.php";
 
-  $filter = new ResultFilter();
+  $filter = new ResultsFilter();
 
   $objCollection = new Collection($filter->model('Test')
                                          ->start(10)

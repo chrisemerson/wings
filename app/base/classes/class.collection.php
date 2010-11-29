@@ -6,7 +6,7 @@
     private $intPosition = 0;
     private $blnJustUnsetCurrent = false;
 
-    public function __construct (ResultFilter $objResultsFilter) {
+    public function __construct (ResultsFilter $objResultsFilter) {
       $this->objResultsFilter = $objResultsFilter;
 
       parent::__construct($this->objResultsFilter->getModelName());
@@ -29,7 +29,7 @@
     }//function
 
     private function fetch () {
-      $strSQL = "SELECT * FROM `" . $this->strTablePrefix . $this->getTableName() . "`";
+      $strSQL = "SELECT * FROM `" . $this->getTableName() . "`";
 
       $strSQL = trim($strSQL) . " " . $this->objResultsFilter->getConditionString();
       $strSQL = trim($strSQL) . " " . $this->objResultsFilter->getOrderByString();

@@ -33,33 +33,27 @@
     }//function
 
     public function __call ($strMethodName, $arrArguments) {
-      //TODO: Change to to use new Results Filter class
-
       if (preg_match("/^get([A-Za-z_-]+)s\$/", $strMethodName, $arrMatches)) {
         $strChildModel = $arrMatches[1];
         $arrRelationshipInfo = $this->getRelationshipInfo($strChildModel);
 
         if ($arrRelationshipInfo && ($arrRelationshipInfo['type'] == 'onetomany' || $arrRelationshipInfo['type'] == 'manytomany')) {
-          $objCollection = new Collection($strChildModel);
+          if (isset($arrArguments[0])) {
+            $objResultsFilter = $arrArguments[0];
+          } else {
+            $objResultsFilter = new ResultsFilter();
+          }//if
+
+          $objResultsFilter->model($strChildModel);
+
+          $strConditionsString = "";
 
           foreach ($arrRelationshipInfo['columns'] as $strLocalColumn => $strForeignColumn) {
-            $objCollection->addCondition($strForeignColumn, $this->$strLocalColumn);
+            $strConditionsString .= " " . $strForeignColumn . " AND " . $this->$strLocalColumn;
+            $objResultsFilter->conditions(trim($strConditionsString));
           }//foreach
 
-          if (isset($arrArguments[0]['orderby'])) {
-            $arrOrderBy = $arrArguments[0]['orderby'];
-
-            foreach ($arrOrderBy as $strFieldName => $conOrderDirection) {
-              $objCollection->addOrderBy($strFieldName, $conOrderDirection);
-            }//foreach
-          }//if
-
-          if (isset($arrArguments[0]['limit'])) {
-            $objCollection->setLimit($arrArguments[0]['limit']);
-          }//if
-
-          $objCollection->fetch();
-          return $objCollection;
+          return new Collection($objResultsFilter);
         }//if
       } else if (preg_match("/^get([A-Za-z_-]+)\$/", $strMethodName, $arrMatches)) {
         $strParentModel = $arrMatches[1];
