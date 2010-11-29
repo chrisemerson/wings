@@ -8,7 +8,11 @@
     /* Template Handling */
 
     public function loadTemplate ($strTemplateName, $blnIgnoreMasterTemplateSetting = false) {
-      $this->template = new Template($strTemplateName, $blnIgnoreMasterTemplateSetting);
+      try {
+        $this->template = new Template($strTemplateName, $blnIgnoreMasterTemplateSetting);
+      } catch (TemplateNotFoundException $ex) {
+        Application::showError('template');
+      }//try
     }//function
 
     /* Output */

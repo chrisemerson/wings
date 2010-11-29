@@ -23,7 +23,7 @@
         self::$arrConfigObjects[$mixConfigData] = new Config($mixConfigData);
       }//if
 
-      if (preg_match('/^environment$/', $mixConfigData)) {
+      if ((string) $mixConfigData == 'app') {
         $objConfig = self::$arrConfigObjects[$mixConfigData];
         $strCurrentEnvironment = Application::getEnvironment();
 

@@ -9,10 +9,10 @@
 
     protected function openDBConn () {
       if (empty($this->dbConn)) {
-        $objEnvConfig = Config::get('environment');
+        $objAppConfig = Config::get('app');
 
         try {
-          $objDBConfig = $objEnvConfig->db;
+          $objDBConfig = $objAppConfig->db;
         } catch (ConfigSettingNotFoundException $exException) {
           //Database Connection Error
           Application::showError('database');

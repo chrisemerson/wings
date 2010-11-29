@@ -20,7 +20,6 @@
 
     public static function getBaseURI ($blnSecure = false) {
       $objAppConfig = Config::get('app');
-      $objEnvConfig = Config::get('environment');
 
       $strCurrentEnvironment = self::getEnvironment();
 
@@ -32,16 +31,16 @@
 
       $strAppBaseURI .= '://';
 
-      $strPath = $objEnvConfig->uri->path;
+      $strPath = $objAppConfig->uri->path;
 
       if (!empty($strPath)) {
         $strPath = trim($strPath, '/') . '/';
       }//if
 
       if ($_SERVER['SERVER_PORT'] != '80') {
-        $strAppBaseURI .= $objEnvConfig->uri->host . ':' . $_SERVER['SERVER_PORT'] . '/' . $strPath;
+        $strAppBaseURI .= $objAppConfig->uri->host . ':' . $_SERVER['SERVER_PORT'] . '/' . $strPath;
       } else {
-        $strAppBaseURI .= $objEnvConfig->uri->host . '/' . $strPath;
+        $strAppBaseURI .= $objAppConfig->uri->host . '/' . $strPath;
       }//if
 
       return $strAppBaseURI;
@@ -61,10 +60,8 @@
     }//function
 
     public static function getEnvironment () {
-      $objAppConfig = Config::get('app');
-
-      if (isset($_SERVER[$objAppConfig->environmentvar])) {
-        $strEnvironment = $_SERVER[$objAppConfig->environmentvar];
+      if (isset($_SERVER['APP_ENVIRONMENT'])) {
+        $strEnvironment = $_SERVER['APP_ENVIRONMENT'];
 
         if (!empty($strEnvironment)) {
           return $strEnvironment;
@@ -86,6 +83,29 @@
       call_user_func_array(array($objErrorController, $strAction));
 
       //We don't want to continue beyond the error showing
-      Application::exitApp();
+      self::exitApp();
+    }//function
+
+    public static function handleUncaughtException ($exException) {
+      echo "<h1>Uncaught " . get_class($exException) . "</h1>\n\n";
+      echo "<p><b>" . $exException->getFile() . "(" . $exException->getLine() . ")</b></p>";
+
+      $arrTrace = $exException->getTrace();
+
+      echo "<ol>";
+
+      foreach ($arrTrace as $arrTraceStep) {
+        echo "<li>\n";
+        echo "  <dl>\n";
+        echo "    <dt><b>File (Line)</b></dt>\n";
+        echo "    <dd>" . $arrTraceStep['file'] . " (" . $arrTraceStep['line'] . ")\n\n";
+
+        echo "    <dt><b>Call</b></dt>\n";
+        echo "    <dd>" . $arrTraceStep['class'] . $arrTraceStep['type'] . $arrTraceStep['function'] . "(" . implode(", ", $arrTraceStep['args']) . ")</dd>";
+        echo "  </dl>\n";
+        echo "</li>\n";
+      }//foreach
+
+      echo "</ol>";
     }//function
   }//class

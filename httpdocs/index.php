@@ -5,6 +5,6 @@
     $objDispatcher = new Dispatcher(isset($_GET['url']) ? $_GET['url'] : '');
     $objDispatcher->execute();
   } catch (Exception $exException) {
-    showException($exException);
+    Application::handleUncaughtException($exException);
   }//try
 ?>

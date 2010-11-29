@@ -1,9 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<app>
-  <template>
-    <mastertemplate>system.master</mastertemplate>
-  </template>
+<environments>
+  <default>
+    <uri>
+      <host>dev</host>
+      <path>appframework/httpdocs</path>
+    </uri>
 
-  <environmentvar>APP_ENVIRONMENT</environmentvar>
-</app>
+    <template>
+      <mastertemplate>system.master</mastertemplate>
+    </template>
+
+    <db>
+      <uri>mysqli://testuser:testpass@localhost/test</uri>
+      <prefix>test_</prefix>
+    </db>
+
+    <showerrors>0</showerrors>
+  </default>
+
+  <dev>
+    <uri>
+      <host>dev</host>
+      <path>appframework/httpdocs</path>
+    </uri>
+
+    <template>
+      <mastertemplate>system.master</mastertemplate>
+    </template>
+
+    <db>
+      <uri>mysqli://testuser:testpass@localhost/test</uri>
+      <prefix>test_</prefix>
+    </db>
+
+    <showerrors>1</showerrors>
+  </dev>
+
+  <test>
+    <uri>
+      <host></host>
+      <path></path>
+    </uri>
+
+    <template>
+      <mastertemplate>system.master</mastertemplate>
+    </template>
+
+    <db>
+      <uri></uri>
+      <prefix></prefix>
+    </db>
+
+    <showerrors>0</showerrors>
+  </test>
+
+  <live>
+    <uri>
+      <host></host>
+      <path></path>
+    </uri>
+
+    <template>
+      <mastertemplate>system.master</mastertemplate>
+    </template>
+
+    <db>
+      <uri></uri>
+      <prefix></prefix>
+    </db>
+
+    <showerrors>0</showerrors>
+  </live>
+</environments>
