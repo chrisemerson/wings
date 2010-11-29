@@ -46,6 +46,22 @@
 
     /* Helper Functions */
 
+    protected function passthrough () {
+      $arrVars = func_get_args();
+
+      foreach ($arrVars as $strVar) {
+        $this->template->$strVar = $this->$strVar;
+      }//foreach
+    }//function
+
+    protected function passthroughAll () {
+      $arrVars = $this->arrData;
+
+      foreach ($arrVars as $strVar => $mixValue) {
+        $this->template->$strVar = $mixValue;
+      }//foreach
+    }//function
+
     protected function coalesce () {
       $intMax = func_num_args();
 

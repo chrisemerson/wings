@@ -15,6 +15,10 @@
    }//function
 
    public function index () {
-     echo "Default Text Here";
+     $this->view = new DefaultView();
+
+     $this->view->controllername = get_class($this);
+
+     $this->view->render();
    }//function
  }//class

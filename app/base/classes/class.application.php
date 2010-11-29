@@ -52,7 +52,7 @@
     }//function
 
     public static function isSecure () {
-     return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on');
+      return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on');
     }//function
 
     public static function redirect ($strURL) {
