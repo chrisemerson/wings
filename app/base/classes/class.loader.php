@@ -22,6 +22,8 @@
         if (self::isController($strModuleName)) {
           self::loadController($strModuleName);
           return true;
+        } else {
+          Application::showError('controller');
         }//if
       } else if (strtolower(substr($this->strClassName, -4)) == 'view') {
         $strModuleName = strtolower(substr($this->strClassName, 0, -4));
@@ -29,6 +31,8 @@
         if (self::isView($strModuleName)) {
           self::loadView($strModuleName);
           return true;
+        } else {
+          Application::showError('view');
         }//if
       } else {
         $strModuleName = strtolower($this->strClassName);
@@ -40,6 +44,7 @@
         } else if (self::isThirdParty($strModuleName)) {
           self::loadThirdParty($strModuleName);
         } else {
+          Application::showError('general');
           return false;
         }//if
       }//if
