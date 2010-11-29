@@ -1,12 +1,4 @@
 - Library files to include:
  - Page Manager
 
-- General Error conditions - ie missing controller, model etc and default error displays
-
 - Error bin class, error handling functions etc
-
-- Allow updating of any variable in Collection class - to propagate through all member objects
-
-- Schemas to come directly from DB info rather than manual XML files. Perhaps use MySQL relationships as well?
-
-- Combine DB functions into DB base class that Collection and BaseModel can inherit from - eg prepare data

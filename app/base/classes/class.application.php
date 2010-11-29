@@ -80,6 +80,9 @@
     }//function
 
     public static function showError ($strErrorType) {
-      //TODO
+      $objErrorController = new ErrorController();
+      $strAction = "Error" . ucwords($strErrorType);
+
+      call_user_func_array(array($objErrorController, $strAction));
     }//function
   }//class
