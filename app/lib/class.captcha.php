@@ -1,12 +1,4 @@
 <?php
-  /************************************/
-  /* Captcha Class - by Chris Emerson */
-  /* http://www.cemerson.co.uk/       */
-  /*                                  */
-  /* Version 0.2                      */
-  /* 28th May 2009                    */
-  /************************************/
-
   class Captcha {
     private $strCode;
     private $imgCaptchaImage;

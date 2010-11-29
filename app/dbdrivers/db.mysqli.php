@@ -1,12 +1,4 @@
 <?php
-  /**************************************************/
-  /* MySQL Improved Driver Class - by Chris Emerson */
-  /* http://www.cemerson.co.uk/                     */
-  /*                                                */
-  /* Version 0.1                                    */
-  /* 28th May 2009                                  */
-  /**************************************************/
-
   class MysqliDriver implements iDBDriver {
     private static $arrConnections;
     private        $strConnectionHash;
