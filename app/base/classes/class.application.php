@@ -84,5 +84,8 @@
       $strAction = "Error" . ucwords($strErrorType);
 
       call_user_func_array(array($objErrorController, $strAction));
+
+      //We don't want to continue beyond the error showing
+      Application::exitApp();
     }//function
   }//class

@@ -1,9 +1,11 @@
-<html>
- <head>
-  <title>Test Master Template</title>
- </head>
+<!DOCTYPE html>
 
- <body>
-  <!--<SLAVE>-->
- </body>
+<html lang="en">
+  <head>
+    <title>Website</title>
+  </head>
+
+  <body>
+    <!--<SLAVE>-->
+  </body>
 </html>

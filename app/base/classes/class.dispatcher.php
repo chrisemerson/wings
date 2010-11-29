@@ -205,7 +205,12 @@
 
     private function executeAction ($strController, $strAction = 'index', $arrParams = array()) {
       $objController = new $strController;
-      call_user_func_array(array($objController, $strAction), $arrParams);
+
+      if (is_callable(array($objController, $strAction))) {
+        call_user_func_array(array($objController, $strAction), $arrParams);
+      } else {
+        Application::showError('action');
+      }//if
     }//function
   }//class
 

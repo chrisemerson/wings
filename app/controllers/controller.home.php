@@ -1,6 +1,8 @@
 <?php
   class HomeController extends BaseController {
     public function index () {
-      echo "Home";
+      $this->view = new HomeView();
+
+      $this->view->render();
     }//function
   }//class
