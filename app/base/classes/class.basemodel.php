@@ -1,9 +1,9 @@
 <?php
-  class BaseModel extends Schema {
+  abstract class BaseModel extends Schema {
     private   $arrCurrentData = array();
     private   $arrNewData = array();
 
-    protected $blnSaved = false;
+    private $blnSaved = false;
 
     public function __construct ($mixPK = null) {
       parent::__construct(get_class($this));
@@ -33,7 +33,7 @@
     }//function
 
     public function __call ($strMethodName, $arrArguments) {
-      if (preg_match("/^get([A-Za-z_-]+)s\$/", $strMethodName, $arrMatches)) {
+      if (preg_match("/^get([A-Za-z-]+)s\$/", $strMethodName, $arrMatches)) {
         $strChildModel = $arrMatches[1];
         $arrRelationshipInfo = $this->getRelationshipInfo($strChildModel);
 
@@ -100,7 +100,7 @@
     }//function
 
     private function loadFromPK ($mixPK) {
-      $strSQL = "SELECT * FROM `" . $this->strTablePrefix . $this->getTableName() . "` WHERE ";
+      $strSQL = "SELECT * FROM `" . $this->getTableName() . "` WHERE ";
 
       $arrPKs = $this->getPrimaryKeys();
 
@@ -143,7 +143,7 @@
     }//function
 
     private function insertIntoDB () {
-      $strSQL = "INSERT INTO `" . $this->strTablePrefix . $this->getTableName() . "` ";
+      $strSQL = "INSERT INTO `" . $this->getTableName() . "` ";
 
       $arrNewData = $this->arrNewData;
 
@@ -200,7 +200,7 @@
     }//function
 
     private function updateDB () {
-      $strSQL = "UPDATE `" . $this->strTablePrefix . $this->getTableName() . "` SET";
+      $strSQL = "UPDATE `" . $this->getTableName() . "` SET";
 
       $arrNewData = $this->arrNewData;
       $arrCurrentData = $this->arrCurrentData;
@@ -244,7 +244,7 @@
         $arrCurrentData = $this->arrCurrentData;
         $arrPKData = $this->getPrimaryKeys();
 
-        $strSQL = "DELETE FROM `" . $this->strTablePrefix . $this->getTableName() . "` WHERE ";
+        $strSQL = "DELETE FROM `" . $this->getTableName() . "` WHERE ";
 
         foreach ($arrPKData as $strFieldName) {
           $arrWhereStrings[] = "`" . $strFieldName . "` = ". $this->prepareData($arrCurrentData[$strFieldName], $strFieldName);
@@ -258,7 +258,7 @@
       }//if
     }//function
 
-    public function isSavedData () {
+    protected function isSavedData () {
       return $this->blnSaved;
     }//function
   }//class

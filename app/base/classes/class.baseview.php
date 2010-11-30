@@ -1,5 +1,5 @@
 <?php
-  class BaseView {
+  abstract class BaseView {
     protected $template;
 
     private   $arrData = array();
@@ -7,7 +7,7 @@
 
     /* Template Handling */
 
-    public function loadTemplate ($strTemplateName, $blnIgnoreMasterTemplateSetting = false) {
+    protected function loadTemplate ($strTemplateName, $blnIgnoreMasterTemplateSetting = false) {
       try {
         $this->template = new Template($strTemplateName, $blnIgnoreMasterTemplateSetting);
       } catch (TemplateNotFoundException $ex) {

@@ -1,14 +1,15 @@
 <?php
-  class Schema extends Database {
+  abstract class Schema extends Database {
     private $strModelName;
 
-    private static $arrSchemaInfo;
+    private static $objSchemaConfig;
+    private static $arrTableNames;
     private static $arrRelationships;
     private static $arrColumns;
 
     private $arrEmptyDataArray;
 
-    public function __construct ($strModelName) {
+    protected function __construct ($strModelName) {
       $this->strModelName = $strModelName;
       $this->loadAllSchemaInfo();
 
@@ -18,51 +19,57 @@
     }//function
 
     private function loadAllSchemaInfo () {
-      if (empty(self::$arrSchemaInfo)) {
-        $objSchemaConfig = simplexml_load_file(Application::getBasePath() . "config/schema.xml");
+      if (empty(self::$objSchemaConfig)) {
+        self::$objSchemaConfig = simplexml_load_file(Application::getBasePath() . "config/schema.xml");
 
-        foreach ($objSchemaConfig->model as $objModel) {
-          self::$arrSchemaInfo[(string) $objModel['name']]['table'] = (string) $objModel['table'];
-        }//foreach
-
-        foreach ($objSchemaConfig->relationships->relationship as $objRelationshipInfo) {
-          $arrRelationship = array();
-
-          $arrRelationship['model'] = (string) $objRelationshipInfo['foreign'];
-          $arrRelationship['type'] = (string) $objRelationshipInfo['type'];
-
-          $arrColumns = array();
-
-          foreach ($objRelationshipInfo->column as $objColumn) {
-            $arrColumns[(string) $objColumn['local']] = (string) $objColumn['foreign'];
-          }//foreach
-
-          $arrRelationship['columns'] = $arrColumns;
-
-          self::$arrRelationships[(string) $objRelationshipInfo['local']] = $arrRelationship;
-
-          //Inverse Relationship
-          $arrInverseRelationship = array();
-
-          $arrInverseRelationship['model'] = (string) $objRelationshipInfo['local'];
-
-          if ((string) $objRelationshipInfo['type'] == 'onetomany') {
-            $arrInverseRelationship['type'] = 'manytoone';
-          } else {
-            $arrInverseRelationship['type'] = 'manytomany';
-          }//if
-
-          $arrColumns = array();
-
-          foreach ($objRelationshipInfo->column as $objColumn) {
-            $arrColumns[(string) $objColumn['foreign']] = (string) $objColumn['local'];
-          }//foreach
-
-          $arrInverseRelationship['columns'] = $arrColumns;
-
-          self::$arrRelationships[(string) $objRelationshipInfo['foreign']] = $arrRelationship;
-        }//foreach
+        $this->loadTableNameInfo();
+        $this->loadRelationships();
       }//if
+    }//function
+
+    private function loadTableNameInfo () {
+      foreach (self::$objSchemaConfig->model as $objModel) {
+        self::$arrTableNames[(string) $objModel['name']]['table'] = (string) $objModel['table'];
+      }//foreach
+    }//function
+
+    private function loadRelationships () {
+      foreach (self::$objSchemaConfig->relationships->onetomany as $objOneToManyRelationship) {
+        $arrRelationship = array();
+
+        $arrRelationship['type'] = 'onetomany';
+
+        $arrRelationship['local'] = array('model' => (string) $objOneToManyRelationship->localmodel['name'],
+                                          'column' => (string) $objOneToManyRelationship->localmodel['column']);
+
+        $arrRelationship['foreign'] = array('model' => (string) $objOneToManyRelationship->foreignmodel['name'],
+                                            'column' => (string) $objOneToManyRelationship->foreignmodel['column']);
+
+        self::$arrRelationships[] = $arrRelationship;
+      }//foreach
+
+      foreach (self::$objSchemaConfig->relationships->manytomany as $objManyToManyRelationship) {
+        $arrRelationship = array();
+
+        $arrRelationship['type'] = 'manytomany';
+
+        $arrRelationship['jointable'] = (string) $objManyToManyRelationship['jointable'];
+
+        $arrModels = array();
+
+        foreach ($objManyToManyRelationship->model as $objRelationshipModel) {
+          $arrModel = array();
+
+          $arrModel['name'] = (string) $objRelationshipModel['name'];
+          $arrModel['column'] = (string) $objRelationshipModel['column'];
+
+          $arrModels[] = $arrModel;
+        }//foreach
+
+        $arrRelationship['models'] = $arrModels;
+
+        self::$arrRelationships[] = $arrRelationship;
+      }//foreach
     }//function
 
     private function loadColumnInfo () {
@@ -86,11 +93,12 @@
           }//if
 
           $arrColumn['default'] = $arrResult['Default'];
-          $arrColumn['nullable'] = (strtolower($arrResult['Null']) == 'YES');
-          $arrColumn['PK'] = (strtolower($arrResult['Key']) == 'PRI');
+          $arrColumn['nullable'] = (strtoupper($arrResult['Null']) == 'YES');
+          $arrColumn['PK'] = (strtoupper($arrResult['Key']) == 'PRI');
           $arrColumn['autonumber'] = (strtolower($arrResult['Extra']) == 'auto_increment');
 
           self::$arrColumns[$strColumnName] = $arrColumn;
+
           $this->arrEmptyDataArray[$strColumnName] = null;
         }//while
       }//if
@@ -112,23 +120,23 @@
       return $strTableName . 's';
     }//function
 
-    public function getTableName () {
-      if (isset(self::$arrSchemaInfo[$this->strModelName])) {
-        return $this->strTablePrefix . self::$arrSchemaInfo[$this->strModelName]['table'];
+    protected function getTableName () {
+      if (isset(self::$arrTableNames[$this->strModelName])) {
+        return $this->strTablePrefix . self::$arrTableNames[$this->strModelName]['table'];
       } else {
         return $this->strTablePrefix . $this->convertModelNameToTableName($this->strModelName);
       }//if
     }//function
 
-    public function getEmptyDataArray () {
+    protected function getEmptyDataArray () {
       return $this->arrEmptyDataArray;
     }//function
 
-    public function getDataType ($strFieldName) {
+    protected function getDataType ($strFieldName) {
       return self::$arrColumns[$strFieldName]['type'];
     }//function
 
-    public function getPrimaryKeys () {
+    protected function getPrimaryKeys () {
       $arrColumns = self::$arrColumns;
       $arrPKs = array();
 
@@ -141,15 +149,15 @@
       return $arrPKs;
     }//function
 
-    public function isColumn ($strColumn) {
+    protected function isColumn ($strColumn) {
       return isset(self::$arrColumns[$strColumn]);
     }//function
 
-    public function getColumnInfo ($strFieldName) {
+    protected function getColumnInfo ($strFieldName) {
       return self::$arrColumns[$strFieldName];
     }//function
 
-    public function getColumnList () {
+    protected function getColumnList () {
       $arrColumnList = array();
       $arrColumns = self::$arrColumns;
 
@@ -160,11 +168,27 @@
       return $arrColumnList;
     }//function
 
-    public function getRelationshipInfo ($strModelName) {
-      if (isset(self::$arrRelationships[$strModelName])) {
-        return self::$arrRelationships[$strModelName];
-      } else {
-        return false;
-      }//if
+    protected function getRelationshipInfo () {
+      return self::$arrRelationships;
+    }//function
+
+    protected function prepareData ($strData, $strFieldName) {
+      $strDataType = $this->getDataType($strFieldName);
+
+      switch ($strDataType) {
+        case 'int':
+        case 'tinyint':
+        case 'decimal':
+          return $strData;
+          break;
+
+        case 'date':
+        case 'datetime':
+        case 'time':
+        case 'text':
+        case 'varchar':
+          return "'" . $this->dbConn->escape_string($strData) . "'";
+          break;
+      }//switch
     }//function
   }//class

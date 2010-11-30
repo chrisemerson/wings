@@ -1,4 +1,3 @@
 <?php
-  class MasterView extends BaseView {
-
+  abstract class MasterView extends BaseView {
   }//class
