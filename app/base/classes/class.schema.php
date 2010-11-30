@@ -109,7 +109,7 @@
         }//if
       }//for
 
-      return $strTableName;
+      return $strTableName . 's';
     }//function
 
     public function getTableName () {
