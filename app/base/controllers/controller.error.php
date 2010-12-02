@@ -2,74 +2,114 @@
   /* Modify the text in this class, but do not remove or rename any of the functions! */
 
   class ErrorController extends BaseController {
-    public function Error404 () {
+    public function show404Error ($strErrorText = '') {
       $this->view = new ErrorView();
 
       $this->view->errortitle = "404 - Page Not Found";
-      $this->view->errortext = "Page not found";
+
+      if (!empty($strErrorText)) {
+        $this->view->errortext = $strErrorText;
+      } else {
+        $this->view->errortext = "Page not found";
+      }//if
 
       $this->view->render();
     }//function
 
-    public function ErrorController () {
+    public function showControllerError ($strErrorText = '') {
       $this->view = new ErrorView();
 
       $this->view->errortitle = "Controller Not Found";
-      $this->view->errortext = "Controller not found";
+
+      if (!empty($strErrorText)) {
+        $this->view->errortext = $strErrorText;
+      } else {
+        $this->view->errortext = "Controller not found";
+      }//if
 
       $this->view->render();
     }//function
 
-    public function ErrorAction () {
+    public function showActionError ($strErrorText = '') {
       $this->view = new ErrorView();
 
       $this->view->errortitle = "Action Not Found";
-      $this->view->errortext = "Action not found";
+
+      if (!empty($strErrorText)) {
+        $this->view->errortext = $strErrorText;
+      } else {
+        $this->view->errortext = "Action not found";
+      }//if
 
       $this->view->render();
     }//function
 
-    public function ErrorView () {
+    public function showViewError ($strErrorText = '') {
       $this->view = new ErrorView();
 
       $this->view->errortitle = "View Not Found";
-      $this->view->errortext = "View not found";
+
+      if (!empty($strErrorText)) {
+        $this->view->errortext = $strErrorText;
+      } else {
+        $this->view->errortext = "View not found";
+      }//if
 
       $this->view->render();
     }//function
 
-    public function ErrorTemplate () {
+    public function showTemplateError ($strErrorText = '') {
       $this->view = new ErrorView();
 
       $this->view->errortitle = "Template Not Found";
-      $this->view->errortext = "Template not found";
+
+      if (!empty($strErrorText)) {
+        $this->view->errortext = $strErrorText;
+      } else {
+        $this->view->errortext = "Template not found";
+      }//if
 
       $this->view->render();
     }//function
 
-    public function ErrorDatabase () {
+    public function showDatabaseError ($strErrorText = '') {
       $this->view = new ErrorView();
 
       $this->view->errortitle = "Database Error";
-      $this->view->errortext = "Database error";
+
+      if (!empty($strErrorText)) {
+        $this->view->errortext = $strErrorText;
+      } else {
+        $this->view->errortext = "Database error";
+      }//if
 
       $this->view->render();
     }//function
 
-    public function ErrorGeneral () {
+    public function showGeneralError ($strErrorText = '') {
       $this->view = new ErrorView();
 
       $this->view->errortitle = "Error";
-      $this->view->errortext = "General error";
+
+      if (!empty($strErrorText)) {
+        $this->view->errortext = $strErrorText;
+      } else {
+        $this->view->errortext = "General error";
+      }//if
 
       $this->view->render();
     }//function
 
-    public function ErrorOffline () {
+    public function showOfflineError ($strErrorText = '') {
       $this->view = new ErrorView();
 
       $this->view->errortitle = "Site Offline";
-      $this->view->errortext = "Please try again later.";
+
+      if (!empty($strErrorText)) {
+        $this->view->errortext = $strErrorText;
+      } else {
+        $this->view->errortext = "Please try again later.";
+      }//if
 
       $this->view->render();
     }//function

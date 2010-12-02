@@ -6,10 +6,11 @@
     private $blnSaved = false;
 
     public function __construct ($mixPK = null) {
-      parent::__construct(get_class($this));
+      $this->strModelName = get_class($this);
+      parent::__construct();
 
-      $this->arrCurrentData = $this->getEmptyDataArray();
-      $this->arrNewData = $this->getEmptyDataArray();
+      $this->arrCurrentData = $this->arrEmptyDataArray;
+      $this->arrNewData = $this->arrEmptyDataArray;
 
       if (!is_null($mixPK)) {
         $this->loadFromPK($mixPK);
@@ -33,42 +34,115 @@
     }//function
 
     public function __call ($strMethodName, $arrArguments) {
-      if (preg_match("/^get([A-Za-z-]+)s\$/", $strMethodName, $arrMatches)) {
-        $strChildModel = $arrMatches[1];
-        $arrRelationshipInfo = $this->getRelationshipInfo($strChildModel);
+      if (preg_match("/^get([A-Za-z0-9-]+)\$/", $strMethodName, $arrMatches)) {
+        $strGetCallName = $arrMatches[1];
+        $blnRelationshipFound = false;
 
-        if ($arrRelationshipInfo && ($arrRelationshipInfo['type'] == 'onetomany' || $arrRelationshipInfo['type'] == 'manytomany')) {
-          if (isset($arrArguments[0])) {
+        if ($strRelatedModel = $this->objModelRegistry->getModelNameFromPlural($strGetCallName)) {
+          $objCollection = new Collection($strRelatedModel);
+
+          if (isset($arrArguments[0]) && ($arrArguments[0] instanceof ResultsFilter)) {
             $objResultsFilter = $arrArguments[0];
-          } else {
-            $objResultsFilter = new ResultsFilter();
           }//if
 
-          $objResultsFilter->model($strChildModel);
+          foreach (self::$arrRelationships as $arrRelationshipInfo) {
+            switch ($arrRelationshipInfo['type']) {
+              case 'manytomany':
+                $strJoinTable = $arrRelationshipInfo['jointable'];
 
-          $strConditionsString = "";
+                foreach ($arrRelationshipInfo['models'] as $arrModelInfo) {
+                  if ($arrModelInfo['name'] == $this->strModelName) {
+                    $strLocalModel = $arrModelInfo['name'];
+                    $strLocalColumn = $arrModelInfo['column'];
+                  } else {
+                    $strForeignModel = $arrModelInfo['name'];
+                    $strForeignColumn = $arrModelInfo['column'];
+                  }//if
+                }//foreach
 
-          foreach ($arrRelationshipInfo['columns'] as $strLocalColumn => $strForeignColumn) {
-            $strConditionsString .= " " . $strForeignColumn . " AND " . $this->$strLocalColumn;
-            $objResultsFilter->conditions(trim($strConditionsString));
+                if ((isset($strLocalModel) && $strLocalModel == $this->strModelName) && ($strForeignModel == $strRelatedModel)) {
+                  $blnRelationshipFound = true;
+
+                  $strSQL = "SELECT
+                               f.*
+                             FROM
+                               `" . $this->addTablePrefix($this->objModelRegistry->getTableName($strForeignModel)) . "` f
+                                 INNER JOIN `" . $this->addTablePrefix($strJoinTable) . "` j
+                                   ON f.`" . $strForeignColumn . "` = j.`" . $strForeignColumn . "`
+                                 INNER JOIN `" . $this->addTablePrefix($this->objModelRegistry->getTableName($strLocalModel)) . "` l
+                                   ON l.`" . $strLocalColumn . "` = j.`" . $strLocalColumn . "`
+                             WHERE
+                               l.`" . $strLocalColumn . "` = " . $this->prepareData($this->$strLocalColumn, $strLocalColumn);
+
+                  if (isset($objResultsFilter)) {
+                    $strSQL .= $objResultsFilter->getOrderByString();
+                    $strSQL .= $objResultsFilter->getLimitString();
+                  }//if
+
+                  $strSQL .= ";";
+
+                  $dbResults = $this->dbConn->query($strSQL);
+
+                  while ($arrResult = $dbResults->fetch_assoc()) {
+                    $objModel = new $strRelatedModel;
+                    $objModel->loadFromDBArray($arrResult);
+
+                    $objCollection[] = $objModel;
+                  }//while
+
+                  return $objCollection;
+                }//if
+                break;
+
+              case 'onetomany':
+                if ($arrRelationshipInfo['local']['model'] == $this->strModelName && $arrRelationshipInfo['foreign']['model'] == $strRelatedModel) {
+                  $blnRelationshipFound = true;
+
+                  $strLocalColumn = $arrRelationshipInfo['local']['column'];
+
+                  $strSQL = "SELECT
+                               *
+                             FROM
+                               `" . $this->addTablePrefix($this->objModelRegistry->getTableName($arrRelationshipInfo['foreign']['model'])) . "`
+                             WHERE
+                               `" . $arrRelationshipInfo['foreign']['column'] . "` = " . $this->prepareData($this->$strLocalColumn, $strLocalColumn);
+
+                  if (isset($objResultsFilter)) {
+                    $strSQL .= $objResultsFilter->getOrderByString();
+                    $strSQL .= $objResultsFilter->getLimitString();
+                  }//if
+
+                  $strSQL .= ";";
+
+                  $dbResults = $this->dbConn->query($strSQL);
+
+                  while ($arrResult = $dbResults->fetch_assoc()) {
+                    $objModel = new $strRelatedModel;
+                    $objModel->loadFromDBArray($arrResult);
+
+                    $objCollection[] = $objModel;
+                  }//while
+
+                  return $objCollection;
+                }//if
+                break;
+            }//switch
           }//foreach
-
-          return new Collection($objResultsFilter);
         }//if
-      } else if (preg_match("/^get([A-Za-z_-]+)\$/", $strMethodName, $arrMatches)) {
-        $strParentModel = $arrMatches[1];
-        $arrRelationshipInfo = $this->getRelationshipInfo($strParentModel);
 
-        if ($arrRelationshipInfo && $arrRelationshipInfo['type'] == 'manytoone') {
-          $arrWhere = array();
+        if (!$blnRelationshipFound && $this->objModelRegistry->isModel($strGetCallName)) {
+          $strRelatedModel = $strGetCallName;
+          //Singular, so should only be concerned with onetomany relationships where this model is the child / foreign table
 
-          foreach ($arrRelationshipInfo['columns'] as $strLocalColumn => $strForeignColumn) {
-            $arrWhere[$strForeignColumn] = $this->$strLocalColumn;
+          foreach (self::$arrRelationships as $arrRelationshipInfo) {
+            if ($arrRelationshipInfo['type'] == 'onetomany') {
+              if ($arrRelationshipInfo['foreign']['model'] == $this->strModelName && $arrRelationshipInfo['local']['model'] == $strRelatedModel) {
+                $strColumn = $arrRelationshipInfo['foreign']['column'];
+
+                return new $strRelatedModel($this->$strColumn);
+              }//if
+            }//if
           }//foreach
-
-          $objParentModel = new $strParentModel($arrWhere);
-
-          return $objParentModel;
         }//if
       }//if
 
@@ -262,6 +336,10 @@
       return $this->blnSaved;
     }//function
   }//class
+
+  //For use when creating classes on the fly
+
+  class GenericModelClass extends BaseModel {}
 
   //Exceptions
 

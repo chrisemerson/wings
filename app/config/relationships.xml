@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<relationships>
+  <manytomany jointable="vouchers2retailers">
+    <model name="Voucher" column="voucher_id" />
+    <model name="Retailer" column="retailer_id" />
+  </manytomany>
+
+  <onetomany>
+    <localmodel name="AdminUser" column="admin_user_id" />
+    <foreignmodel name="Voucher" column="admin_user_id" />
+  </onetomany>
+</relationships>

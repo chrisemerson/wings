@@ -7,7 +7,7 @@
       $this->openDBConn();
     }//function
 
-    protected function openDBConn () {
+    private function openDBConn () {
       if (empty($this->dbConn)) {
         $objAppConfig = Config::get('app');
 

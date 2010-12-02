@@ -4,6 +4,7 @@ class.baseview.php
 class.config.php
 class.dispatcher.php
 class.loader.php
+class.modelregistry.php
 class.resultsfilter.php
 class.template.php
 

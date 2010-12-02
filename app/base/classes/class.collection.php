@@ -6,14 +6,20 @@
     private $intPosition = 0;
     private $blnJustUnsetCurrent = false;
 
-    public function __construct (ResultsFilter $objResultsFilter) {
-      $this->objResultsFilter = $objResultsFilter;
+    public function __construct ($mixParameter) {
+      if ($mixParameter instanceof ResultsFilter) {
+        $this->objResultsFilter = $objResultsFilter;
 
-      parent::__construct($this->objResultsFilter->getModelName());
+        $this->strModelName = $this->objResultsFilter->getModelName();
+        parent::__construct();
 
-      $this->objResultsFilter->setDBConn($this->dbConn);
+        $this->objResultsFilter->setDBConn($this->dbConn);
 
-      $this->fetch();
+        $this->fetch();
+      } else if (is_string($mixParameter)) {
+        $this->strModelName = $mixParameter;
+        parent::__construct();
+      }//if
     }//function
 
     public function __set ($strName, $strValue) {

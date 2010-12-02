@@ -1,9 +1,11 @@
 <?php
   class Loader {
     private $strClassName;
+    private $objModelRegistry;
 
     public function __construct ($strClassName) {
       $this->strClassName = $strClassName;
+      $this->objModelRegistry = new ModelRegistry();
     }//function
 
     public function load () {
@@ -39,6 +41,10 @@
 
         if (self::isModel($strModuleName)) {
           self::loadModel($strModuleName);
+        } else if ($this->objModelRegistry->isModel($this->strClassName)) {
+          eval('class ' . $this->strClassName . ' extends BaseModel {}');
+
+          return true;
         } else if (self::isLibrary($strModuleName)) {
           self::loadLibrary($strModuleName);
         } else if (self::isThirdParty($strModuleName)) {

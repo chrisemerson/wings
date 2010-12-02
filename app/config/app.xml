@@ -4,7 +4,7 @@
   <default>
     <uri>
       <host>dev</host>
-      <path>appframework/httpdocs</path>
+      <path>boonspace/httpdocs</path>
     </uri>
 
     <template>
@@ -12,8 +12,8 @@
     </template>
 
     <db>
-      <uri>mysqli://testuser:testpass@localhost/test</uri>
-      <prefix>test_</prefix>
+      <uri>mysqli://boonspace:F83ZjudAc8BNcEnX@localhost/boonspace</uri>
+      <prefix>bs_</prefix>
     </db>
 
     <errors>
@@ -25,7 +25,7 @@
   <dev>
     <uri>
       <host>dev</host>
-      <path>appframework/httpdocs</path>
+      <path>boonspace/httpdocs</path>
     </uri>
 
     <template>
@@ -33,13 +33,13 @@
     </template>
 
     <db>
-      <uri>mysqli://testuser:testpass@localhost/test</uri>
-      <prefix>test_</prefix>
+      <uri>mysqli://boonspace:F83ZjudAc8BNcEnX@localhost/boonspace</uri>
+      <prefix>bs_</prefix>
     </db>
 
     <errors>
-      <showerrors>0</showerrors>
-      <debugmode>0</debugmode>
+      <showerrors>1</showerrors>
+      <debugmode>1</debugmode>
     </errors>
   </dev>
 
@@ -54,8 +54,8 @@
     </template>
 
     <db>
-      <uri></uri>
-      <prefix></prefix>
+      <uri>mysqli://boonspace:F83ZjudAc8BNcEnX@localhost/boonspace</uri>
+      <prefix>bs_</prefix>
     </db>
 
     <errors>
@@ -75,8 +75,8 @@
     </template>
 
     <db>
-      <uri></uri>
-      <prefix></prefix>
+      <uri>mysqli://boonspace:F83ZjudAc8BNcEnX@localhost/boonspace</uri>
+      <prefix>bs_</prefix>
     </db>
 
     <errors>

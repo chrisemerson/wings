@@ -76,11 +76,11 @@
       exit($strMessage);
     }//function
 
-    public static function showError ($strErrorType) {
+    public static function showError ($strErrorType, $strErrorText = '') {
       $objErrorController = new ErrorController();
-      $strAction = "Error" . ucwords($strErrorType);
+      $strAction = "show" . ucwords($strErrorType) . "Error";
 
-      call_user_func_array(array($objErrorController, $strAction));
+      call_user_func(array($objErrorController, $strAction), $strErrorText);
 
       //We don't want to continue beyond the error showing
       self::exitApp();
