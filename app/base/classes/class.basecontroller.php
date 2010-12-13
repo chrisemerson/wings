@@ -3,7 +3,7 @@
     protected $view = null;
 
     private $arrInbuiltClasses = array('errors' => 'ErrorHandler',
-                                       'input' => 'InputFilter',
+                                       'input' => 'FormValidator',
                                        'session' => 'Session');
 
     public function index () {

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<errors>
+  <default>{field} is in an incorrect format</default>
+
+  <types>
+    <required>
+      <default>{field} is required, and was not entered</default>
+
+      <fields>
+        <firstname>First Name is required, and was not entered</firstname>
+      </fields>
+    </required>
+
+    <validatefield>
+      <default>{field} is rubbish</default>
+    </validatefield>
+  </types>
+</errors>

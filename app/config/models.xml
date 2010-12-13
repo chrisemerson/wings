@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <!-- If no plural is specified, it defaults to simply adding an 's' to the end of the model name
      If no table is specified, it defaults to an underscored, lowercased version of the plural name

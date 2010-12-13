@@ -424,8 +424,6 @@
     }//function
   }//class
 
-  //Exceptions
-
   class BlockFormattingException extends Exception {}
   class BlockNotFoundException extends Exception {}
   class InvalidIncludeRecursionException extends Exception {}

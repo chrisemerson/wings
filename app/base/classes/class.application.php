@@ -76,9 +76,9 @@
       exit($strMessage);
     }//function
 
-    public static function showError ($strErrorType, $strErrorText = '') {
+    public static function showError ($strErrorType, $strErrorText = '', $strLoggedError = '') {
       $objErrorController = new ErrorController();
-      $strAction = "show" . ucwords($strErrorType) . "Error";
+      $strAction = "show" . ucwords(strtolower($strErrorType)) . "Error";
 
       call_user_func(array($objErrorController, $strAction), $strErrorText);
 
