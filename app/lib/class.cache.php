@@ -17,7 +17,10 @@
       if (file_exists($strCacheFilename)) {
         $arrCacheContents = unserialize(file_get_contents($strCacheFilename));
 
-        return $arrCacheContents['item'];
+        //Check expiry
+        if ($arrCacheContents['expires'] == 0 || ($arrCacheContents['expires'] > date('U'))) {
+          return $arrCacheContents['item'];
+        }//if
       }//if
 
       return false;
