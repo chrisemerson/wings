@@ -6,7 +6,7 @@
   </index>
 
   <notfound>
-    <execute controller="ErrorController" action="Error404" />
+    <execute controller="ErrorController" action="show404Error" />
   </notfound>
 
 <!-- Some examples of routes:
