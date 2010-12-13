@@ -19,6 +19,7 @@
     <errors>
       <showerrors>0</showerrors>
       <debugmode>0</debugmode>
+      <defaultformerror>{field} errored</defaultformerror>
     </errors>
   </default>
 
@@ -40,6 +41,7 @@
     <errors>
       <showerrors>1</showerrors>
       <debugmode>1</debugmode>
+      <defaultformerror>{field} errored</defaultformerror>
     </errors>
   </dev>
 
@@ -61,6 +63,7 @@
     <errors>
       <showerrors>0</showerrors>
       <debugmode>0</debugmode>
+      <defaultformerror>{field} errored</defaultformerror>
     </errors>
   </test>
 
@@ -82,6 +85,7 @@
     <errors>
       <showerrors>0</showerrors>
       <debugmode>0</debugmode>
+      <defaultformerror>{field} errored</defaultformerror>
     </errors>
   </live>
 </app>

@@ -10,7 +10,6 @@
     private $arrFormValues;
 
     private $objErrorHandler;
-    private $objErrorTexts;
     private $objController = null;
 
     public function __construct ($conInputType = INPUT_TYPE_POST) {
@@ -26,7 +25,6 @@
       }//switch
 
       $this->objErrorHandler = new ErrorHandler('form');
-      $this->objErrorTexts = Config::get('errors');
 
       $arrBacktrace = debug_backtrace(true);
 
@@ -111,16 +109,23 @@
     }//function
 
     private function getErrorText ($strError, $strField, $arrParams = array()) {
+      $objErrorTextConfig = Config::get('errors');
+      $objAppConfig = Config::get('app');
+
       try {
-        $strError = $this->objErrorTexts->types->$strError->fields->$strField;
+        $strError = $objErrorTextConfig->$strError->fields->$strField;
       } catch (ConfigSettingNotFoundException $ex) {
         try {
-          $strError = $this->objErrorTexts->types->$strError->default;
+          $strError = $objErrorTextConfig->$strError->default;
         } catch (ConfigSettingNotFoundException $ex) {
           try {
-            $strError = $this->objErrorTexts->default;
+            $strError = $objErrorTextConfig->$strError;
           } catch (ConfigSettingNotFoundException $ex) {
-            Application::showError('general', 'Error Text Not Found');
+            try {
+              $strError = $objAppConfig->errors->defaultformerror;
+            } catch (ConfigSettingNotFoundException $ex) {
+              Application::showError('general', 'Error Text Not Found');
+            }//try
           }//try
         }//try
       }//try
