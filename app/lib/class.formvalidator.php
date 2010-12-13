@@ -65,8 +65,6 @@
         }//if
 
         foreach ($arrValidationRules as $strValidationRule) {
-          echo $strValidationRule;
-
           if (preg_match('/^regex\[(.*)\]$/i', $strValidationRule, $arrMatches)) {
             if (!preg_match($arrMatches[1], $this->arrFormValues[$strFieldName])) {
               $this->objErrorHandler->addError($this->getErrorText('regex', $strFieldName), $strFieldName);
@@ -142,7 +140,6 @@
     /* Validation Functions */
 
     private function required ($strValue) {
-      echo __FUNCTION__;
       return (!empty($strValue));
     }//function
 
