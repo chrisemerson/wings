@@ -83,15 +83,15 @@
             }//if
 
             if (is_callable(array($this, $strValidationFunction))) {
-              if (!call_user_func_array(array($this, $strValidationFunction), $arrValidationParams)) {
+              if (!($this->arrFormValues[$strFieldName] = call_user_func_array(array($this, $strValidationFunction), $arrValidationParams))) {
                 $this->objErrorHandler->addError($this->getErrorText($strValidationFunction, $strFieldName), $strFieldName);
               }//if
             } else if (is_callable($strValidationFunction)) {
-              $this->arrFormValues[$strFieldName] = call_user_func_array($strValidationFunction, $arrValidationParams);
+              if (!($this->arrFormValues[$strFieldName] = call_user_func_array($strValidationFunction, $arrValidationParams))) {
+                $this->objErrorHandler->addError($this->getErrorText($strValidationFunction, $strFieldName), $strFieldName);
+              }//if
             }//if
           }//if
-
-          echo "<br>";
         }//foreach
       }//foreach
 
