@@ -2,7 +2,7 @@
   abstract class BaseController {
     protected $view = null;
 
-    private $arrInbuiltClasses = array('errors' => 'ErrorHandler',
+    private $arrInbuiltClasses = array('errors' => 'ErrorRegistry',
                                        'input' => 'FormValidator',
                                        'session' => 'Session');
 

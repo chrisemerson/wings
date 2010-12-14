@@ -36,9 +36,11 @@
     }//function
 
     private function applyMasterTemplate () {
-      try {
-        $objAppConfig = Config::get('app');
+      $objAppConfig = new Config('app');
+
+      if (isset($objAppConfig->template->mastertemplate)) {
         $strThisClassName = __CLASS__;
+
         $objMasterTemplate = new $strThisClassName($objAppConfig->template->mastertemplate, true);
         $arrMasterTemplateLines = $objMasterTemplate->returnOriginalContentLines();
 
@@ -57,9 +59,7 @@
         }//foreach
 
         $this->arrOriginalTemplateLines = $arrNewTemplateLines;
-      } catch (ConfigSettingNotFoundException $exException) {
-        //Master Template variable not set - do nothing
-      }//try
+      }//if
     }//function
 
     private function initialiseBlock ($strBlockName = "") {

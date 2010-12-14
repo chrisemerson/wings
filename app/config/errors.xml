@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <errors>
-  <required>{field} is required, and was not entered</required>
-  <validatefield>{field} is rubbish</validatefield>
+  <required>{field} is required, and was not entered.</required>
+  <required_if>{field} is required, and was not entered.</required_if>
+  <matches>{field} must match {1}.</matches>
+  <length>{field} must be exactly {1} characters long.</length>
+  <length_min>{field} must be at least {1} characters long.</length_min>
+  <length_max>{field} must be {1} characters or less.</length_max>
+  <length_between>{field} must be between {1} and {2} characters long.</length_between>
+  <alpha>{field} can only consist of alphabetical characters.</alpha>
+  <numeric>{field} must be a numeric value.</numeric>
+  <alpha_numeric>{field} can only consist of alphanumeric characters.</alpha_numeric>
+  <integer>{field} must be an integer.</integer>
+  <integer_min>{field} must be an integer and no lower than {1}.</integer_min>
+  <integer_max>{field} must be an integer and no higher than {1}.</integer_max>
+  <integer_between>{field} must be an integer between {1} and {2}.</integer_between>
+  <valid_email>{field} must be a valid email address.</valid_email>
+  <unique>{field} is already taken. Please try another one!</unique>
+  <regex>{field} is in an invalid format</regex>
 </errors>

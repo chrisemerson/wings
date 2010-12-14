@@ -119,7 +119,7 @@
     /*********************/
 
     private function loadConfig () {
-      $objCaptchaConfig = Config::get('captcha');
+      $objCaptchaConfig = new Config('captcha');
 
       $this->strAllowedCharacters          =       $objCaptchaConfig->allowedcharacters;
       $this->intLength                     = (int) $objCaptchaConfig->captchalength;

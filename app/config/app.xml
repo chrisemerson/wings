@@ -24,68 +24,9 @@
   </default>
 
   <dev>
-    <uri>
-      <host>dev</host>
-      <path>boonspace/httpdocs</path>
-    </uri>
-
-    <template>
-      <mastertemplate>system.master</mastertemplate>
-    </template>
-
-    <db>
-      <uri>mysqli://boonspace:F83ZjudAc8BNcEnX@localhost/boonspace</uri>
-      <prefix>bs_</prefix>
-    </db>
-
     <errors>
       <showerrors>1</showerrors>
       <debugmode>1</debugmode>
-      <defaultformerror>{field} errored</defaultformerror>
     </errors>
   </dev>
-
-  <test>
-    <uri>
-      <host></host>
-      <path></path>
-    </uri>
-
-    <template>
-      <mastertemplate>system.master</mastertemplate>
-    </template>
-
-    <db>
-      <uri>mysqli://boonspace:F83ZjudAc8BNcEnX@localhost/boonspace</uri>
-      <prefix>bs_</prefix>
-    </db>
-
-    <errors>
-      <showerrors>0</showerrors>
-      <debugmode>0</debugmode>
-      <defaultformerror>{field} errored</defaultformerror>
-    </errors>
-  </test>
-
-  <live>
-    <uri>
-      <host></host>
-      <path></path>
-    </uri>
-
-    <template>
-      <mastertemplate>system.master</mastertemplate>
-    </template>
-
-    <db>
-      <uri>mysqli://boonspace:F83ZjudAc8BNcEnX@localhost/boonspace</uri>
-      <prefix>bs_</prefix>
-    </db>
-
-    <errors>
-      <showerrors>0</showerrors>
-      <debugmode>0</debugmode>
-      <defaultformerror>{field} errored</defaultformerror>
-    </errors>
-  </live>
 </app>

@@ -8,7 +8,7 @@
 
     public function __construct ($mixParameter) {
       if ($mixParameter instanceof ResultsFilter) {
-        $this->objResultsFilter = $objResultsFilter;
+        $this->objResultsFilter = $mixParameter;
 
         $this->strModelName = $this->objResultsFilter->getModelName();
         parent::__construct();
@@ -48,6 +48,8 @@
       $arrMembers = array();
 
       while ($arrResult = $dbResults->fetch_assoc()) {
+        $strModelName = $this->objResultsFilter->getModelName();
+
         $objModel = new $strModelName;
         $objModel->loadFromDBArray($arrResult);
         $arrMembers[] = $objModel;

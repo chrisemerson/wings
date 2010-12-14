@@ -19,9 +19,7 @@
     }//function
 
     public static function getBaseURI ($blnSecure = false) {
-      $objAppConfig = Config::get('app');
-
-      $strCurrentEnvironment = self::getEnvironment();
+      $objAppConfig = new Config('app');
 
       $strAppBaseURI = 'http';
 
@@ -68,7 +66,7 @@
         }//if
       }//if
 
-      return 'default';
+      return false;
     }//function
 
     public static function exitApp ($strMessage = "") {

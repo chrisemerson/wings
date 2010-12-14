@@ -135,7 +135,7 @@
     }//function
 
     private static function getThirdPartyFilename ($strName) {
-      $objThirdPartyConfig = Config::get('thirdparty');
+      $objThirdPartyConfig = new Config('thirdparty');
       return Application::getBasePath() . "lib/thirdparty/" . $objThirdPartyConfig->$strName;
     }//function
   }//class

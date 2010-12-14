@@ -1,5 +1,5 @@
 <?php
-  class ErrorHandler {
+  class ErrorRegistry {
     private static $arrErrors;
 
     private $strContext;
@@ -22,7 +22,7 @@
       }//if
     }//function
 
-    public function getAllErrorMessages () {
+    public function getErrors () {
       $arrErrorMessages = array();
 
       $arrErrors = $this->getErrorsForCurrentContext();
@@ -34,23 +34,7 @@
       return $arrErrorMessages;
     }//function
 
-    public function isFieldError ($strField) {
-      return (count($this->getErrorsForField($strField)) != 0);
-    }//function
-
-    public function getErrorFields () {
-      $arrErrorMessages = array();
-
-      $arrErrors = $this->getErrorsForCurrentContext();
-
-      foreach ($arrErrors as $arrErrorInfo) {
-        $arrErrorMessages[] = $arrErrorInfo['field'];
-      }//foreach
-
-      return array_unique($arrErrorMessages);
-    }//function
-
-    public function getErrorsForField ($strField) {
+    public function getFieldErrors ($strField) {
       $arrErrorMessages = array();
 
       $arrErrors = $this->getErrorsForCurrentContext();
@@ -64,8 +48,24 @@
       return $arrErrorMessages;
     }//function
 
-    public function getNumberOfErrors () {
-      return count($this->getErrorsForCurrentContext());
+    public function isError () {
+      return (count($this->getErrors()) != 0);
+    }//function
+
+    public function isFieldError ($strField) {
+      return (count($this->getFieldErrors($strField)) != 0);
+    }//function
+
+    public function getErroredFields () {
+      $arrErrorMessages = array();
+
+      $arrErrors = $this->getErrorsForCurrentContext();
+
+      foreach ($arrErrors as $arrErrorInfo) {
+        $arrErrorMessages[] = $arrErrorInfo['field'];
+      }//foreach
+
+      return array_unique($arrErrorMessages);
     }//function
 
     private function getErrorsForCurrentContext () {

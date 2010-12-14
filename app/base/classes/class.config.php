@@ -1,78 +1,76 @@
 <?php
   class Config {
-    private static $arrConfigObjects = array();
-    private $arrConfigData = array();
+    private static $arrConfigs;
+    private $strCurrentConfig;
 
-    private function __construct ($mixConfigData) {
-      if (is_array($mixConfigData)) {
-        $this->arrConfigData = $mixConfigData;
-      } else if (is_file($mixConfigData)) {
-        $this->arrConfigData = $this->getConfigDataFromXML(simplexml_load_file($mixConfigData));
+    public function __construct ($mixConfigData) {
+      if (is_file(realpath($mixConfigData))) {
+        $strFilename = realpath($mixConfigData);
+      } else if (is_file(Application::getBasePath() . "/config/" . $mixConfigData . ".xml")) {
+        $strFilename = Application::getBasePath() . "/config/" . $mixConfigData . ".xml";
       } else {
-        $strConfigFilename = dirname(__FILE__) . "/../../config/" . $mixConfigData . ".xml";
-        $this->arrConfigData = $this->getConfigDataFromXML(simplexml_load_file($strConfigFilename));
+        throw new ConfigNotFoundException();
+      }//if
+
+      $this->strCurrentConfig = md5($strFilename);
+
+      if (!isset(self::$arrConfigs[$this->strCurrentConfig])) {
+        self::$arrConfigs[$this->strCurrentConfig] = $this->loadConfigFile($strFilename);
       }//if
     }//function
 
-    public static function get ($mixConfigData) {
-      if (is_file($mixConfigData)) {
-        $mixConfigData = $this->resolveFilename($mixConfigData);
-      }//if
+    private function loadConfigFile ($strFilename) {
+      if ($strFilename == Application::getBasePath() . "/config/app.xml") {
+        $objAppConfig = simplexml_load_file($strFilename);
+        $strEnvironment = Application::getEnvironment();
 
-      if (!isset(self::$arrConfigObjects[$mixConfigData])) {
-        self::$arrConfigObjects[$mixConfigData] = new Config($mixConfigData);
-      }//if
+        $objDefaultConfigData = $this->convertToObject($objAppConfig->default);
 
-      if ((string) $mixConfigData == 'app') {
-        $objConfig = self::$arrConfigObjects[$mixConfigData];
-        $strCurrentEnvironment = Application::getEnvironment();
-
-        return $objConfig->$strCurrentEnvironment;
-      } else {
-        return self::$arrConfigObjects[$mixConfigData];
-      }//if
-    }//function
-
-    private function getConfigDataFromXML ($objXMLData) {
-      $arrData = array();
-
-      foreach ($objXMLData as $strElementName => $objElement) {
-        $strElementValue = trim((string) $objElement);
-
-        if (isset($arrData[$strElementName])) {
-          throw new ConfigSettingAlreadyExistsException;
-        }//if
-
-        if (count($objElement) > 0) {
-          $arrData[$strElementName] = $this->getConfigDataFromXML($objElement);
+        if ($strEnvironment && isset($objAppConfig->$strEnvironment)) {
+          return $this->substituteValues($objDefaultConfigData, $this->convertToObject($objAppConfig->$strEnvironment));
         } else {
-          $arrData[$strElementName] = trim((string) $objElement);
+          return $objDefaultConfigData;
+        }//if
+      } else {
+        return $this->convertToObject(simplexml_load_file($strFilename));
+      }//if
+    }//function
+
+    private function convertToObject ($objConfigXMLData) {
+      $objReturn = new stdClass();
+
+      if ($objConfigXMLData->count()) {
+        foreach ($objConfigXMLData->children() as $strChildName => $objChild) {
+          $objReturn->$strChildName = $this->convertToObject($objChild);
+        }//foreach
+
+        return $objReturn;
+      } else {
+        return (string) $objConfigXMLData;
+      }//if
+    }//function
+
+    private function substituteValues ($objBaseObject, $objNewValuesObject) {
+      foreach ($objBaseObject as $strName => $mixValue) {
+        if (is_object($mixValue) && isset($objNewValuesObject->$strName)) {
+          $objBaseObject->$strName = $this->substituteValues($objBaseObject->$strName, $objNewValuesObject->$strName);
+        } else if (isset($objNewValuesObject->$strName)) {
+          $objBaseObject->$strName = $objNewValuesObject->$strName;
         }//if
       }//foreach
 
-      return $arrData;
+      return $objBaseObject;
     }//function
 
-    private function resolveFilename ($strFilename) {
-      return realpath(dirname($strFilename)) . '/' . basename($strFilename);
-    }//function
-
-    public function __get ($strConfigSetting) {
-      if (!isset($this->arrConfigData[$strConfigSetting])) {
-        throw new ConfigSettingNotFoundException;
-      } else if (is_array($this->arrConfigData[$strConfigSetting])) {
-        return new Config($this->arrConfigData[$strConfigSetting]);
-      } else {
-        return $this->arrConfigData[$strConfigSetting];
+    public function __get ($strName) {
+      if (isset(self::$arrConfigs[$this->strCurrentConfig]->$strName)) {
+        return self::$arrConfigs[$this->strCurrentConfig]->$strName;
       }//if
     }//function
 
-    public function __toString () {
-      return '';
+    public function __isset ($strName) {
+      return isset(self::$arrConfigs[$this->strCurrentConfig]->$strName);
     }//function
   }//class
 
- //Exceptions
-
- class ConfigSettingNotFoundException extends Exception {}
- class ConfigSettingAlreadyExistsException extends Exception {}
+  class ConfigNotFoundException extends Exception {}

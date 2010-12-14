@@ -9,13 +9,13 @@
 
     private function openDBConn () {
       if (empty($this->dbConn)) {
-        $objAppConfig = Config::get('app');
+        $objAppConfig = new Config('app');
 
         try {
           $objDBConfig = $objAppConfig->db;
         } catch (ConfigSettingNotFoundException $exException) {
           //Database Connection Error
-          Application::showError('database');
+          Application::showError('database', '', 'No Database Config Details Found');
         }//try
 
         $arrDBInfo = parse_url($objDBConfig->uri);

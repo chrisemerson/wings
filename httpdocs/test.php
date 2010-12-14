@@ -6,7 +6,8 @@
       $this->input->addValidationRules(array('firstname' => array('label' => 'First Name',
                                                                   'rules' => array('required',
                                                                                    'length_min[6]',
-                                                                                   'callback[validatefield]')),
+                                                                                   'callback[validatefield]',
+                                                                                   'regex[/^[A-Z]*$/i]')),
                                              'surname' => array('label' => 'Surname',
                                                                 'rules' => array('required',
                                                                                  'length_max[12]')),
@@ -18,11 +19,24 @@
                                                                                         'matches[password]')),
                                              'email' => array('label' => 'Email Address',
                                                               'rules' => array('required',
-                                                                               'valid_email'))));
+                                                                               'valid_email',
+                                                                               'unique[User, user_email]'))));
 
       if ($this->input->validate()) {
-
+        echo "Thank you for submitting form";
       } else {
+        if ($this->input->isError()) {
+          $objFormErrors = $this->input->getErrorRegistry();
+          $arrErrors = $objFormErrors->getErrors();
+
+          echo "<ul>\n";
+
+          foreach ($arrErrors as $strError) {
+            echo "  <li>" . $strError . "</li>\n";
+          }//foreach
+
+          echo "</ul>\n";
+        }//if
     ?>
 
     <form action="test.php" method="post">
@@ -44,9 +58,7 @@
       <input type="submit" name="submit" value="Submit">
     </form>
 <?php
-        $objErrorHandler = new ErrorHandler('form');
-        var_dump($objErrorHandler->getAllErrorMessages());
-      }//if
+      }//
     }//function
 
     public function validatefield ($strValue) {
