@@ -1,2 +1,4 @@
+Rewrite ResultsFilter class to be completely robust!
+
 - Library files to include:
  - Page Manager
