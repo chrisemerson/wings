@@ -6,14 +6,7 @@
     private $arrIndexAction;
     private $arrNotFoundAction;
 
-    private $blnAddTrailingSlash = false;
-
     public function __construct ($strURI = '') {
-      //Enforce trailing slash
-      if (!empty($strURI) && substr($strURI, -1) != '/') {
-        $this->blnAddTrailingSlash = true;
-      }//if
-
       $this->strURI = trim($strURI, '/ ');
       $this->loadRoutes();
     }//function
@@ -179,12 +172,6 @@
         Application::redirect($strRedirectURI);
       } else if (isset($arrAction['execute'])) {
         //Execute - combination of Controller, Action and Params
-
-        //Now we know we aren't redirecting, add the trailing slash if needed
-        if ($this->blnAddTrailingSlash && !file_exists(Application::getBasePath() . $this->strURI) && !preg_match('|[^/]+\.[^/]+$|', $this->strURI)) {
-          Application::redirect(Application::getBaseURI(Application::isSecure()) . $this->strURI . '/');
-        }//if
-
         $strController = $arrAction['execute']['controller'];
 
         if (isset($arrAction['execute']['action'])) {
