@@ -150,6 +150,10 @@
       return (empty($this->arrFormValues[$strControlField]) || !empty($strValue));
     }//function
 
+    private function is ($strValue, $strStringToMatch) {
+      return ($strValue == $strStringToMatch);
+    }//function
+
     private function matches ($strValue, $strMatchField) {
       return ($strValue == $this->arrFormValues[$strMatchField]);
     }//function
@@ -196,6 +200,22 @@
 
     private function integer_between ($strValue, $intMinValue, $intMaxValue) {
       return ($this->integer($strValue) && $strValue >= $intMinValue && $strValue <= $intMaxValue);
+    }//function
+
+    private function integer_positive ($strValue) {
+      return ($this->integer($strValue) && $this->integer_min($strValue, 1));
+    }//function
+
+    private function integer_negative ($strValue) {
+      return ($this->integer($strValue) && $this->integer_max($strValue, -1));
+    }//function
+
+    private function integer_nonnegative ($strValue) {
+      return !$this->integer_negative($strValue);
+    }//function
+
+    private function integer_nonzero ($strValue) {
+      return ($this->integer($strValue) && ($this->integer_max($strValue, -1) || $this->integer_min($strValue, 1)));
     }//function
 
     private function valid_email ($strValue) {
