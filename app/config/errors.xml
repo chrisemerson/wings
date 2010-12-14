@@ -1,21 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <errors>
-  <required>{field} is required, and was not entered.</required>
-  <required_if>{field} is required, and was not entered.</required_if>
-  <matches>{field} must match {1}.</matches>
-  <length>{field} must be exactly {1} characters long.</length>
-  <length_min>{field} must be at least {1} characters long.</length_min>
-  <length_max>{field} must be {1} characters or less.</length_max>
-  <length_between>{field} must be between {1} and {2} characters long.</length_between>
-  <alpha>{field} can only consist of alphabetical characters.</alpha>
-  <numeric>{field} must be a numeric value.</numeric>
-  <alpha_numeric>{field} can only consist of alphanumeric characters.</alpha_numeric>
-  <integer>{field} must be an integer.</integer>
-  <integer_min>{field} must be an integer and no lower than {1}.</integer_min>
-  <integer_max>{field} must be an integer and no higher than {1}.</integer_max>
-  <integer_between>{field} must be an integer between {1} and {2}.</integer_between>
-  <valid_email>{field} must be a valid email address.</valid_email>
-  <unique>{field} is already taken. Please try another one!</unique>
-  <regex>{field} is in an invalid format</regex>
+  <required>
+    <default>{field} is required, and was not entered.</default>
+  </required>
+
+  <required_if>
+    <default>{field} is required, and was not entered.</default>
+  </required_if>
+
+  <is>
+    <default>{field} has an incorrect value</default>
+  </is>
+
+  <matches>
+    <default>{field} must match {1}.</default>
+  </matches>
+
+  <length>
+    <default>{field} must be exactly {1} characters long.</default>
+  </length>
+
+  <length_min>
+    <default>{field} must be at least {1} characters long.</default>
+  </length_min>
+
+  <length_max>
+    <default>{field} must be {1} characters or less.</default>
+  </length_max>
+
+  <length_between>
+    <default>{field} must be between {1} and {2} characters long.</default>
+  </length_between>
+
+  <alpha>
+    <default>{field} can only consist of alphabetical characters.</default>
+  </alpha>
+
+  <numeric>
+    <default>{field} must be a numeric value.</default>
+  </numeric>
+
+  <alpha_numeric>
+    <default>{field} can only consist of alphanumeric characters.</default>
+  </alpha_numeric>
+
+  <integer>
+    <default>{field} must be an integer.</default>
+  </integer>
+
+  <integer_min>
+    <default>{field} must be an integer and no lower than {1}.</default>
+  </integer_min>
+
+  <integer_max>
+    <default>{field} must be an integer and no higher than {1}.</default>
+  </integer_max>
+
+  <integer_between>
+    <default>{field} must be an integer between {1} and {2}.</default>
+  </integer_between>
+
+  <integer_positive>
+    <default>{field} must be a positive integer</default>
+  </integer_positive>
+
+  <integer_negative>
+    <default>{field} must be a negative integer</default>
+  </integer_negative>
+
+  <integer_nonpositive>
+    <default>{field} must be a non-positive integer</default>
+  </integer_nonpositive>
+
+  <integer_nonnegative>
+    <default>{field} must be a non-negative integer</default>
+  </integer_nonnegative>
+
+  <integer_nonzero>
+    <default>{field} must be an integer, and must not be 0</default>
+
+    <fields>
+      <title>You must select a Title</title>
+    </fields>
+  </integer_nonzero>
+
+  <valid_email>
+    <default>{field} must be a valid email address.</default>
+  </valid_email>
+
+  <unique>
+    <default>{field} is already taken. Please try another one!</default>
+  </unique>
+
+  <regex>
+    <default>{field} is in an invalid format</default>
+  </regex>
 </errors>

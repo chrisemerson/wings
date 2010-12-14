@@ -28,6 +28,10 @@
       $this->writeSession();
     }//function
 
+    public function destroy () {
+      session_destroy();
+    }//function
+
     public function regenerateID () {
       session_regenerate_id();
     }//function

@@ -5,12 +5,12 @@
 
     private static $intQueryCount;
 
-    public         $affected_rows;
-    public         $insert_id;
-    public         $connect_errno;
-    public         $connect_error;
-    public         $errno;
-    public         $error;
+    public         $affected_rows = 0;
+    public         $insert_id = 0;
+    public         $connect_errno = 0;
+    public         $connect_error = '';
+    public         $errno = 0;
+    public         $error = '';
 
     /****************************/
     /* DB Abstraction Functions */

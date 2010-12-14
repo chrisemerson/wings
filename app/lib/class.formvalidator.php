@@ -3,11 +3,11 @@
   define('INPUT_TYPE_GET', 2);
 
   class FormValidator {
-    private $arrValidationRules;
-    private $arrLabels;
+    private $arrValidationRules = array();
+    private $arrLabels = array();
 
-    private $arrInputArray;
-    private $arrFormValues;
+    private $arrInputArray = array();
+    private $arrFormValues = array();
 
     private $objErrorRegistry;
     private $objController = null;
@@ -34,6 +34,18 @@
           break;
         }//if
       }//foreach
+    }//function
+
+    public function __get ($strName) {
+      if (isset($this->arrInputArray[$strName])) {
+        return $this->arrInputArray[$strName];
+      }//if
+
+      return null;
+    }//function
+
+    public function __isset ($strName) {
+      return isset($this->arrInputArray[$strName]);
     }//function
 
     public function addValidationRules ($mixNameOrArray, $arrFormValidationInfo = array()) {
@@ -105,6 +117,14 @@
       } else {
         return null;
       }//if
+    }//function
+
+    public function getAllValues () {
+      return $this->arrFormValues;
+    }//function
+
+    public function isChecked ($strName) {
+      return (isset($this->arrFormValues[$strName]) && !empty($this->arrFormValues[$strName]));
     }//function
 
     public function getErrorRegistry () {
@@ -208,6 +228,10 @@
 
     private function integer_negative ($strValue) {
       return ($this->integer($strValue) && $this->integer_max($strValue, -1));
+    }//function
+
+    private function integer_nonpositive ($strValue) {
+      return !$this->integer_positive($strValue);
     }//function
 
     private function integer_nonnegative ($strValue) {

@@ -98,5 +98,3 @@
       $this->dbConn = $dbConn;
     }//function
   }//class
-
-  class InvalidConditionsException extends Exception {}
