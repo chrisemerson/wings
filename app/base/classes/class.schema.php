@@ -63,6 +63,27 @@
 
           self::$arrRelationships[] = $arrRelationship;
         }//foreach
+
+        foreach ($objRelationshipsConfig->onetoone as $objOneToOneRelationship) {
+          $arrRelationship = array();
+
+          $arrRelationship['type'] = 'onetoone';
+
+          $arrModels = array();
+
+          foreach ($objOneToOneRelationship->model as $objRelationshipModel) {
+            $arrModel = array();
+
+            $arrModel['name'] = (string) $objRelationshipModel['name'];
+            $arrModel['column'] = (string) $objRelationshipModel['column'];
+
+            $arrModels[] = $arrModel;
+          }//foreach
+
+          $arrRelationship['models'] = $arrModels;
+
+          self::$arrRelationships[] = $arrRelationship;
+        }//foreach
       }//if
     }//function
 

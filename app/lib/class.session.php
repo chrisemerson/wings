@@ -33,7 +33,9 @@
     }//function
 
     public function regenerateID () {
-      session_regenerate_id();
+      $arrOldSession = $_SESSION;
+      session_regenerate_id(true);
+      $_SESSION = $arrOldSession;
     }//function
 
     private function readSession () {

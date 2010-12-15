@@ -135,13 +135,28 @@
           //Singular, so should only be concerned with onetomany relationships where this model is the child / foreign table
 
           foreach (self::$arrRelationships as $arrRelationshipInfo) {
-            if ($arrRelationshipInfo['type'] == 'onetomany') {
-              if ($arrRelationshipInfo['foreign']['model'] == $this->strModelName && $arrRelationshipInfo['local']['model'] == $strRelatedModel) {
-                $strColumn = $arrRelationshipInfo['foreign']['column'];
+            switch ($arrRelationshipInfo['type']) {
+              case 'onetomany':
+                if ($arrRelationshipInfo['foreign']['model'] == $this->strModelName && $arrRelationshipInfo['local']['model'] == $strRelatedModel) {
+                  $strForeignColumn = $arrRelationshipInfo['foreign']['column'];
+                  $strLocalColumn = $arrRelationshipInfo['local']['column'];
 
-                return new $strRelatedModel($this->$strColumn);
-              }//if
-            }//if
+                  return new $strRelatedModel(array($strLocalColumn => $this->$strForeignColumn));
+                }//if
+                break;
+
+              case 'onetoone':
+                foreach ($arrRelationshipInfo['models'] as $arrModelInfo) {
+                  if ($arrModelInfo['name'] == $this->strModelName) {
+                    $strColumn = $arrModelInfo['column'];
+                  } else {
+                    $strOtherColumn = $arrModelInfo['column'];
+                  }//if
+                }//foreach
+
+                return new $strRelatedModel(array($strOtherColumn => $this->$strColumn));
+                break;
+            }//switch
           }//foreach
         }//if
       }//if

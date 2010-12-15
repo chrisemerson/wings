@@ -1,13 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <relationships>
-  <manytomany jointable="vouchers2retailers">
-    <model name="Voucher" column="voucher_id" />
-    <model name="Retailer" column="retailer_id" />
+  <onetomany>
+    <localmodel name="Address" column="address_id" />
+    <foreignmodel name="OrderLine" column="address_id" />
+  </onetomany>
+
+  <manytomany jointable="recipient_addresses">
+    <model name="Address" column="address_id" />
+    <model name="User" column="user_id" />
   </manytomany>
+
+  <onetoone>
+    <model name="Address" column="address_id" />
+    <model name="User" column="address_id" />
+  </onetoone>
+
+  <onetomany>
+    <localmodel name="AdminUser" column="admin_user_id" />
+    <foreignmodel name="Card" column="admin_user_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="AdminUser" column="admin_user_id" />
+    <foreignmodel name="Category" column="admin_user_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="AdminUser" column="admin_user_id" />
+    <foreignmodel name="EmailTemplate" column="admin_user_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="AdminUser" column="admin_user_id" />
+    <foreignmodel name="GlobalReminderDate" column="admin_user_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="AdminUser" column="admin_user_id" />
+    <foreignmodel name="Page" column="admin_user_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="AdminUser" column="admin_user_id" />
+    <foreignmodel name="Retailer" column="admin_user_id" />
+  </onetomany>
 
   <onetomany>
     <localmodel name="AdminUser" column="admin_user_id" />
     <foreignmodel name="Voucher" column="admin_user_id" />
+  </onetomany>
+
+  <manytomany jointable="cards2categories">
+    <model name="Card" column="card_id" />
+    <model name="Category" column="category_id" />
+  </manytomany>
+
+  <onetomany>
+    <localmodel name="Card" column="card_id" />
+    <foreignmodel name="PersonalisedCard" column="card_id" />
+  </onetomany>
+
+  <manytomany jointable="cards2retailers">
+    <model name="Card" column="card_id" />
+    <model name="Retailer" column="retailer_id" />
+  </manytomany>
+
+  <onetomany>
+    <localmodel name="Category" column="category_id" />
+    <foreignmodel name="Category" column="parent_category_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="ContentType" column="content_type_id" />
+    <foreignmodel name="EditableArea" column="content_type_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="Country" column="country_id" />
+    <foreignmodel name="Address" column="country_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="DeliveryMethod" column="delivery_method_id" />
+    <foreignmodel name="OrderLine" column="delivery_method_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="EmailTemplate" column="email_template_id" />
+    <foreignmodel name="Alert" column="email_template_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="GlobalReminderDate" column="global_reminder_date_id" />
+    <foreignmodel name="Alert" column="global_reminder_date_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="Order" column="order_id" />
+    <foreignmodel name="OrderLine" column="order_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="Order" column="order_id" />
+    <foreignmodel name="OrderStatusUpdate" column="order_id" />
+  </onetomany>
+
+  <onetoone>
+    <model name="OrderLine" column="personalised_card_id" />
+    <model name="PersonalisedCard" column="personalised_card_id" />
+  </onetoone>
+
+  <manytomany jointable="orderlines2vouchers">
+    <model name="OrderLine" column="orderline_id" />
+    <model name="Voucher" column="voucher_id" />
+  </manytomany>
+
+  <onetomany>
+    <localmodel name="OrderStatus" column="order_status_id" />
+    <foreignmodel name="OrderStatusUpdate" column="order_status_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="ReminderDate" column="reminder_date_id" />
+    <foreignmodel name="Alert" column="reminder_date_id" />
+  </onetomany>
+
+  <manytomany jointable="vouchers2retailers">
+    <model name="Retailer" column="retailer_id" />
+    <model name="Voucher" column="voucher_id" />
+  </manytomany>
+
+  <onetomany>
+    <localmodel name="Template" column="template_id" />
+    <foreignmodel name="Card" column="template_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="Template" column="template_id" />
+    <foreignmodel name="EditableArea" column="template_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="Title" column="title_id" />
+    <foreignmodel name="Address" column="title_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="Title" column="title_id" />
+    <foreignmodel name="User" column="title_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="Typeface" column="typeface_id" />
+    <foreignmodel name="EditableArea" column="typeface_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="User" column="user_id" />
+    <foreignmodel name="Alert" column="user_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="User" column="user_id" />
+    <foreignmodel name="Order" column="user_id" />
+  </onetomany>
+
+  <onetomany>
+    <localmodel name="User" column="user_id" />
+    <foreignmodel name="ReminderDate" column="user_id" />
   </onetomany>
 </relationships>
