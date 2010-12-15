@@ -95,11 +95,27 @@
       foreach ($arrTrace as $arrTraceStep) {
         echo "<li>\n";
         echo "  <dl>\n";
-        echo "    <dt><b>File (Line)</b></dt>\n";
-        echo "    <dd>" . $arrTraceStep['file'] . " (" . $arrTraceStep['line'] . ")\n\n";
 
-        echo "    <dt><b>Call</b></dt>\n";
-        echo "    <dd>" . $arrTraceStep['class'] . $arrTraceStep['type'] . $arrTraceStep['function'] . "(" . implode(", ", $arrTraceStep['args']) . ")</dd>";
+        if (isset($arrTraceStep['file'])) {
+          echo "    <dt><b>File (Line)</b></dt>\n";
+          echo "    <dd>" . $arrTraceStep['file'];
+
+          if (isset($arrTraceStep['line'])) {
+            echo " (" . $arrTraceStep['line'] . ")";
+          }//if
+
+          echo "\n\n";
+        }//if
+
+        if (isset($arrTraceStep['class'])) {
+          echo "    <dt><b>Call</b></dt>\n";
+          echo "    <dd>" . $arrTraceStep['class'] . $arrTraceStep['type'] . $arrTraceStep['function'];
+
+          if (!empty($arrTraceStep['args'])) {
+            echo "(" . implode(", ", array_map('strval', $arrTraceStep['args'])) . ")</dd>";
+          }//if
+        }//if
+
         echo "  </dl>\n";
         echo "</li>\n";
       }//foreach
