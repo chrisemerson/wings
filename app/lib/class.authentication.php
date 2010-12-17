@@ -10,6 +10,9 @@
     private $strTokenField;
     private $strSerialField;
 
+    private $strRequireLoginURI;
+    private $strRequireLogoutURI;
+
     private $strSalt;
     private $intDaysToRemember;
 
@@ -37,6 +40,9 @@
       $this->strUserIDField = $objAuthConfig->rememberedlogins->fields->userid;
       $this->strTokenField = $objAuthConfig->rememberedlogins->fields->token;
       $this->strSerialField = $objAuthConfig->rememberedlogins->fields->serial;
+
+      $this->strRequireLoginURI = Application::getFullURI($objAuthConfig->uris->requirelogin);
+      $this->strRequireLogoutURI = Application::getFullURI($objAuthConfig->uris->requirelogout);
 
       $this->strSalt = $objAuthConfig->salt;
       $this->intDaysToRemember = $objAuthConfig->remembereddays;
@@ -90,23 +96,35 @@
       return (isset($this->objSession->auththissession) && $this->objSession->auththissession);
     }//function
 
-    public function requireLoggedIn ($strURLToRedirectTo) {
+    public function requireLoggedIn ($strURIToRedirectTo = '') {
       if (!$this->isLoggedIn()) {
         $this->session->redirectafterlogin = Application::getCurrentPageURI();
 
-        Application::redirect($strURLToRedirectTo);
+        if (!empty($strURIToRedirectTo)) {
+          Application::redirect($strURIToRedirectTo);
+        } else {
+          Application::redirect($this->strRequireLoginURI);
+        }//if
       }//if
     }//function
 
-    public function requireLoggedOut ($strURLToRedirectTo) {
+    public function requireLoggedOut ($strURIToRedirectTo = '') {
       if ($this->isLoggedIn()) {
-        Application::redirect($strURLToRedirectTo);
+        if (!empty($strURIToRedirectTo)) {
+          Application::redirect($strURIToRedirectTo);
+        } else {
+          Application::redirect($this->strRequireLogoutURI);
+        }//if
       }//if
     }//function
 
-    public function requireReAuthentication ($strURLToRedirectTo) {
+    public function requireReAuthentication ($strURIToRedirectTo = '') {
       if (!$this->isLoggedIn() || !$this->isAuthenticatedThisSession()) {
-        Application::redirect($strURLToRedirectTo);
+        if (!empty($strURIToRedirectTo)) {
+          Application::redirect($strURIToRedirectTo);
+        } else {
+          Application::redirect($this->strRequireLoginURI);
+        }//if
       }//if
     }//function
 
@@ -140,6 +158,10 @@
       }//if
 
       $this->logout();
+    }//function
+
+    private function clearExpiredRememberedLogins ($intUserID = 0) {
+
     }//function
 
     private function checkForRememberedLogin () {

@@ -21,6 +21,11 @@
     </fields>
   </rememberedlogins>
 
+  <uris>
+    <requirelogin>user/login</requirelogin>
+    <requirelogout>user/my-account</requirelogout>
+  </uris>
+
   <salt>vgw3e4%^W4gvqwaFA£5vaWFA!£%FVazswetzvbS£%FA</salt>
 
   <remembereddays>30</remembereddays>

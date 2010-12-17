@@ -44,6 +44,10 @@
       return $strAppBaseURI;
     }//function
 
+    public static function getFullURI ($strPath = "/", $blnSecure = false) {
+      return self::getBaseURI($blnSecure) . trim($strPath, '/') . '/';
+    }//function
+
     public static function getBasePath () {
       return realpath(dirname(__FILE__) . '/../../') . '/';
     }//function
