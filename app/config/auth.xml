@@ -27,14 +27,17 @@
 
     <remembereddays>30</remembereddays>
 
-    <defaultcookiename>cookieauth</defaultcookiename>
+    <defaultcookiename>bsauth</defaultcookiename>
   </rememberme>
 
   <uris>
     <requirelogin>user/login</requirelogin>
     <requirelogout>user/my-account</requirelogout>
     <requirereauth>user/login</requirereauth>
+    <redirectafterlogin>user/my-account</redirectafterlogin>
   </uris>
 
   <salt>vgw3e4%^W4gvqwaFA£5vaWFA!£%FVazswetzvbS£%FA</salt>
+
+  <sessionname>userauth</sessionname>
 </auth>

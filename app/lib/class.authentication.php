@@ -16,6 +16,7 @@
     private $strRequireLoginURI;
     private $strRequireLogoutURI;
     private $strRequireReAuthURI;
+    private $strRedirectAfterLogin;
 
     private $strSalt;
     private $intDaysToRemember;
@@ -23,6 +24,7 @@
     private $strCookieDomain;
     private $strCookiePath;
 
+    private $strSessionName;
     private $strCookieName;
 
     private $objSession;
@@ -45,6 +47,7 @@
       $this->strRequireLoginURI = Application::getFullURI($objAuthConfig->uris->requirelogin);
       $this->strRequireLogoutURI = Application::getFullURI($objAuthConfig->uris->requirelogout);
       $this->strRequireReAuthURI = Application::getFullURI($objAuthConfig->uris->requirereauth);
+      $this->strRedirectAfterLogin = Application::getFullURI($objAuthConfig->uris->redirectafterlogin);
 
       $this->strSalt = $objAuthConfig->salt;
 
@@ -100,6 +103,22 @@
       }//if
 
       return false;
+    }//function
+
+    public function redirectAfterLogin ($strDefaultRedirection = '') {
+      if (isset($this->objSession->redirectafterlogin)) {
+        $strRedirect = $this->objSession->redirectafterlogin;
+
+        unset($this->objSession->redirectafterlogin);
+
+        Application::redirect($strRedirect);
+      } else {
+        if (!empty($strDefaultRedirection)) {
+          Application::redirect($strDefaultRedirection);
+        } else {
+          Application::redirect($this->strRedirectAfterLogin);
+        }//if
+      }//if
     }//function
 
     public function logout () {
@@ -158,7 +177,7 @@
       } else {
         return false;
       }//if
-    }//if
+    }//function
 
     public function createHashFromPassword ($strPassword) {
       return sha1($this->strSalt . md5($strPassword) . $strPassword . strrev($this->strSalt) . strrev($strPassword) . md5($this->strSalt));
