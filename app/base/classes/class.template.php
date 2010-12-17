@@ -18,7 +18,7 @@
     /* Constructor & Initialisation */
     /********************************/
 
-    public function __construct($strTemplateName, $blnIgnoreMasterTemplateSetting = false) {
+    public function __construct ($strTemplateName, $blnIgnoreMasterTemplateSetting = false) {
       $this->strTemplateName = $strTemplateName;
       $strTemplateFile = Application::getBasePath() . "templates/" . str_replace(".", "/", $strTemplateName) . ".tpl";
 
