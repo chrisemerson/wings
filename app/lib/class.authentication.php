@@ -30,8 +30,6 @@
     private $objSession;
 
     public function __construct ($strConfigName = 'auth') {
-      $this->objSession = new Session();
-
       $objAppConfig = new Config('app');
 
       $this->strCookieDomain = $objAppConfig->cookie->domain;
@@ -50,6 +48,8 @@
       $this->strRedirectAfterLogin = Application::getFullURI($objAuthConfig->uris->redirectafterlogin);
 
       $this->strSalt = $objAuthConfig->salt;
+
+      $this->objSession = new Session($objAuthConfig->sessionname);
 
       $this->blnRememberedLoginsEnabled = ($objAuthConfig->rememberme->enabled == 1);
 
