@@ -8,6 +8,10 @@
       $this->strContext = $strContext;
     }//function
 
+    public function setContext ($strContext = '') {
+      $this->strContext = $strContext;
+    }//function
+
     public function addError ($strMessage, $strField = '') {
       $arrError = array('error' => $strMessage);
 

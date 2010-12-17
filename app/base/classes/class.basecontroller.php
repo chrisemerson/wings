@@ -4,7 +4,8 @@
 
     private $arrInbuiltClasses = array('errors' => 'ErrorRegistry',
                                        'input' => 'FormValidator',
-                                       'session' => 'Session');
+                                       'session' => 'Session',
+                                       'auth' => 'Authentication');
 
     public function index () {
       $this->view = new DefaultView();

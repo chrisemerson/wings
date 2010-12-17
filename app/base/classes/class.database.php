@@ -27,4 +27,16 @@
 
       return $this->dbConn;
     }//function
+
+    public function startTransaction () {
+      $this->dbConn->query("START TRANSACTION;");
+    }//function
+
+    public function commit () {
+      $this->dbConn->query("COMMIT;");
+    }//function
+
+    public function rollback () {
+      $this->dbConn->query("ROLLBACK;");
+    }//function
   }//class

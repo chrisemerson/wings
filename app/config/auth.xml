@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<auth>
+  <users>
+    <model>User</model>
+
+    <fields>
+      <id>user_id</id>
+      <username>user_email</username>
+      <password>user_password</password>
+    </fields>
+  </users>
+
+  <rememberedlogins>
+    <model>RememberedLogin</model>
+
+    <fields>
+      <userid>user_id</userid>
+      <token>remembered_login_token</token>
+      <serial>remembered_login_serial</serial>
+    </fields>
+  </rememberedlogins>
+
+  <salt>vgw3e4%^W4gvqwaFA£5vaWFA!£%FVazswetzvbS£%FA</salt>
+
+  <remembereddays>30</remembereddays>
+</auth>

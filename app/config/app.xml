@@ -21,6 +21,11 @@
       <debugmode>0</debugmode>
       <defaultformerror>{field} errored</defaultformerror>
     </errors>
+
+    <cookie>
+      <domain></domain>
+      <path>/</path>
+    </cookie>
   </default>
 
   <dev>

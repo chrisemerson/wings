@@ -1,30 +1,30 @@
 <?php
   class Session {
-    private $arrData = array();
+    private static $arrData = array();
 
     public function __construct () {
       $this->readSession();
     }//function
 
     public function __get ($strName) {
-      if (isset($this->arrData[$strName])) {
-        return $this->arrData[$strName];
+      if (isset(self::$arrData[$strName])) {
+        return self::$arrData[$strName];
       }//if
 
       return null;
     }//function
 
     public function __set ($strName, $mixValue) {
-      $this->arrData[$strName] = $mixValue;
+      self::$arrData[$strName] = $mixValue;
       $this->writeSession();
     }//function
 
     public function __isset ($strName) {
-      return isset($this->arrData[$strName]);
+      return isset(self::$arrData[$strName]);
     }//function
 
     public function __unset ($strName) {
-      unset($this->arrData[$strName]);
+      unset(self::$arrData[$strName]);
       $this->writeSession();
     }//function
 
@@ -33,16 +33,14 @@
     }//function
 
     public function regenerateID () {
-      $arrOldSession = $_SESSION;
       session_regenerate_id(true);
-      $_SESSION = $arrOldSession;
     }//function
 
     private function readSession () {
-      $this->arrData = $_SESSION;
+      self::$arrData = $_SESSION;
     }//function
 
     private function writeSession () {
-      $_SESSION = $this->arrData;
+      $_SESSION = self::$arrData;
     }//function
   }//class

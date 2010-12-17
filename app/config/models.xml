@@ -24,7 +24,7 @@
   <model name="OrderStatusUpdate" />
   <model name="Page" />
   <model name="PersonalisedCard" />
-  <model name="RecipientAddress" plural="RecipientAddresses" />
+  <model name="RememberedLogin" />
   <model name="ReminderDate" />
   <model name="Retailer" />
   <model name="Template" />

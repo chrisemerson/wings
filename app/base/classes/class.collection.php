@@ -34,6 +34,12 @@
       }//foreach
     }//function
 
+    public function delete () {
+      foreach ($this->arrMembers as $objModel) {
+        $objModel->delete();
+      }//foreach
+    }//function
+
     private function fetch () {
       $strSQL = "SELECT * FROM `" . $this->getTableName() . "`";
 
