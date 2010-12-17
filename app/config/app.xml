@@ -24,7 +24,7 @@
 
     <cookie>
       <domain></domain>
-      <path>/</path>
+      <path>/boonspace/httpdocs/</path>
     </cookie>
   </default>
 

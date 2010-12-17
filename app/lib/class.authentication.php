@@ -5,13 +5,17 @@
     private $strUsernameField;
     private $strPasswordField;
 
+    private $blnRememberedLoginsEnabled;
+
     private $strRememberedLoginsModel;
     private $strUserIDField;
     private $strTokenField;
     private $strSerialField;
+    private $strExpiryField;
 
     private $strRequireLoginURI;
     private $strRequireLogoutURI;
+    private $strRequireReAuthURI;
 
     private $strSalt;
     private $intDaysToRemember;
@@ -19,9 +23,11 @@
     private $strCookieDomain;
     private $strCookiePath;
 
+    private $strCookieName;
+
     private $objSession;
 
-    public function __construct () {
+    public function __construct ($strConfigName = 'auth') {
       $this->objSession = new Session();
 
       $objAppConfig = new Config('app');
@@ -29,28 +35,37 @@
       $this->strCookieDomain = $objAppConfig->cookie->domain;
       $this->strCookiePath = $objAppConfig->cookie->path;
 
-      $objAuthConfig = new Config('auth');
+      $objAuthConfig = new Config($strConfigName);
 
       $this->strUserModel = $objAuthConfig->users->model;
       $this->strIDField = $objAuthConfig->users->fields->id;
       $this->strUsernameField = $objAuthConfig->users->fields->username;
       $this->strPasswordField = $objAuthConfig->users->fields->password;
 
-      $this->strRememberedLoginsModel = $objAuthConfig->rememberedlogins->model;
-      $this->strUserIDField = $objAuthConfig->rememberedlogins->fields->userid;
-      $this->strTokenField = $objAuthConfig->rememberedlogins->fields->token;
-      $this->strSerialField = $objAuthConfig->rememberedlogins->fields->serial;
-
       $this->strRequireLoginURI = Application::getFullURI($objAuthConfig->uris->requirelogin);
       $this->strRequireLogoutURI = Application::getFullURI($objAuthConfig->uris->requirelogout);
+      $this->strRequireReAuthURI = Application::getFullURI($objAuthConfig->uris->requirereauth);
 
       $this->strSalt = $objAuthConfig->salt;
-      $this->intDaysToRemember = $objAuthConfig->remembereddays;
 
-      $this->checkForRememberedLogin();
+      $this->blnRememberedLoginsEnabled = ($objAuthConfig->rememberme->enabled == 1);
+
+      if ($this->blnRememberedLoginsEnabled) {
+        $this->strRememberedLoginsModel = $objAuthConfig->rememberme->rememberedlogins->model;
+        $this->strUserIDField = $objAuthConfig->rememberme->rememberedlogins->fields->userid;
+        $this->strTokenField = $objAuthConfig->rememberme->rememberedlogins->fields->token;
+        $this->strSerialField = $objAuthConfig->rememberme->rememberedlogins->fields->serial;
+        $this->strExpiryField = $objAuthConfig->rememberme->rememberedlogins->fields->expiry;
+
+        $this->strCookieName = $objAuthConfig->rememberme->defaultcookiename;
+
+        $this->intDaysToRemember = $objAuthConfig->rememberme->remembereddays;
+
+        $this->checkForRememberedLogin();
+      }//if
     }//function
 
-    public function attemptLogin ($strUsername, $strPassword, $blnRememberLogin = false) {
+    public function attemptLogin ($strUsername, $strPassword, $blnRememberMe = false) {
       $objResultsFilter = new ResultsFilter();
       $objResultsFilter->model($this->strUserModel)
                        ->conditions("`" . $this->strUsernameField . "` = '" . $strUsername . "'");
@@ -70,10 +85,14 @@
           $this->objSession->loggedin = true;
           $this->objSession->auththissession = true;
 
-          if ($blnRememberLogin) {
-            $this->rememberLoginAtThisLocation();
-          } else {
-            $this->forgetLoginAtThisLocation();
+          if ($this->blnRememberedLoginsEnabled) {
+            $this->clearExpiredRememberedLogins($this->objSession->currentuserid);
+
+            if ($blnRememberMe) {
+              $this->rememberLoginAtThisLocation();
+            } else {
+              $this->forgetLoginAtThisLocation();
+            }//if
           }//if
 
           return true;
@@ -84,7 +103,10 @@
     }//function
 
     public function logout () {
-      $this->forgetLoginAtThisLocation();
+      if ($this->blnRememberedLoginsEnabled) {
+        $this->forgetLoginAtThisLocation();
+      }//if
+
       $this->objSession->destroy();
     }//function
 
@@ -123,7 +145,7 @@
         if (!empty($strURIToRedirectTo)) {
           Application::redirect($strURIToRedirectTo);
         } else {
-          Application::redirect($this->strRequireLoginURI);
+          Application::redirect($this->strRequireReAuthURI);
         }//if
       }//if
     }//function
@@ -143,67 +165,84 @@
     }//function
 
     public function clearAllRememberedLogins ($intUserID = 0) {
-      if (!empty($intUserID) || (isset($this->objSession->currentuserid) && !empty($this->objSession->currentuserid))) {
-        if (empty($intUserID)) {
-          $intUserID = $this->objSession->currentuserid;
-        }//if
+      if ($this->blnRememberedLoginsEnabled) {
+        if (!empty($intUserID) || (isset($this->objSession->currentuserid) && !empty($this->objSession->currentuserid))) {
+          if (empty($intUserID)) {
+            $intUserID = $this->objSession->currentuserid;
+          }//if
 
+          $objResultsFilter = new ResultsFilter();
+          $objResultsFilter->model($this->strRememberedLoginsModel)
+                           ->conditions("`" . $this->strUserIDField . "` = " . intval($intUserID));
+
+          $objRememberedLogins = new Collection($objResultsFilter);
+
+          $objRememberedLogins->delete();
+
+          $this->forgetLoginAtThisLocation();
+        }//if
+      }//if
+    }//function
+
+    private function clearExpiredRememberedLogins () {
+      if ($this->blnRememberedLoginsEnabled) {
         $objResultsFilter = new ResultsFilter();
-        $objResultsFilter->model('RememberedLogin')
-                         ->conditions("`user_id` = " . intval($intUserID));
+        $objResultsFilter->model($this->strRememberedLoginsModel)
+                         ->conditions("`" . $this->strExpiryField . "` <= '" . date('Y-m-d H:i:s') . "'");
 
         $objRememberedLogins = new Collection($objResultsFilter);
 
         $objRememberedLogins->delete();
       }//if
-
-      $this->logout();
-    }//function
-
-    private function clearExpiredRememberedLogins ($intUserID = 0) {
-
     }//function
 
     private function checkForRememberedLogin () {
-      //Don't check if already logged in for this session!
-      if (!$this->isLoggedIn()) {
-        if (isset($_COOKIE['cookieauth'])) {
-          list($intUserID, $strToken, $strSerial) = explode("-", $_COOKIE['cookieauth']);
+      if ($this->blnRememberedLoginsEnabled) {
+        //Don't check if already logged in for this session!
+        if (!$this->isLoggedIn()) {
+          if (isset($_COOKIE[$this->strCookieName])) {
+            list($intUserID, $strToken, $strSerial) = explode("-", $_COOKIE[$this->strCookieName]);
 
-          //First, check for full match - if so, authenticate user
-
-          $objResultsFilter = new ResultsFilter();
-          $objResultsFilter->model('RememberedLogin')
-                           ->conditions("`user_id` = " . intval($intUserID) . " AND `remembered_login_token` = '" . $strToken . "' AND `remembered_login_serial` = '" . $strSerial . "'");
-
-          $objRememberedLogins = new Collection($objResultsFilter);
-
-          if (count($objRememberedLogins) == 1) {
-            $objRememberedLogin = $objRememberedLogins[0];
-
-            $this->objSession->currentuserid = $objRememberedLogin->user_id;
-            $this->objSession->loggedin = true;
-
-            //Reissue new token
-            $objRememberedLogin->remembered_login_token = $this->generateRandomNumber();
-            $objRememberedLogin->remembered_login_expiry = date('Y-m-d H:i:s', strtotime('+30days'));
-            $objRememberedLogin->save();
-
-            $this->setRememberedLoginCookie($objRememberedLogin);
-          } else {
-            //Check for series + username match, but not token
+            //First, check for full match, including expiry - if so, authenticate user
 
             $objResultsFilter = new ResultsFilter();
-            $objResultsFilter->model('RememberedLogin')
-                             ->conditions("`user_id` = " . intval($intUserID) . " AND `remembered_login_token` != '" . $strToken . "' AND `remembered_login_serial` = '" . $strSerial . "'");
+            $objResultsFilter->model($this->strRememberedLoginsModel)
+                             ->conditions("`" . $this->strUserIDField . "` = " . intval($intUserID) . " AND `" . $this->strTokenField . "` = '" . $strToken . "' AND `" . $this->strSerialField . "` = '" . $strSerial . "' AND `" . $this->strExpiryField . "` >= '" . date('Y-m-d H:i:s') . "'");
 
             $objRememberedLogins = new Collection($objResultsFilter);
 
             if (count($objRememberedLogins) == 1) {
-              //Cookie theft has taken place! As a precaution, delete cookie, and log user out from all places
+              $objRememberedLogin = $objRememberedLogins[0];
 
-              $this->forgetLoginAtThisLocation($intUserID);
-              $this->clearAllRememberedLogins($intUserID);
+              $strUserIDField = $this->strUserIDField;
+              $strTokenField = $this->strTokenField;
+              $strExpiryField = $this->strExpiryField;
+
+              $this->objSession->currentuserid = $objRememberedLogin->$strUserIDField;
+              $this->objSession->loggedin = true;
+
+              //Reissue new token
+              $objRememberedLogin->$strTokenField = $this->generateRandomString();
+              $objRememberedLogin->$strExpiryField = date('Y-m-d H:i:s', strtotime('+ ' . intval($this->intDaysToRemember) . ' days'));
+              $objRememberedLogin->save();
+
+              $this->setRememberedLoginCookie($objRememberedLogin);
+            } else {
+              //Check for series + username match, but not token. Expiry doesn't matter here, as we are simply detecting thefts and logging the user out anyway.
+
+              $objResultsFilter = new ResultsFilter();
+              $objResultsFilter->model($this->strRememberedLoginsModel)
+                               ->conditions("`" . $this->strUserIDField . "` = " . intval($intUserID) . " AND `" . $this->strTokenField . "` != '" . $strToken . "' AND `" . $this->strSerialField . "` = '" . $strSerial . "'");
+
+              $objRememberedLogins = new Collection($objResultsFilter);
+
+              if (count($objRememberedLogins) == 1) {
+                //Cookie theft has taken place! As a precaution, delete cookie, and log user out from all places
+
+                $this->forgetLoginAtThisLocation($intUserID);
+                $this->clearAllRememberedLogins($intUserID);
+                $this->logout();
+              }//if
             }//if
           }//if
         }//if
@@ -211,15 +250,20 @@
     }//function
 
     private function rememberLoginAtThisLocation () {
-      if ($this->isLoggedIn()) {
+      if ($this->blnRememberedLoginsEnabled && $this->isLoggedIn()) {
         //Generate new series and token identifiers, and add to database. Set as cookie.
 
         $objRememberedLogin = new RememberedLogin();
 
-        $objRememberedLogin->user_id = $this->objSession->currentuserid;
-        $objRememberedLogin->remembered_login_token = $this->generateRandomNumber();
-        $objRememberedLogin->remembered_login_serial = $this->generateRandomNumber();
-        $objRememberedLogin->remembered_login_expiry = date('Y-m-d H:i:s', strtotime('+30days'));
+        $strUserIDField = $this->strUserIDField;
+        $strTokenField = $this->strTokenField;
+        $strSerialField = $this->strSerialField;
+        $strExpiryField = $this->strExpiryField;
+
+        $objRememberedLogin->$strUserIDField = $this->objSession->currentuserid;
+        $objRememberedLogin->$strTokenField = $this->generateRandomString();
+        $objRememberedLogin->$strSerialField = $this->generateRandomString();
+        $objRememberedLogin->$strExpiryField = date('Y-m-d H:i:s', strtotime('+ ' . intval($this->intDaysToRemember) . ' days'));
 
         $objRememberedLogin->save();
 
@@ -228,27 +272,35 @@
     }//function
 
     private function setRememberedLoginCookie ($objRememberedLogin) {
-      $strCookieValue = implode("-", array($objRememberedLogin->user_id, $objRememberedLogin->remembered_login_token, $objRememberedLogin->remembered_login_serial));
+      if ($this->blnRememberedLoginsEnabled) {
+        $strUserIDField = $this->strUserIDField;
+        $strTokenField = $this->strTokenField;
+        $strSerialField = $this->strSerialField;
 
-      setcookie("cookieauth", $strCookieValue, time() + ($this->intDaysToRemember * 86400), $this->strCookiePath, $this->strCookieDomain, Application::isSecure());
+        $strCookieValue = implode("-", array($objRememberedLogin->$strUserIDField, $objRememberedLogin->$strTokenField, $objRememberedLogin->$strSerialField));
+
+        setcookie("cookieauth", $strCookieValue, time() + ($this->intDaysToRemember * 86400), $this->strCookiePath, $this->strCookieDomain, Application::isSecure(), true);
+      }//if
     }//function
 
     private function forgetLoginAtThisLocation () {
-      if (isset($_COOKIE['cookieauth'])) {
-        list($intUserID, $strToken, $strSerial) = explode("-", $_COOKIE['cookieauth']);
+      if ($this->blnRememberedLoginsEnabled) {
+        if (isset($_COOKIE[$this->strCookieName])) {
+          list($intUserID, $strToken, $strSerial) = explode("-", $_COOKIE[$this->strCookieName]);
 
-        $objResultsFilter = new ResultsFilter();
-        $objResultsFilter->model('RememberedLogin')
-                         ->conditions("`user_id` = " . intval($intUserID) . " AND `remembered_login_token` = '" . $strToken . "' AND `remembered_login_serial` = '" . $strSerial . "'");
+          $objResultsFilter = new ResultsFilter();
+          $objResultsFilter->model($this->strRememberedLoginsModel)
+                           ->conditions("`" . $this->strUserIDField . "` = " . intval($intUserID) . " AND `" . $this->strTokenField . "` = '" . $strToken . "' AND `" . $this->strSerialField . "` = '" . $strSerial . "'");
 
-        $objRememberedLogins = new Collection($objResultsFilter);
-        $objRememberedLogins->delete();
+          $objRememberedLogins = new Collection($objResultsFilter);
+          $objRememberedLogins->delete();
+        }//if
+
+        setcookie("cookieauth", "", time() - 3600, $this->strCookiePath, $this->strCookieDomain, Application::isSecure(), true);
       }//if
-
-      setcookie("cookieauth", "", time() - 3600, $this->strCookiePath, $this->strCookieDomain, Application::isSecure());
     }//function
 
-    private function generateRandomNumber () {
+    private function generateRandomString () {
       return sha1(rand(0, 10000) . uniqid() . $_SERVER['REMOTE_ADDR']);
     }//function
   }//class
