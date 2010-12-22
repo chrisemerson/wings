@@ -1,6 +1,4 @@
-Rewrite ResultsFilter class to be completely robust!
+Rewrite ResultsFilter class to be completely robust / use alternate method within Collection
 
 - Library files to include:
  - Page Manager
-
-Need support for session names, like error contexts - so adminauth and auth can use same session independently
