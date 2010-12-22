@@ -56,10 +56,14 @@
       } else {
         $this->arrLabels[$mixNameOrArray] = $arrFormValidationInfo['label'];
 
-        if (isset($this->arrValidationRules[$mixNameOrArray]) && is_array($this->arrValidationRules[$mixNameOrArray])) {
-          $this->arrValidationRules[$mixNameOrArray] = array_merge($this->arrValidationRules[$mixNameOrArray], $arrFormValidationInfo['rules']);
+        if (isset($arrFormValidationInfo['rules'])) {
+          if (isset($this->arrValidationRules[$mixNameOrArray]) && is_array($this->arrValidationRules[$mixNameOrArray])) {
+            $this->arrValidationRules[$mixNameOrArray] = array_merge($this->arrValidationRules[$mixNameOrArray], $arrFormValidationInfo['rules']);
+          } else {
+            $this->arrValidationRules[$mixNameOrArray] = $arrFormValidationInfo['rules'];
+          }//if
         } else {
-          $this->arrValidationRules[$mixNameOrArray] = $arrFormValidationInfo['rules'];
+          $this->arrValidationRules[$mixNameOrArray] = array();
         }//if
       }//if
     }//function
@@ -175,7 +179,7 @@
     }//function
 
     private function matches ($strValue, $strMatchField) {
-      return (isset($this->arrFormValues[$strMatchField]) && $strValue == $this->arrFormValues[$strMatchField]);
+      return ((!isset($this->arrFormValues[$strMatchField]) && empty($strValue)) || ($strValue == $this->arrFormValues[$strMatchField]));
     }//function
 
     private function length ($strValue, $intLength) {
