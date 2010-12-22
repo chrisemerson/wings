@@ -1,6 +1,6 @@
 <?php
   class Application {
-    public static function getCurrentPageURI () {
+    public static function getCurrentPageURI ($arrQSA = array()) {
       $strCurrentPageURI = 'http';
 
       if (self::isSecure()) {
@@ -9,10 +9,34 @@
 
       $strCurrentPageURI .= '://';
 
-      if ($_SERVER['SERVER_PORT'] != '80') {
-        $strCurrentPageURI .= $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'];
+      $arrURL = parse_url($_SERVER['REQUEST_URI']);
+
+      $arrFinalQueryString = array();
+
+      if (isset($arrURL['query'])) {
+        $arrQueryString = explode('&', $arrURL['query']);
+
+        foreach ($arrQueryString as $strQueryString) {
+          list($strKey, $strValue) = explode('=', $strQueryString);
+
+          $arrFinalQueryString[$strKey] = $strValue;
+        }//foreach
+      }//if
+
+      foreach ($arrQSA as $strKey => $strValue) {
+        $arrFinalQueryString[$strKey] = $strValue;
+      }//foreach
+
+      $arrQueryStringPieces = array();
+
+      foreach ($arrFinalQueryString as $strKey => $strValue) {
+        $arrQueryStringPieces[] = $strKey . "=" . $strValue;
+      }//foreach
+
+      if (($_SERVER['SERVER_PORT'] != '80') && ($_SERVER['SERVER_PORT'] != '443')) {
+        $strCurrentPageURI .= $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $arrURL['path'] . '?' . implode('&', $arrQueryStringPieces);
       } else {
-        $strCurrentPageURI .= $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+        $strCurrentPageURI .= $_SERVER['SERVER_NAME'] . $arrURL['path'] . '?' . implode('&', $arrQueryStringPieces);
       }//if
 
       return $strCurrentPageURI;

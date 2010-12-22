@@ -5,4 +5,5 @@
   and the value the file to be included, relative to the thirdparty folder -->
 
   <phpmailer>phpmailer/class.phpmailer.php</phpmailer>
+  <fpdf>fpdf/fpdf.php</fpdf>
 </thirdparty>

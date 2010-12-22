@@ -175,7 +175,7 @@
     }//function
 
     private function matches ($strValue, $strMatchField) {
-      return ($strValue == $this->arrFormValues[$strMatchField]);
+      return (isset($this->arrFormValues[$strMatchField]) && $strValue == $this->arrFormValues[$strMatchField]);
     }//function
 
     private function length ($strValue, $intLength) {
