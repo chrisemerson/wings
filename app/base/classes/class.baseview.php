@@ -7,6 +7,9 @@
 
     /* Template Handling */
 
+    protected function __construct () {
+    }//function
+
     protected function loadTemplate ($strTemplateName, $blnIgnoreMasterTemplateSetting = false) {
       try {
         $this->template = new Template($strTemplateName, $blnIgnoreMasterTemplateSetting);
