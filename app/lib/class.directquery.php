@@ -23,6 +23,10 @@
       return $this->dbConn->query($strSQL);
     }//function
 
+    public function multi_query ($strSQL) {
+      return $this->dbConn->multi_query($strSQL);
+    }//function
+
     public function escape_string ($strString) {
       return $this->dbConn->escape_string($strString);
     }//function

@@ -39,7 +39,7 @@
     private function convertToObject ($objConfigXMLData) {
       $objReturn = new stdClass();
 
-      if ($objConfigXMLData->count()) {
+      if (count($objConfigXMLData)) {
         foreach ($objConfigXMLData->children() as $strChildName => $objChild) {
           $objReturn->$strChildName = $this->convertToObject($objChild);
         }//foreach

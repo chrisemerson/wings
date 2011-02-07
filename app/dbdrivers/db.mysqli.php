@@ -44,6 +44,10 @@
       }//if
     }//function
 
+    public function multi_query ($strQuery) {
+      return self::$arrConnections[$this->strConnectionHash]->multi_query($strQuery);
+    }//function
+
     public function escape_string ($strStringToEscape) {
       return self::$arrConnections[$this->strConnectionHash]->escape_string($strStringToEscape);
     }//function

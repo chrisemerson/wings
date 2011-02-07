@@ -50,6 +50,8 @@
 
     public function addValidationRules ($mixNameOrArray, $arrFormValidationInfo = array()) {
       if (is_array($mixNameOrArray)) {
+        $this->clear();
+
         foreach ($mixNameOrArray as $strName => $arrThisFieldValidationRules) {
           $this->addValidationRules($strName, $arrThisFieldValidationRules);
         }//foreach
@@ -67,6 +69,11 @@
         }//if
       }//if
     }//function
+
+    public function clear () {
+      $this->arrValidationRules = array();
+      $this->objErrorRegistry->clearErrors();
+    }//funciton
 
     public function validate () {
       if (empty($this->arrInputArray)) {
@@ -100,6 +107,10 @@
 
             if (is_callable(array($this, $strValidationFunction))) {
               if (!call_user_func_array(array($this, $strValidationFunction), $arrValidationParams)) {
+                if (in_array($strValidationFunction, array('matches', 'required_if'))) {
+                  $arrValidationParams[1] = $this->arrLabels[$arrValidationParams[1]];
+                }//if
+
                 $this->objErrorRegistry->addError($this->getErrorText($strValidationFunction, $strFieldName, array_slice($arrValidationParams, 1)), $strFieldName);
 
                 //Only 1 error per field at a time, so if this validation failed, go to next field

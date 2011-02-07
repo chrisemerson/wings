@@ -6,6 +6,7 @@
     private $intStart;
     private $intLimit;
     private $arrOrderBy = array();
+    private $blnShuffle = false;
     private $strConditions = '';
     private $strModel;
     private $dbConn;
@@ -29,6 +30,10 @@
       return $this;
     }//function
 
+    public function shuffle () {
+      $this->blnShuffle = true;
+    }//function
+
     public function conditions ($strConditionString = '') {
       $this->strConditions = $strConditionString;
 
@@ -45,12 +50,12 @@
       if (empty($this->strConditions)) {
         return "";
       } else {
-        return "WHERE " . $this->strConditions;
+        return " WHERE " . $this->strConditions;
       }//if
     }//function
 
     public function getLimitString () {
-      $strLimitString = "LIMIT ";
+      $strLimitString = " LIMIT ";
 
       if (!empty($this->intStart)) {
         $strLimitString .= intval($this->intStart) . ", ";
@@ -65,10 +70,12 @@
     }//function
 
     public function getOrderByString () {
-      if (empty($this->arrOrderBy)) {
+      if (empty($this->arrOrderBy) && !$this->blnShuffle) {
         return "";
+      } else if ($this->blnShuffle) {
+        return " ORDER BY RAND()";
       } else {
-        $strOrderByString = "ORDER BY ";
+        $strOrderByString = " ORDER BY ";
 
         foreach ($this->arrOrderBy as $arrOrderByInfo) {
           $strOrderByString .= "`" . $arrOrderByInfo['field'] . "` ";

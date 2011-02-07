@@ -43,9 +43,9 @@
     private function fetch () {
       $strSQL = "SELECT * FROM `" . $this->getTableName() . "`";
 
-      $strSQL = trim($strSQL) . " " . $this->objResultsFilter->getConditionString();
-      $strSQL = trim($strSQL) . " " . $this->objResultsFilter->getOrderByString();
-      $strSQL = trim($strSQL) . " " . $this->objResultsFilter->getLimitString();
+      $strSQL .= $this->objResultsFilter->getConditionString();
+      $strSQL .= $this->objResultsFilter->getOrderByString();
+      $strSQL .= $this->objResultsFilter->getLimitString();
 
       $strSQL .= ";";
 

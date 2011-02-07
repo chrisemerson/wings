@@ -5,14 +5,15 @@
     private $arrInbuiltClasses = array('errors' => 'ErrorRegistry',
                                        'input' => 'FormValidator',
                                        'session' => 'Session',
-                                       'auth' => 'Authentication');
+                                       'auth' => 'Authentication',
+                                       'files' => 'FileUpload');
 
     public function index () {
       $this->view = new DefaultView();
 
       $this->view->controllername = get_class($this);
 
-      $this->view->render();
+      $this->renderView();
     }//function
 
     public function __get ($strName) {
@@ -21,5 +22,13 @@
       }//if
 
       return $this->$strName;
+    }//function
+
+    public function renderView () {
+      foreach ($this->arrInbuiltClasses as $strName => $strClass) {
+        $this->view->$strName = $this->$strName;
+      }//foreach
+
+      $this->view->render();
     }//function
   }//class

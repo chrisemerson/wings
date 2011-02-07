@@ -139,7 +139,7 @@
 
     public function requireLoggedIn ($strURIToRedirectTo = '') {
       if (!$this->isLoggedIn()) {
-        $this->session->redirectafterlogin = Application::getCurrentPageURI();
+        $this->objSession->redirectafterlogin = Application::getCurrentPageURI();
 
         if (!empty($strURIToRedirectTo)) {
           Application::redirect($strURIToRedirectTo);

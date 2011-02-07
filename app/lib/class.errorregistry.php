@@ -87,4 +87,12 @@
         return self::$arrErrors['contexts'][$this->strContext];
       }//if
     }//function
+
+    public function clearErrors () {
+      if (empty($this->strContext)) {
+        self::$arrErrors['default'] = array();
+      } else {
+        self::$arrErrors['contexts'][$this->strContext] = array();
+      }//if
+    }//function
   }//class

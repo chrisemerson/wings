@@ -50,17 +50,20 @@
               case 'manytomany':
                 $strJoinTable = $arrRelationshipInfo['jointable'];
 
+                $strLocalModel = "";
+                $strForeignModel = "";
+
                 foreach ($arrRelationshipInfo['models'] as $arrModelInfo) {
                   if ($arrModelInfo['name'] == $this->strModelName) {
                     $strLocalModel = $arrModelInfo['name'];
                     $strLocalColumn = $arrModelInfo['column'];
-                  } else {
+                  } else if ($arrModelInfo['name'] == $strRelatedModel) {
                     $strForeignModel = $arrModelInfo['name'];
                     $strForeignColumn = $arrModelInfo['column'];
                   }//if
                 }//foreach
 
-                if ((isset($strLocalModel) && $strLocalModel == $this->strModelName) && ($strForeignModel == $strRelatedModel)) {
+                if (($strLocalModel == $this->strModelName) && ($strForeignModel == $strRelatedModel)) {
                   $blnRelationshipFound = true;
 
                   $strSQL = "SELECT
@@ -132,7 +135,7 @@
 
         if (!$blnRelationshipFound && $this->objModelRegistry->isModel($strGetCallName)) {
           $strRelatedModel = $strGetCallName;
-          //Singular, so should only be concerned with onetomany relationships where this model is the child / foreign table
+          //Singular, so should only be concerned with onetomany relationships where this model is the child / foreign table, and onetoone relationships
 
           foreach (self::$arrRelationships as $arrRelationshipInfo) {
             switch ($arrRelationshipInfo['type']) {
@@ -146,15 +149,29 @@
                 break;
 
               case 'onetoone':
-                foreach ($arrRelationshipInfo['models'] as $arrModelInfo) {
-                  if ($arrModelInfo['name'] == $this->strModelName) {
-                    $strColumn = $arrModelInfo['column'];
-                  } else {
-                    $strOtherColumn = $arrModelInfo['column'];
-                  }//if
-                }//foreach
+                $blnRelationshipFound = false;
 
-                return new $strRelatedModel(array($strOtherColumn => $this->$strColumn));
+                if ($arrRelationshipInfo['local']['name'] == $this->strModelName && $arrRelationshipInfo['foreign']['name'] == $strRelatedModel) {
+                  $strColumn = $arrRelationshipInfo['local']['column'];
+                  $strOtherColumn = $arrRelationshipInfo['foreign']['column'];
+
+                  $objResultsFilter = new ResultsFilter();
+                  $objResultsFilter->model($strRelatedModel)
+                                   ->conditions($strOtherColumn . " = " . $this->prepareData($this->$strColumn, $strColumn));
+
+                  $objCollection = new Collection($objResultsFilter);
+
+                  if (count($objCollection) == 1) {
+                    return $objCollection[0];
+                  } else {
+                    throw new NoDataFoundException();
+                  }//if
+                } else if ($arrRelationshipInfo['foreign']['name'] == $this->strModelName && $arrRelationshipInfo['local']['name'] == $strRelatedModel) {
+                  $strColumn = $arrRelationshipInfo['foreign']['column'];
+                  $strOtherColumn = $arrRelationshipInfo['local']['column'];
+
+                  return new $strRelatedModel(array($strOtherColumn => $this->$strColumn));
+                }//if
                 break;
             }//switch
           }//foreach

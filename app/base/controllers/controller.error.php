@@ -6,6 +6,7 @@
       $this->view = new ErrorView();
 
       $this->view->errortitle = "404 - Page Not Found";
+      $this->view->is404 = true;
 
       if (!empty($strErrorText)) {
         $this->view->errortext = $strErrorText;
@@ -13,7 +14,7 @@
         $this->view->errortext = "Page not found";
       }//if
 
-      $this->view->render();
+      $this->renderView();
     }//function
 
     public function showControllerError ($strErrorText = '') {
@@ -27,7 +28,7 @@
         $this->view->errortext = "Controller not found";
       }//if
 
-      $this->view->render();
+      $this->renderView();
     }//function
 
     public function showActionError ($strErrorText = '') {
@@ -41,7 +42,7 @@
         $this->view->errortext = "Action not found";
       }//if
 
-      $this->view->render();
+      $this->renderView();
     }//function
 
     public function showViewError ($strErrorText = '') {
@@ -55,7 +56,7 @@
         $this->view->errortext = "View not found";
       }//if
 
-      $this->view->render();
+      $this->renderView();
     }//function
 
     public function showTemplateError ($strErrorText = '') {
@@ -69,7 +70,7 @@
         $this->view->errortext = "Template not found";
       }//if
 
-      $this->view->render();
+      $this->renderView();
     }//function
 
     public function showDatabaseError ($strErrorText = '') {
@@ -83,7 +84,7 @@
         $this->view->errortext = "Database error";
       }//if
 
-      $this->view->render();
+      $this->renderView();
     }//function
 
     public function showGeneralError ($strErrorText = '') {
@@ -97,7 +98,7 @@
         $this->view->errortext = "General error";
       }//if
 
-      $this->view->render();
+      $this->renderView();
     }//function
 
     public function showOfflineError ($strErrorText = '') {
@@ -111,6 +112,6 @@
         $this->view->errortext = "Please try again later.";
       }//if
 
-      $this->view->render();
+      $this->renderView();
     }//function
   }//class

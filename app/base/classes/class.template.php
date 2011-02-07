@@ -400,11 +400,13 @@
             break;
 
           case 'tb':
-            $intLastArrayElement = count($arrBlockLines) - 1;
-            $strBottomLine = trim($arrBlockLines[$intLastArrayElement]);
+            if (count($arrBlockLines) > 0) {
+              $intLastArrayElement = count($arrBlockLines) - 1;
+              $strBottomLine = trim($arrBlockLines[$intLastArrayElement]);
 
-            if (empty($strBottomLine)) {
-              unset($arrBlockLines[$intLastArrayElement]);
+              if (empty($strBottomLine)) {
+                unset($arrBlockLines[$intLastArrayElement]);
+              }//if
             }//if
             break;
 

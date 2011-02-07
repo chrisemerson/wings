@@ -22,6 +22,7 @@
           $strRouteMatch = str_replace('{string}', '([^\/]+)', $strRouteMatch);
           $strRouteMatch = str_replace('{int}', '([0-9]+)', $strRouteMatch);
           $strRouteMatch = str_replace('{integer}', '([0-9]+)', $strRouteMatch);
+          $strRouteMatch = str_replace('{url}', '(.+)', $strRouteMatch);
 
           if (preg_match($strRouteMatch, $this->strURI, $arrMatches)) {
             //Check if the secure setting is correct, redirect if not

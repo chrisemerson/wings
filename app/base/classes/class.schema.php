@@ -71,16 +71,11 @@
 
           $arrModels = array();
 
-          foreach ($objOneToOneRelationship->model as $objRelationshipModel) {
-            $arrModel = array();
+          $arrRelationship['local'] = array('name' => (string) $objOneToOneRelationship->localmodel['name'],
+                                            'column' => (string) $objOneToOneRelationship->localmodel['column']);
 
-            $arrModel['name'] = (string) $objRelationshipModel['name'];
-            $arrModel['column'] = (string) $objRelationshipModel['column'];
-
-            $arrModels[] = $arrModel;
-          }//foreach
-
-          $arrRelationship['models'] = $arrModels;
+          $arrRelationship['foreign'] = array('name' => (string) $objOneToOneRelationship->foreignmodel['name'],
+                                              'column' => (string) $objOneToOneRelationship->foreignmodel['column']);
 
           self::$arrRelationships[] = $arrRelationship;
         }//foreach
