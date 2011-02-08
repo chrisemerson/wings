@@ -1,5 +1,3 @@
-<div class="rbox">
-  <h2>{errortitle}</h2>
+<h2>{errortitle}</h2>
 
-  <p>{errortext}</p>
-</div>
+<p>{errortext}</p>
