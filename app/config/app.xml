@@ -4,7 +4,7 @@
   <default>
     <uri>
       <host>dev</host>
-      <path>boonspace/httpdocs</path>
+      <path>appframework/httpdocs</path>
     </uri>
 
     <template>
@@ -12,7 +12,7 @@
     </template>
 
     <db>
-      <uri>mysqli://boonspace:F83ZjudAc8BNcEnX@localhost/boonspace</uri>
+      <uri>mysqli://app:*****@localhost/app</uri>
       <prefix>bs_</prefix>
     </db>
 
@@ -24,7 +24,7 @@
 
     <cookie>
       <domain></domain>
-      <path>/boonspace/httpdocs/</path>
+      <path>/appframework/httpdocs/</path>
     </cookie>
   </default>
 

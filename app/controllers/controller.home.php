@@ -3,6 +3,6 @@
     public function index () {
       $this->view = new HomeView();
 
-      $this->view->render();
+      $this->renderView();
     }//function
   }//class

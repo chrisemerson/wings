@@ -24,7 +24,7 @@
       return $this->$strName;
     }//function
 
-    public function renderView () {
+    protected function renderView () {
       foreach ($this->arrInbuiltClasses as $strName => $strClass) {
         $this->view->$strName = $this->$strName;
       }//foreach
