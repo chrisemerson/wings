@@ -18,7 +18,7 @@
     /* Constructor & Initialisation */
     /********************************/
 
-    public function __construct ($strTemplateName, $blnIgnoreMasterTemplateSetting = false) {
+    public function __construct ($strTemplateName, $mixMasterTemplateSetting = true) {
       $this->strTemplateName = $strTemplateName;
       $strTemplateFile = Application::getBasePath() . "templates/" . str_replace(".", "/", $strTemplateName) . ".tpl";
 
@@ -28,20 +28,30 @@
 
       $this->arrOriginalTemplateLines = file($strTemplateFile);
 
-      if (!$blnIgnoreMasterTemplateSetting) {
+      if ($mixMasterTemplateSetting === true) {
         $this->applyMasterTemplate();
+      } else if ($mixMasterTemplateSetting !== false) {
+        $this->applyMasterTemplate($mixMasterTemplateSetting);
       }//if
 
       $this->initialiseBlock();
     }//function
 
-    private function applyMasterTemplate () {
-      $objAppConfig = new Config('app');
+    private function applyMasterTemplate ($strMasterTemplate = null) {
+      if (is_null($strMasterTemplate)) {
+        $objAppConfig = new Config('app');
 
-      if (isset($objAppConfig->template->mastertemplate)) {
+        if (isset($objAppConfig->template->mastertemplate)) {
+          $strTemplateName = $objAppConfig->template->mastertemplate;
+        }//if
+      } else {
+        $strTemplateName = $strMasterTemplate;
+      }//if
+
+      if (!empty($strTemplateName)) {
         $strThisClassName = __CLASS__;
 
-        $objMasterTemplate = new $strThisClassName($objAppConfig->template->mastertemplate, true);
+        $objMasterTemplate = new $strThisClassName($strTemplateName, false);
         $arrMasterTemplateLines = $objMasterTemplate->returnOriginalContentLines();
 
         $arrNewTemplateLines = array();

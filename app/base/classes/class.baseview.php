@@ -10,9 +10,9 @@
     protected function __construct () {
     }//function
 
-    protected function loadTemplate ($strTemplateName, $blnIgnoreMasterTemplateSetting = false) {
+    protected function loadTemplate ($strTemplateName, $mixMasterTemplateSetting = true) {
       try {
-        $this->template = new Template($strTemplateName, $blnIgnoreMasterTemplateSetting);
+        $this->template = new Template($strTemplateName, $mixMasterTemplateSetting);
       } catch (TemplateNotFoundException $ex) {
         Application::showError('template');
       }//try
