@@ -68,7 +68,7 @@
       }//if
     }//function
 
-    public function attemptLogin ($strUsername, $strPassword, $blnRememberMe = false) {
+    public function attemptLogin ($strUsername, $strPassword, $blnRememberMe = false, $blnRedirectAfterLogin = true) {
       $objResultsFilter = new ResultsFilter();
       $objResultsFilter->model($this->strUserModel)
                        ->conditions("`" . $this->strUsernameField . "` = '" . $strUsername . "'");
@@ -96,6 +96,10 @@
             } else {
               $this->forgetLoginAtThisLocation();
             }//if
+          }//if
+
+          if ($blnRedirectAfterLogin) {
+            $this->redirectAfterLogin();
           }//if
 
           return true;

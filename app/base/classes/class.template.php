@@ -314,7 +314,7 @@
 
         if ($blnIncludeFoundThisLoop) {
           $strThisClassName = __CLASS__;
-          $objIncludedTemplate = new $strThisClassName($strIncludedTemplateName, true);
+          $objIncludedTemplate = new $strThisClassName($strIncludedTemplateName, false);
           $arrIncludedTemplateLines = $objIncludedTemplate->returnOriginalContentLines();
 
           $intIncludedLines = -1;
