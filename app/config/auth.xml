@@ -6,38 +6,23 @@
 
     <fields>
       <id>user_id</id>
-      <username>user_email</username>
-      <password>user_password</password>
+      <username>user_name</username>
+      <password>user_pass</password>
     </fields>
   </users>
 
   <rememberme>
-    <enabled>1</enabled>
-
-    <rememberedlogins>
-      <model>RememberedLogin</model>
-
-      <fields>
-        <userid>user_id</userid>
-        <token>remembered_login_token</token>
-        <serial>remembered_login_serial</serial>
-        <expiry>remembered_login_expiry</expiry>
-      </fields>
-    </rememberedlogins>
-
-    <remembereddays>30</remembereddays>
-
-    <defaultcookiename>bsauth</defaultcookiename>
+    <enabled>0</enabled>
   </rememberme>
 
   <uris>
-    <requirelogin>user/login</requirelogin>
-    <requirelogout>user/my-account</requirelogout>
-    <requirereauth>user/login</requirereauth>
-    <redirectafterlogin>user/my-account</redirectafterlogin>
+    <requirelogin>admin/login</requirelogin>
+    <requirelogout>admin/pages</requirelogout>
+    <requirereauth>admin/login</requirereauth>
+    <redirectafterlogin>admin/pages</redirectafterlogin>
   </uris>
 
-  <salt>vgw3e4%^W4gvqwaFA£5vaWFA!£%FVazswetzvbS£%FA</salt>
+  <salt>****************************************************************************************************</salt>
 
   <sessionname>userauth</sessionname>
 </auth>

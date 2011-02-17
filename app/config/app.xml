@@ -13,7 +13,7 @@
 
     <db>
       <uri>mysqli://app:*****@localhost/app</uri>
-      <prefix>bs_</prefix>
+      <prefix>app_</prefix>
     </db>
 
     <errors>

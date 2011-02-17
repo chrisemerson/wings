@@ -9,7 +9,7 @@
     <execute controller="ErrorController" action="show404Error" />
   </notfound>
 
-<!-- Some examples of routes:
+  <!-- Some examples of routes:
   <route match="[match]">
     <execute controller="[controller]" />
   </route>

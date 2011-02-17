@@ -79,10 +79,6 @@
 
   <integer_nonzero>
     <default>{field} must be an integer, and must not be 0</default>
-
-    <fields>
-      <title>You must select a Title</title>
-    </fields>
   </integer_nonzero>
 
   <valid_email>

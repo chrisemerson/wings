@@ -7,29 +7,4 @@
      e.g. ExampleModel => ExampleModels => example_models -->
 
 <models>
-  <model name="Address" plural="Addresses" />
-  <model name="AdminUser" />
-  <model name="Alert" />
-  <model name="Card" />
-  <model name="Category" plural="Categories" />
-  <model name="ContentType" />
-  <model name="Country" plural="Countries" />
-  <model name="DeliveryMethod" />
-  <model name="EditableArea" />
-  <model name="EmailTemplate" />
-  <model name="GlobalReminderDate" />
-  <model name="Order" />
-  <model name="OrderLine" />
-  <model name="OrderStatus" plural="OrderStatuses" />
-  <model name="OrderStatusUpdate" />
-  <model name="Page" />
-  <model name="PersonalisedCard" />
-  <model name="RememberedLogin" />
-  <model name="ReminderDate" />
-  <model name="Retailer" />
-  <model name="Template" />
-  <model name="Title" />
-  <model name="Typeface" />
-  <model name="User" />
-  <model name="Voucher" />
 </models>
