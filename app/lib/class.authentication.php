@@ -183,8 +183,13 @@
       }//if
     }//function
 
-    public function createHashFromPassword ($strPassword) {
+    private function createHashFromPassword ($strPassword) {
       return sha1($this->strSalt . md5($strPassword) . $strPassword . strrev($this->strSalt) . strrev($strPassword) . md5($this->strSalt));
+    }//function
+
+    public function setUserPassword (&$objUser, $strPassword) {
+      $strPasswordField = $this->strPasswordField;
+      $objUser->$strPasswordField = $this->createHashFromPassword($strPassword);
     }//function
 
     public function clearAllRememberedLogins ($intUserID = 0) {
