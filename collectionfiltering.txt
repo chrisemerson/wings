@@ -1,0 +1,13 @@
+where
+
+order by
+
+limit
+
+field = value && field = value || field = blah < field    > field     [1,5]
+where                                          | orderasc | orderdesc | limit
+
+eg
+
+new PostCollection ()
+new PostCollection ('date < '2011-02-25' && date > '2011-01-23' < date [3]');
