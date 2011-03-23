@@ -10,4 +10,17 @@
     public function render () {
       parent::render();
     }//function
+
+    protected function addStylesheet ($strStylesheetName, $strStylesheetMedia = 'screen') {
+      $this->template->stylesheetname = $strStylesheetName;
+      $this->template->stylesheetmedia = $strStylesheetMedia;
+
+      $this->template->parse('stylesheet');
+    }//function
+
+    protected function addScript ($strScriptName) {
+      $this->template->scriptname = $strScriptName;
+
+      $this->template->parse('script');
+    }//function
   }//class

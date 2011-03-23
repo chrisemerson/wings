@@ -65,6 +65,8 @@
     public function __get ($strName) {
       if (isset(self::$arrConfigs[$this->strCurrentConfig]->$strName)) {
         return self::$arrConfigs[$this->strCurrentConfig]->$strName;
+      } else {
+        throw new ConfigSettingNotFoundException;
       }//if
     }//function
 
@@ -74,3 +76,4 @@
   }//class
 
   class ConfigNotFoundException extends Exception {}
+  class ConfigSettingNotFoundException extends Exception {}
