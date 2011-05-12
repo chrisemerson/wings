@@ -4,9 +4,8 @@
 
     public final function __construct () {
       $this->errors = new ErrorRegistry();
-      $this->input = new FormValidator();
-      $this->post = new InputFilter(INPUT_TYPE_POST, get_class($this));
-      $this->get = new InputFilter(INPUT_TYPE_GET, get_class($this));
+      $this->post = new InputFilter(INPUT_TYPE_POST);
+      $this->get = new InputFilter(INPUT_TYPE_GET);
       $this->session = new Session();
       $this->auth = new Authentication();
       $this->files = new FileUpload();
@@ -22,7 +21,6 @@
 
     protected function renderView () {
       $this->view->errors = $this->errors;
-      $this->view->input = $this->input;
       $this->view->post = $this->post;
       $this->view->get = $this->get;
       $this->view->session = $this->session;
