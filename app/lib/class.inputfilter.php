@@ -31,34 +31,43 @@
     }//function
 
     public function __get ($strName) {
-      if (is_null($this->strName)) {
-        $this->strName = $strName;
-        $this->strLabel = $strName;
+      switch ($strName) {
+        case 'h':
+          $mixValue = $this->mixValue;
 
-        if (isset($this->arrInputArray[$strName])) {
-          $this->mixValue = $this->arrInputArray[$strName];
-        }//if
-      } else {
-        switch ($strName) {
-          case 'h':
-            return $this->mixValue;
-            break;
+          $this->reset();
 
-          case 'i':
-            return intval($this->mixValue);
-            break;
+          return $mixValue;
+          break;
 
-          case 's':
-            return $this->mixValue;
-            break;
+        case 'i':
+          $mixValue = $this->mixValue;
 
-          case 't':
-            return $this->mixValue;
-            break;
-        }//switch
-      }//if
+          $this->reset();
 
-      return $this;
+          return intval($mixValue);
+          break;
+
+        case 's':
+          $mixValue = $this->mixValue;
+
+          $this->reset();
+
+          return $mixValue;
+          break;
+
+        case 't':
+          $mixValue = $this->mixValue;
+
+          $this->reset();
+
+          return $mixValue;
+          break;
+
+        default:
+          return isset($this->arrInputArray[$strName]) ? $this->arrInputArray[$strName] : null;
+          break;
+      }//switch
     }//function
 
     public function __set ($strName, $mixValue) {
@@ -94,8 +103,10 @@
       return $this;
     }//function
 
-    public function __toString () {
-      return $this->mixValue;
+    public function reset () {
+      $this->strName = null;
+      $this->strLabel = null;
+      $this->mixValue = null;
     }//function
 
     public function isError () {
