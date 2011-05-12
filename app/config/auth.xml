@@ -12,7 +12,22 @@
   </users>
 
   <rememberme>
-    <enabled>0</enabled>
+    <enabled>1</enabled>
+
+    <rememberedlogins>
+      <model>RememberedLogin</model>
+
+      <fields>
+        <userid>user_id</userid>
+        <token>remembered_login_token</token>
+        <serial>remembered_login_serial</serial>
+        <expiry>remembered_login_expiry</expiry>
+      </fields>
+    </rememberedlogins>
+
+    <remembereddays>30</remembereddays>
+
+    <defaultcookiename>auth</defaultcookiename>
   </rememberme>
 
   <uris>

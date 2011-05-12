@@ -17,12 +17,7 @@
         $arrQueryString = explode('&', $arrURL['query']);
 
         foreach ($arrQueryString as $strQueryString) {
-          if (strpos($strQueryString, '=') !== false) {
-            list($strKey, $strValue) = explode('=', $strQueryString);
-          } else {
-            $strKey = $strQueryString;
-            $strValue = true;
-          }//if
+          list($strKey, $strValue) = explode('=', $strQueryString);
 
           $arrFinalQueryString[$strKey] = $strValue;
         }//foreach

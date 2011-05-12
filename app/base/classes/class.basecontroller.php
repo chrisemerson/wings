@@ -2,11 +2,15 @@
   abstract class BaseController {
     protected $view = null;
 
-    private $arrInbuiltClasses = array('errors' => 'ErrorRegistry',
-                                       'input' => 'FormValidator',
-                                       'session' => 'Session',
-                                       'auth' => 'Authentication',
-                                       'files' => 'FileUpload');
+    public final function __construct () {
+      $this->errors = new ErrorRegistry();
+      $this->input = new FormValidator();
+      $this->post = new InputFilter(INPUT_TYPE_POST, get_class($this));
+      $this->get = new InputFilter(INPUT_TYPE_GET, get_class($this));
+      $this->session = new Session();
+      $this->auth = new Authentication();
+      $this->files = new FileUpload();
+    }//function
 
     public function index () {
       $this->view = new DefaultView();
@@ -16,18 +20,14 @@
       $this->renderView();
     }//function
 
-    public function __get ($strName) {
-      if (isset($this->arrInbuiltClasses[$strName])) {
-        $this->$strName = new $this->arrInbuiltClasses[$strName];
-      }//if
-
-      return $this->$strName;
-    }//function
-
     protected function renderView () {
-      foreach ($this->arrInbuiltClasses as $strName => $strClass) {
-        $this->view->$strName = $this->$strName;
-      }//foreach
+      $this->view->errors = $this->errors;
+      $this->view->input = $this->input;
+      $this->view->post = $this->post;
+      $this->view->get = $this->get;
+      $this->view->session = $this->session;
+      $this->view->auth = $this->auth;
+      $this->view->files = $this->files;
 
       $this->view->render();
     }//function

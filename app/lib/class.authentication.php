@@ -192,6 +192,11 @@
       $objUser->$strPasswordField = $this->createHashFromPassword($strPassword);
     }//function
 
+    public function checkUserPassword (&$objUser, $strPassword) {
+      $strPasswordField = $this->strPasswordField;
+      return (strcmp($objUser->$strPasswordField, $this->createHashFromPassword($strPassword)) == 0);
+    }//function
+
     public function clearAllRememberedLogins ($intUserID = 0) {
       if ($this->blnRememberedLoginsEnabled) {
         if (!empty($intUserID) || (isset($this->objSession->currentuserid) && !empty($this->objSession->currentuserid))) {

@@ -81,6 +81,10 @@
     <default>{field} must be an integer, and must not be 0</default>
   </integer_nonzero>
 
+  <regex>
+    <default>{field} is in an invalid format</default>
+  </regex>
+
   <valid_email>
     <default>{field} must be a valid email address.</default>
   </valid_email>
@@ -88,8 +92,4 @@
   <unique>
     <default>{field} is already taken. Please try another one!</default>
   </unique>
-
-  <regex>
-    <default>{field} is in an invalid format</default>
-  </regex>
 </errors>
