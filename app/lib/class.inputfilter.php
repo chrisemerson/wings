@@ -103,7 +103,7 @@
       return $this;
     }//function
 
-    public function reset () {
+    private function reset () {
       $this->strName = null;
       $this->strLabel = null;
       $this->mixValue = null;
