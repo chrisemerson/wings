@@ -94,6 +94,10 @@
       return $this;
     }//function
 
+    public function __toString () {
+      return $this->mixValue;
+    }//function
+
     public function isError () {
       return $this->objErrorRegistry->isError();
     }//function
