@@ -102,52 +102,17 @@
       exit($strMessage);
     }//function
 
-    public static function showError ($strErrorType, $strErrorText = '', $strLoggedError = '') {
+    public static function showError ($strErrorType, $mixErrorContent = '', $strLoggedError = '') {
       $objErrorController = new ErrorController();
       $strAction = "show" . ucwords(strtolower($strErrorType)) . "Error";
 
-      call_user_func(array($objErrorController, $strAction), $strErrorText);
+      call_user_func(array($objErrorController, $strAction), $mixErrorContent);
 
       //We don't want to continue beyond the error showing
       self::exitApp();
     }//function
 
     public static function handleUncaughtException ($exException) {
-      echo "<h1>Uncaught " . get_class($exException) . "</h1>\n\n";
-      echo "<p><b>" . $exException->getFile() . "(" . $exException->getLine() . ")</b></p>";
-
-      $arrTrace = $exException->getTrace();
-
-      echo "<ol>";
-
-      foreach ($arrTrace as $arrTraceStep) {
-        echo "<li>\n";
-        echo "  <dl>\n";
-
-        if (isset($arrTraceStep['file'])) {
-          echo "    <dt><b>File (Line)</b></dt>\n";
-          echo "    <dd>" . $arrTraceStep['file'];
-
-          if (isset($arrTraceStep['line'])) {
-            echo " (" . $arrTraceStep['line'] . ")";
-          }//if
-
-          echo "\n\n";
-        }//if
-
-        if (isset($arrTraceStep['class'])) {
-          echo "    <dt><b>Call</b></dt>\n";
-          echo "    <dd>" . $arrTraceStep['class'] . $arrTraceStep['type'] . $arrTraceStep['function'];
-
-          if (!empty($arrTraceStep['args'])) {
-            echo "(" . implode(", ", array_map('strval', $arrTraceStep['args'])) . ")</dd>";
-          }//if
-        }//if
-
-        echo "  </dl>\n";
-        echo "</li>\n";
-      }//foreach
-
-      echo "</ol>";
+      self::showError('Exception', $exException);
     }//function
   }//class

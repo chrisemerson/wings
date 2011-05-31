@@ -1,16 +1,6 @@
 <?php
   class ErrorRegistry {
-    private static $arrErrors;
-
-    private $strContext;
-
-    public function __construct ($strContext = '') {
-      $this->strContext = $strContext;
-    }//function
-
-    public function setContext ($strContext = '') {
-      $this->strContext = $strContext;
-    }//function
+    private static $arrErrors = array();
 
     public function addError ($strMessage, $strField = '') {
       $arrError = array('error' => $strMessage);
@@ -19,17 +9,13 @@
         $arrError['field'] = $strField;
       }//if
 
-      if (empty($this->strContext)) {
-        self::$arrErrors['default'][] = $arrError;
-      } else {
-        self::$arrErrors['contexts'][$this->strContext][] = $arrError;
-      }//if
+      self::$arrErrors[] = $arrError;
     }//function
 
     public function getErrors () {
       $arrErrorMessages = array();
 
-      $arrErrors = $this->getErrorsForCurrentContext();
+      $arrErrors = $this->getAllErrors();
 
       foreach ($arrErrors as $arrErrorInfo) {
         $arrErrorMessages[] = $arrErrorInfo['error'];
@@ -41,7 +27,7 @@
     public function getFieldErrors ($strField) {
       $arrErrorMessages = array();
 
-      $arrErrors = $this->getErrorsForCurrentContext();
+      $arrErrors = $this->getAllErrors();
 
       foreach ($arrErrors as $arrErrorInfo) {
         if ($arrErrorInfo['field'] == $strField) {
@@ -63,7 +49,7 @@
     public function getErroredFields () {
       $arrErrorMessages = array();
 
-      $arrErrors = $this->getErrorsForCurrentContext();
+      $arrErrors = $this->getAllErrors();
 
       foreach ($arrErrors as $arrErrorInfo) {
         $arrErrorMessages[] = $arrErrorInfo['field'];
@@ -72,27 +58,11 @@
       return array_unique($arrErrorMessages);
     }//function
 
-    private function getErrorsForCurrentContext () {
-      if (empty($this->strContext)) {
-        if (!isset(self::$arrErrors['default'])) {
-          return array();
-        }//if
-
-        return self::$arrErrors['default'];
-      } else {
-        if (!isset(self::$arrErrors['contexts'][$this->strContext])) {
-          return array();
-        }//if
-
-        return self::$arrErrors['contexts'][$this->strContext];
-      }//if
+    private function getAllErrors () {
+      return self::$arrErrors;
     }//function
 
     public function clearErrors () {
-      if (empty($this->strContext)) {
-        self::$arrErrors['default'] = array();
-      } else {
-        self::$arrErrors['contexts'][$this->strContext] = array();
-      }//if
+      self::$arrErrors = array();
     }//function
   }//class

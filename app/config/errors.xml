@@ -5,33 +5,33 @@
     <default>{field} is required, and was not entered.</default>
   </required>
 
-  <required_if>
+  <requiredif>
     <default>{field} is required, and was not entered.</default>
-  </required_if>
+  </requiredif>
 
   <is>
     <default>{field} has an incorrect value</default>
   </is>
 
   <matches>
-    <default>{field} must match {1}.</default>
+    <default>{field} must match {2}.</default>
   </matches>
 
   <length>
     <default>{field} must be exactly {1} characters long.</default>
   </length>
 
-  <length_min>
+  <lengthmin>
     <default>{field} must be at least {1} characters long.</default>
-  </length_min>
+  </lengthmin>
 
-  <length_max>
+  <lengthmax>
     <default>{field} must be {1} characters or less.</default>
-  </length_max>
+  </lengthmax>
 
-  <length_between>
+  <lengthbetween>
     <default>{field} must be between {1} and {2} characters long.</default>
-  </length_between>
+  </lengthbetween>
 
   <alpha>
     <default>{field} can only consist of alphabetical characters.</default>
@@ -41,53 +41,53 @@
     <default>{field} must be a numeric value.</default>
   </numeric>
 
-  <alpha_numeric>
+  <alphanumeric>
     <default>{field} can only consist of alphanumeric characters.</default>
-  </alpha_numeric>
+  </alphanumeric>
 
   <integer>
     <default>{field} must be an integer.</default>
   </integer>
 
-  <integer_min>
+  <integermin>
     <default>{field} must be an integer and no lower than {1}.</default>
-  </integer_min>
+  </integermin>
 
-  <integer_max>
+  <integermax>
     <default>{field} must be an integer and no higher than {1}.</default>
-  </integer_max>
+  </integermax>
 
-  <integer_between>
+  <integerbetween>
     <default>{field} must be an integer between {1} and {2}.</default>
-  </integer_between>
+  </integerbetween>
 
-  <integer_positive>
+  <integerpositive>
     <default>{field} must be a positive integer</default>
-  </integer_positive>
+  </integerpositive>
 
-  <integer_negative>
+  <integernegative>
     <default>{field} must be a negative integer</default>
-  </integer_negative>
+  </integernegative>
 
-  <integer_nonpositive>
+  <integernonpositive>
     <default>{field} must be a non-positive integer</default>
-  </integer_nonpositive>
+  </integernonpositive>
 
-  <integer_nonnegative>
+  <integernonnegative>
     <default>{field} must be a non-negative integer</default>
-  </integer_nonnegative>
+  </integernonnegative>
 
-  <integer_nonzero>
+  <integernonzero>
     <default>{field} must be an integer, and must not be 0</default>
-  </integer_nonzero>
+  </integernonzero>
 
   <regex>
     <default>{field} is in an invalid format</default>
   </regex>
 
-  <valid_email>
+  <validemail>
     <default>{field} must be a valid email address.</default>
-  </valid_email>
+  </validemail>
 
   <unique>
     <default>{field} is already taken. Please try another one!</default>

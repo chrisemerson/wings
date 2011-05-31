@@ -27,7 +27,7 @@
           break;
       }//switch
 
-      $this->objErrorRegistry = new ErrorRegistry('form');
+      $this->objErrorRegistry = new ErrorRegistry();
     }//function
 
     public function __get ($strName) {
@@ -103,12 +103,6 @@
       return $this;
     }//function
 
-    private function reset () {
-      $this->strName = null;
-      $this->strLabel = null;
-      $this->mixValue = null;
-    }//function
-
     public function isError () {
       return $this->objErrorRegistry->isError();
     }//function
@@ -117,9 +111,17 @@
       return $this->objErrorRegistry->getErrors();
     }//function
 
+    private function reset () {
+      $this->strName = null;
+      $this->strLabel = null;
+      $this->mixValue = null;
+    }//function
+
     private function getErrorText ($strError, $strField, $arrParams = array()) {
       $objErrorTextConfig = new Config('errors');
       $objAppConfig = new Config('app');
+
+      $strError = strtolower($strError);
 
       if (isset($objErrorTextConfig->$strError->fields->$strField)) {
         $strError = $objErrorTextConfig->$strError->fields->$strField;
@@ -145,11 +147,11 @@
     /* Validation Functions */
 
     private function required ($strValue) {
-      return (!empty($strValue));
+      return (!empty($strValue) || ($strValue === '0'));
     }//function
 
-    private function required_if ($strValue, $strControlField) {
-      return (empty($this->arrFormValues[$strControlField]) || !empty($strValue));
+    private function requiredIf ($strValue, $strControlField) {
+      return (empty($this->arrInputArray[$strControlField]) || (!empty($strValue) || ($strValue === '0')));
     }//function
 
     private function is ($strValue, $strStringToMatch) {
@@ -157,22 +159,22 @@
     }//function
 
     private function matches ($strValue, $strMatchField) {
-      return ((!isset($this->arrFormValues[$strMatchField]) && empty($strValue)) || ($strValue == $this->arrFormValues[$strMatchField]));
+      return ((!isset($this->arrInputArray[$strMatchField]) && empty($strValue)) || ($strValue == $this->arrInputArray[$strMatchField]));
     }//function
 
     private function length ($strValue, $intLength) {
       return (strlen($strValue) == $intLength);
     }//function
 
-    private function length_min ($strValue, $intLength) {
+    private function lengthMin ($strValue, $intLength) {
       return (strlen($strValue) >= $intLength);
     }//function
 
-    private function length_max ($strValue, $intLength) {
+    private function lengthMax ($strValue, $intLength) {
       return (strlen($strValue) <= $intLength);
     }//function
 
-    private function length_between ($strValue, $intMinLength, $intMaxLength) {
+    private function lengthBetween ($strValue, $intMinLength, $intMaxLength) {
       return (strlen($strValue) >= $intMinLength) && (strlen($strValue) <= $intMaxLength);
     }//function
 
@@ -184,51 +186,51 @@
       return is_numeric($strValue);
     }//function
 
-    private function alpha_numeric ($strValue) {
+    private function alphaNumeric ($strValue) {
       return preg_match("/^[a-z0-9]+\$/i", $strValue);
     }//function
 
     private function integer ($strValue) {
-      return preg_match("/^[-+]?[0-9]+\$/", $strValue);
+      return preg_match("/^([-+]?[0-9]+|[0-9]*)\$/", $strValue);
     }//function
 
-    private function integer_min ($strValue, $intValue) {
+    private function integerMin ($strValue, $intValue) {
       return ($this->integer($strValue) && $strValue >= $intValue);
     }//function
 
-    private function integer_max ($strValue, $intValue) {
+    private function integerMax ($strValue, $intValue) {
       return ($this->integer($strValue) && $strValue <= $intValue);
     }//function
 
-    private function integer_between ($strValue, $intMinValue, $intMaxValue) {
+    private function integerBetween ($strValue, $intMinValue, $intMaxValue) {
       return ($this->integer($strValue) && $strValue >= $intMinValue && $strValue <= $intMaxValue);
     }//function
 
-    private function integer_positive ($strValue) {
-      return ($this->integer($strValue) && $this->integer_min($strValue, 1));
+    private function integerPositive ($strValue) {
+      return ($this->integer($strValue) && $this->integerMin($strValue, 1));
     }//function
 
-    private function integer_negative ($strValue) {
-      return ($this->integer($strValue) && $this->integer_max($strValue, -1));
+    private function integerNegative ($strValue) {
+      return ($this->integer($strValue) && $this->integerMax($strValue, -1));
     }//function
 
-    private function integer_nonpositive ($strValue) {
-      return !$this->integer_positive($strValue);
+    private function integerNonPositive ($strValue) {
+      return ($this->integer($strValue) && !$this->integerPositive($strValue));
     }//function
 
-    private function integer_nonnegative ($strValue) {
-      return !$this->integer_negative($strValue);
+    private function integerNonNegative ($strValue) {
+      return ($this->integer($strValue) && !$this->integerNegative($strValue));
     }//function
 
-    private function integer_nonzero ($strValue) {
-      return ($this->integer($strValue) && ($this->integer_max($strValue, -1) || $this->integer_min($strValue, 1)));
+    private function integerNonZero ($strValue) {
+      return ($this->integer($strValue) && ($this->integerMax($strValue, -1) || $this->integerMin($strValue, 1)));
     }//function
 
     private function regex ($strValue, $strRegex) {
       return preg_match($strRegex, $strValue);
     }//function
 
-    private function valid_email ($strValue) {
+    private function validEmail ($strValue) {
       return preg_match("/^[a-z0-9!#\$%&'*+\\/=?^_`{|}~-]+(\\.[a-z0-9!#\$%&'*+\\/=?^_`{|}~-]+)*@([a-z0-9]([a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9]([a-z0-9-]*[a-z0-9])?\$/i", $strValue);
     }//function
 

@@ -106,10 +106,12 @@
           $arrColumn['autonumber'] = (strtolower($arrResult['Extra']) == 'auto_increment');
 
           self::$arrColumns[$this->strModelName][$strColumnName] = $arrColumn;
-
-          $this->arrEmptyDataArray[$strColumnName] = null;
         }//while
       }//if
+
+      foreach (self::$arrColumns[$this->strModelName] as $strColumnName => $arrColumn) {
+        $this->arrEmptyDataArray[$strColumnName] = null;
+      }//foreach
     }//function
 
     protected function getTableName () {
@@ -163,11 +165,15 @@
     protected function prepareData ($strData, $strFieldName) {
       $strDataType = $this->getDataType($strFieldName);
 
+      if (is_null($strData)) {
+        return 'NULL';
+      }//if
+
       switch ($strDataType) {
         case 'int':
         case 'tinyint':
         case 'decimal':
-          return $strData;
+          return empty($strData) ? 0 : $strData;
           break;
 
         case 'date':

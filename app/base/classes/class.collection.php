@@ -68,6 +68,20 @@
       $this->arrMembers[] = $objModel;
     }//function
 
+    public function sortBy ($strSortColumn) {
+      usort($this->arrMembers, array($this, 'orderBy' . $strSortColumn));
+    }//function
+
+    public function __call ($strName, $arrArgs) {
+      if (preg_match('/^orderBy(.+)$/', $strName, $arrMatches)) {
+        return call_user_func_array(array($this, 'orderBy'), array_merge(array($arrMatches[1]), $arrArgs));
+      }//if
+    }//function
+
+    private function orderBy ($strField, $objModel1, $objModel2) {
+      return ($objModel1->$strField > $objModel2->$strField);
+    }//function
+
     /************************************/
     /* Abstract Methods from Interfaces */
     /************************************/

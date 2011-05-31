@@ -114,4 +114,12 @@
 
       $this->renderView();
     }//function
+
+    public function showExceptionError ($exException) {
+      $this->view = new ErrorView();
+
+      $this->view->exception = $exException;
+
+      $this->renderView();
+    }//function
   }//class
