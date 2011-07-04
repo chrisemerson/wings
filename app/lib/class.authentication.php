@@ -286,7 +286,9 @@
       if ($this->blnRememberedLoginsEnabled && $this->isLoggedIn()) {
         //Generate new series and token identifiers, and add to database. Set as cookie.
 
-        $objRememberedLogin = new RememberedLogin();
+        $strRememberedLoginsModel = $this->strRememberedLoginsModel;
+
+        $objRememberedLogin = new $strRememberedLoginsModel();
 
         $strUserIDField = $this->strUserIDField;
         $strTokenField = $this->strTokenField;
