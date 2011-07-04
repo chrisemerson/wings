@@ -176,6 +176,7 @@
           return empty($strData) ? 0 : $strData;
           break;
 
+        case 'char':
         case 'date':
         case 'datetime':
         case 'time':

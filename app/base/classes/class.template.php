@@ -333,7 +333,7 @@
           foreach ($arrBlockStartLines as $intChildBlockStartLine => $strChildBlockName) {
             $intNewChildBlockStartLine = $intChildBlockStartLine;
 
-            if ($intChildBlockStartLine >= $intLineNo) {
+            if ($intChildBlockStartLine >= $intLineCounter) {
               $intNewChildBlockStartLine += $intIncludedLines;
             }//if
 
