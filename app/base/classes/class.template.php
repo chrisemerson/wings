@@ -333,14 +333,15 @@
           foreach ($arrBlockStartLines as $intChildBlockStartLine => $strChildBlockName) {
             $intNewChildBlockStartLine = $intChildBlockStartLine;
 
-            if ($intChildBlockStartLine >= $intLineCounter) {
+            if ($intChildBlockStartLine >= $intLineNo) {
               $intNewChildBlockStartLine += $intIncludedLines;
             }//if
 
             $arrNewBlockStartLines[$intNewChildBlockStartLine] = $strChildBlockName;
           }//foreach
-
+print_r($this->arrBlockInformation[$strBlockName]['startlines']);
           $this->arrBlockInformation[$strBlockName]['startlines'] = $arrNewBlockStartLines;
+print_r($this->arrBlockInformation[$strBlockName]['startlines']);
         } else {
           if ($blnProcessLine) {
             $arrFinalLines[$intLineCounter] = $strLine;
