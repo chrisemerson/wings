@@ -325,22 +325,6 @@
             $intIncludedLines++;
             $intLineCounter++;
           }//foreach
-
-          //Because we have changed the line numbers / number of lines, we have to recalculate the start lines of child blocks now
-          $arrBlockStartLines = $this->arrBlockInformation[$strBlockName]['startlines'];
-          $arrNewBlockStartLines = array();
-
-          foreach ($arrBlockStartLines as $intChildBlockStartLine => $strChildBlockName) {
-            $intNewChildBlockStartLine = $intChildBlockStartLine;
-
-            if ($intChildBlockStartLine >= $intLineNo) {
-              $intNewChildBlockStartLine += $intIncludedLines;
-            }//if
-
-            $arrNewBlockStartLines[$intNewChildBlockStartLine] = $strChildBlockName;
-          }//foreach
-
-          $this->arrBlockInformation[$strBlockName]['startlines'] = $arrNewBlockStartLines;
         } else {
           if ($blnProcessLine) {
             $arrFinalLines[$intLineCounter] = $strLine;
@@ -351,6 +335,7 @@
 
       if ($blnIncludeFound) {
         $this->arrBlockInformation[$strBlockName]['originallines'] = $arrFinalLines;
+        $this->arrBlockInformation[$strBlockName]['startlines'] = array();
         $this->initialiseBlock($strBlockName);
       }//if
 
