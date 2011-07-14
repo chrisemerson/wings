@@ -287,11 +287,13 @@
       $arrLines = $this->arrBlockInformation[$strBlockName]['originallines'];
 
       $blnIncludeFound = false;
+      $intIncludedLines = -1;
 
       foreach ($arrLines as $intLineNo => $strLine) {
         $blnIncludeFoundThisLoop = false;
         $blnProcessLine = true;
 
+        //Is this line an include line?
         if (preg_match(self::RE_INCLUDE, $strLine, $arrMatches)) {
           $blnIncludeFound = true;
           $blnIncludeFoundThisLoop = true;
@@ -302,22 +304,21 @@
 
         if (preg_match(self::RE_INCLUDE_VARIABLE, $strLine, $arrMatches)) {
           if (isset($this->arrVariables[strtolower($arrMatches[2])])) {
-            $strIncludedTemplateName = $this->arrVariables[strtolower($arrMatches[2])];
-            $strIncludedTemplateIndent = $arrMatches[1];
-
             $blnIncludeFound = true;
             $blnIncludeFoundThisLoop = true;
+
+            $strIncludedTemplateIndent = $arrMatches[1];
+            $strIncludedTemplateName = $this->arrVariables[strtolower($arrMatches[2])];
           } else {
             $blnProcessLine = false;
           }//if
         }//if
 
+        //If this line is an include, process...
         if ($blnIncludeFoundThisLoop) {
           $strThisClassName = __CLASS__;
           $objIncludedTemplate = new $strThisClassName($strIncludedTemplateName, false);
           $arrIncludedTemplateLines = $objIncludedTemplate->returnOriginalContentLines();
-
-          $intIncludedLines = -1;
 
           foreach ($arrIncludedTemplateLines as $strIncludedTemplateLine) {
             $arrFinalLines[$intLineCounter] = rtrim($strIncludedTemplateIndent . $strIncludedTemplateLine, "\r\n") . PHP_EOL;
@@ -326,7 +327,6 @@
           }//foreach
 
           //Because we have changed the line numbers / number of lines, we have to recalculate the start lines of child blocks now
-
           $arrBlockStartLines = $this->arrBlockInformation[$strBlockName]['startlines'];
           $arrNewBlockStartLines = array();
 
@@ -339,9 +339,8 @@
 
             $arrNewBlockStartLines[$intNewChildBlockStartLine] = $strChildBlockName;
           }//foreach
-print_r($this->arrBlockInformation[$strBlockName]['startlines']);
+
           $this->arrBlockInformation[$strBlockName]['startlines'] = $arrNewBlockStartLines;
-print_r($this->arrBlockInformation[$strBlockName]['startlines']);
         } else {
           if ($blnProcessLine) {
             $arrFinalLines[$intLineCounter] = $strLine;
