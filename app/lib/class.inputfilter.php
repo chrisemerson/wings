@@ -227,7 +227,7 @@
     }//function
 
     private function regex ($strValue, $strRegex) {
-      return preg_match($strRegex, $strValue);
+      return !$this->required($strValue) || preg_match($strRegex, $strValue);
     }//function
 
     private function validEmail ($strValue) {
