@@ -23,9 +23,11 @@
         }//foreach
       }//if
 
-      foreach ($arrQSA as $strKey => $strValue) {
-        $arrFinalQueryString[$strKey] = $strValue;
-      }//foreach
+      if (is_array($arrQSA)) {
+        foreach ($arrQSA as $strKey => $strValue) {
+          $arrFinalQueryString[$strKey] = $strValue;
+        }//foreach
+      }//if
 
       $arrQueryStringPieces = array();
 
@@ -34,9 +36,13 @@
       }//foreach
 
       if (($_SERVER['SERVER_PORT'] != '80') && ($_SERVER['SERVER_PORT'] != '443')) {
-        $strCurrentPageURI .= $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $arrURL['path'] . '?' . implode('&', $arrQueryStringPieces);
+        $strCurrentPageURI .= $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $arrURL['path'];
       } else {
-        $strCurrentPageURI .= $_SERVER['SERVER_NAME'] . $arrURL['path'] . '?' . implode('&', $arrQueryStringPieces);
+        $strCurrentPageURI .= $_SERVER['SERVER_NAME'] . $arrURL['path'];
+      }//if
+
+      if (count($arrQueryStringPieces) && $arrQSA !== false) {
+        $strCurrentPageURI .= '?' . implode('&', $arrQueryStringPieces);
       }//if
 
       return $strCurrentPageURI;
@@ -66,6 +72,19 @@
       }//if
 
       return $strAppBaseURI;
+    }//function
+
+    public static function getCurrentPageURIRelativeToBase ($arrQSA = array()) {
+      $strCurrentPageURI = self::getCurrentPageURI($arrQSA);
+      $strBaseURI = self::getBaseURI(self::isSecure());
+
+      if ($strBaseURI == substr($strCurrentPageURI, 0, strlen($strBaseURI))) {
+        return substr($strCurrentPageURI, strlen($strBaseURI));
+      } else {
+        return $strCurrentPageURI;
+      }//if
+
+      return str_replace($strBaseURI, '', $strCurrentPageURI);
     }//function
 
     public static function getFullURI ($strPath = "/", $blnSecure = false) {
