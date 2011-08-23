@@ -84,6 +84,10 @@
       return $this->dbResults->fetch_assoc();
     }//function
 
+    public function data_seek ($intOffset) {
+      return $this->dbResults->data_seek($intOffset);
+    }//function
+
     public function free () {
       $this->dbResults->free();
     }//function

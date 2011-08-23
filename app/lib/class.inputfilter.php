@@ -15,6 +15,11 @@
     private $strLabel = null;
     private $mixValue = null;
 
+    const REGEX_ALPHA = "/^[a-z]+\$/i";
+    const REGEX_ALPHANUMERIC = "/^[a-z0-9]+\$/i";
+    const REGEX_INTEGER = "/^([-+]?[0-9]+|[0-9]*)\$/";
+    const REGEX_EMAIL_ADDRESS = "/^[a-z0-9!#\$%&'*+\\/=?^_`{|}~-]+(\\.[a-z0-9!#\$%&'*+\\/=?^_`{|}~-]+)*@([a-z0-9]([a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9]([a-z0-9-]*[a-z0-9])?\$/i";
+
     public function __construct ($conInputType = INPUT_TYPE_POST) {
       switch ($conInputType) {
         case INPUT_TYPE_GET:
@@ -94,8 +99,8 @@
         } else if (count($arrArguments) == 0) {
           $this->strLabel = $strCall;
         }//if
-      } else if (is_callable(array($this, $strCall))) {
-        if (!call_user_func_array(array($this, $strCall), array_merge(array($this->mixValue), $arrArguments))) {
+      } else if (is_callable(array($this, "CHK" . $strCall))) {
+        if (!call_user_func_array(array($this, "CHK" . $strCall), array_merge(array($this->mixValue), $arrArguments))) {
           $this->objErrorRegistry->addError($this->getErrorText($strCall, $this->strName, $arrArguments), $this->strName);
         }//if
       }//if
@@ -146,95 +151,95 @@
 
     /* Validation Functions */
 
-    private function required ($strValue) {
+    private function CHKrequired ($strValue) {
       return (!empty($strValue) || ($strValue === '0'));
     }//function
 
-    private function requiredIf ($strValue, $strControlField) {
+    private function CHKrequiredIf ($strValue, $strControlField) {
       return (empty($this->arrInputArray[$strControlField]) || (!empty($strValue) || ($strValue === '0')));
     }//function
 
-    private function is ($strValue, $strStringToMatch) {
+    private function CHKis ($strValue, $strStringToMatch) {
       return ($strValue == $strStringToMatch);
     }//function
 
-    private function matches ($strValue, $strMatchField) {
+    private function CHKmatches ($strValue, $strMatchField) {
       return ((!isset($this->arrInputArray[$strMatchField]) && empty($strValue)) || ($strValue == $this->arrInputArray[$strMatchField]));
     }//function
 
-    private function length ($strValue, $intLength) {
+    private function CHKlength ($strValue, $intLength) {
       return (strlen($strValue) == $intLength);
     }//function
 
-    private function lengthMin ($strValue, $intLength) {
+    private function CHKlengthMin ($strValue, $intLength) {
       return (strlen($strValue) >= $intLength);
     }//function
 
-    private function lengthMax ($strValue, $intLength) {
+    private function CHKlengthMax ($strValue, $intLength) {
       return (strlen($strValue) <= $intLength);
     }//function
 
-    private function lengthBetween ($strValue, $intMinLength, $intMaxLength) {
+    private function CHKlengthBetween ($strValue, $intMinLength, $intMaxLength) {
       return (strlen($strValue) >= $intMinLength) && (strlen($strValue) <= $intMaxLength);
     }//function
 
-    private function alpha ($strValue) {
-      return preg_match("/^[a-z]+\$/i", $strValue);
+    private function CHKalpha ($strValue) {
+      return $this->CHKregex($strValue, self::REGEX_ALPHA);
     }//function
 
-    private function numeric ($strValue) {
+    private function CHKnumeric ($strValue) {
       return is_numeric($strValue);
     }//function
 
-    private function alphaNumeric ($strValue) {
-      return preg_match("/^[a-z0-9]+\$/i", $strValue);
+    private function CHKalphaNumeric ($strValue) {
+      return $this->CHKregex($strValue, self::REGEX_ALPHANUMERIC);
     }//function
 
-    private function integer ($strValue) {
-      return preg_match("/^([-+]?[0-9]+|[0-9]*)\$/", $strValue);
+    private function CHKinteger ($strValue) {
+      return $this->CHKregex($strValue, self::REGEX_INTEGER);
     }//function
 
-    private function integerMin ($strValue, $intValue) {
-      return ($this->integer($strValue) && $strValue >= $intValue);
+    private function CHKintegerMin ($strValue, $intValue) {
+      return ($this->CHKinteger($strValue) && $strValue >= $intValue);
     }//function
 
-    private function integerMax ($strValue, $intValue) {
-      return ($this->integer($strValue) && $strValue <= $intValue);
+    private function CHKintegerMax ($strValue, $intValue) {
+      return ($this->CHKinteger($strValue) && $strValue <= $intValue);
     }//function
 
-    private function integerBetween ($strValue, $intMinValue, $intMaxValue) {
-      return ($this->integer($strValue) && $strValue >= $intMinValue && $strValue <= $intMaxValue);
+    private function CHKintegerBetween ($strValue, $intMinValue, $intMaxValue) {
+      return ($this->CHKinteger($strValue) && $strValue >= $intMinValue && $strValue <= $intMaxValue);
     }//function
 
-    private function integerPositive ($strValue) {
-      return ($this->integer($strValue) && $this->integerMin($strValue, 1));
+    private function CHKintegerPositive ($strValue) {
+      return ($this->CHKinteger($strValue) && $this->CHKintegerMin($strValue, 1));
     }//function
 
-    private function integerNegative ($strValue) {
-      return ($this->integer($strValue) && $this->integerMax($strValue, -1));
+    private function CHKintegerNegative ($strValue) {
+      return ($this->CHKinteger($strValue) && $this->CHKintegerMax($strValue, -1));
     }//function
 
-    private function integerNonPositive ($strValue) {
-      return ($this->integer($strValue) && !$this->integerPositive($strValue));
+    private function CHKintegerNonPositive ($strValue) {
+      return ($this->CHKinteger($strValue) && !$this->CHKintegerPositive($strValue));
     }//function
 
-    private function integerNonNegative ($strValue) {
-      return ($this->integer($strValue) && !$this->integerNegative($strValue));
+    private function CHKintegerNonNegative ($strValue) {
+      return ($this->CHKinteger($strValue) && !$this->CHKintegerNegative($strValue));
     }//function
 
-    private function integerNonZero ($strValue) {
-      return ($this->integer($strValue) && ($this->integerMax($strValue, -1) || $this->integerMin($strValue, 1)));
+    private function CHKintegerNonZero ($strValue) {
+      return ($this->CHKinteger($strValue) && ($this->CHKintegerMax($strValue, -1) || $this->CHKintegerMin($strValue, 1)));
     }//function
 
-    private function regex ($strValue, $strRegex) {
-      return !$this->required($strValue) || preg_match($strRegex, $strValue);
+    private function CHKregex ($strValue, $strRegex) {
+      return preg_match($strRegex, $strValue);
     }//function
 
-    private function validEmail ($strValue) {
-      return preg_match("/^[a-z0-9!#\$%&'*+\\/=?^_`{|}~-]+(\\.[a-z0-9!#\$%&'*+\\/=?^_`{|}~-]+)*@([a-z0-9]([a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9]([a-z0-9-]*[a-z0-9])?\$/i", $strValue);
+    private function CHKvalidEmail ($strValue) {
+      return $this->CHKregex($strValue, self::REGEX_EMAIL_ADDRESS);
     }//function
 
-    private function unique ($strValue, $strModel, $strField) {
+    private function CHKunique ($strValue, $strModel, $strField) {
       $objResultsFilter = new ResultsFilter();
 
       $objResultsFilter->model($strModel)

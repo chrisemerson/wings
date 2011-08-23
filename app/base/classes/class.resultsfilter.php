@@ -32,6 +32,8 @@
 
     public function shuffle () {
       $this->blnShuffle = true;
+
+      return $this;
     }//function
 
     public function conditions ($strConditionString = '') {

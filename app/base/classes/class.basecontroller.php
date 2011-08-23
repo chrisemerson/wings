@@ -20,13 +20,6 @@
     }//function
 
     protected function renderView () {
-      $this->view->errors = $this->errors;
-      $this->view->post = $this->post;
-      $this->view->get = $this->get;
-      $this->view->session = $this->session;
-      $this->view->auth = $this->auth;
-      $this->view->files = $this->files;
-
       $this->view->render();
     }//function
   }//class

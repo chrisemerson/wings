@@ -331,7 +331,7 @@
           $objRememberedLogins->delete();
         }//if
 
-        setcookie("cookieauth", "", time() - 3600, $this->strCookiePath, $this->strCookieDomain, Application::isSecure(), true);
+        setcookie("cookieauth", "", time() - 3600, $this->strCookiePath, $this->strCookieDomain, Application::isSecure());
       }//if
     }//function
 

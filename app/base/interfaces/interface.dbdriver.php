@@ -10,5 +10,6 @@
   interface iDBResult {
     public function __construct ($dbResults);
     public function fetch_assoc ();
+    public function data_seek ($intOffset);
     public function free ();
   }//interface

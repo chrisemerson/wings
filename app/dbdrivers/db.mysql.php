@@ -91,6 +91,10 @@
       return mysql_fetch_assoc($this->dbResults);
     }//function
 
+    public function data_seek ($intOffset) {
+      return mysql_data_seek($this->dbResults, $intOffset);
+    }//function
+
     public function free () {
       mysql_free_result($this->dbResults);
     }//function
