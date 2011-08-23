@@ -7,7 +7,7 @@
     define('INPUT_TYPE_GET', 2);
   }//if
 
-  class InputFilter {
+  class InputFilter implements Iterator, ArrayAccess, Countable {
     private $arrInputArray = array();
     private $objErrorRegistry;
 
@@ -149,6 +149,52 @@
       return $strError;
     }//function
 
+    /* Iterator Functions */
+
+    public function current () {
+      return current($this->arrInputArray);
+    }//function
+
+    public function key () {
+      return key($this->arrInputArray);
+    }//function
+
+    public function next () {
+      return next($this->arrInputArray);
+    }//function
+
+    public function rewind () {
+      return reset($this->arrInputArray);
+    }//function
+
+    public function valid () {
+      return key($this->arrInputArray) !== null;
+    }//function
+
+    /* ArrayAccess Functions */
+
+    public function offsetExists ($offset) {
+      return isset($this->arrInputArray[$offset]);
+    }//function
+
+    public function offsetGet ($offset) {
+      return $this->arrInputArray[$offset];
+    }//function
+
+    public function offsetSet ($offset, $value) {
+      $this->arrInputArray[$offset] = $value;
+    }//function
+
+    public function offsetUnset ($offset) {
+      unset($this->arrInputArray[$offset]);
+    }//function
+
+    /* Countable Functions */
+
+    public function count () {
+      return count($this->arrInputArray);
+    }//function
+
     /* Validation Functions */
 
     private function CHKrequired ($strValue) {
@@ -232,7 +278,7 @@
     }//function
 
     private function CHKregex ($strValue, $strRegex) {
-      return preg_match($strRegex, $strValue);
+      return !$this->CHKrequired($strValue) || preg_match($strRegex, $strValue);
     }//function
 
     private function CHKvalidEmail ($strValue) {
