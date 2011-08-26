@@ -237,7 +237,6 @@
             list($intUserID, $strToken, $strSerial) = explode("-", $_COOKIE[$this->strCookieName]);
 
             //First, check for full match, including expiry - if so, authenticate user
-
             $objResultsFilter = new ResultsFilter();
             $objResultsFilter->model($this->strRememberedLoginsModel)
                              ->conditions("`" . $this->strUserIDField . "` = " . intval($intUserID) . " AND `" . $this->strTokenField . "` = '" . $strToken . "' AND `" . $this->strSerialField . "` = '" . $strSerial . "' AND `" . $this->strExpiryField . "` >= '" . date('Y-m-d H:i:s') . "'");
@@ -314,7 +313,7 @@
 
         $strCookieValue = implode("-", array($objRememberedLogin->$strUserIDField, $objRememberedLogin->$strTokenField, $objRememberedLogin->$strSerialField));
 
-        setcookie("cookieauth", $strCookieValue, time() + ($this->intDaysToRemember * 86400), $this->strCookiePath, $this->strCookieDomain, Application::isSecure(), true);
+        setcookie($this->strCookieName, $strCookieValue, time() + ($this->intDaysToRemember * 86400), $this->strCookiePath, $this->strCookieDomain, Application::isSecure(), true);
       }//if
     }//function
 
@@ -331,7 +330,7 @@
           $objRememberedLogins->delete();
         }//if
 
-        setcookie("cookieauth", "", time() - 3600, $this->strCookiePath, $this->strCookieDomain, Application::isSecure());
+        setcookie($this->strCookieName, "", time() - 3600, $this->strCookiePath, $this->strCookieDomain, Application::isSecure());
       }//if
     }//function
 
