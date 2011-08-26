@@ -99,6 +99,10 @@
       return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on');
     }//function
 
+    public static function doNotTrack () {
+      return (isset($_SERVER['HTTP_DNT']) && ($_SERVER['HTTP_DNT'] == 1));
+    }//function
+
     public static function redirect ($strURL) {
       header('Location: ' . $strURL);
       self::exitApp();
