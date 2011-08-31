@@ -69,11 +69,8 @@
     }//function
 
     public function attemptLogin ($strUsername, $strPassword, $blnRememberMe = false, $blnRedirectAfterLogin = true) {
-      $objResultsFilter = new ResultsFilter();
-      $objResultsFilter->model($this->strUserModel)
-                       ->conditions("`" . $this->strUsernameField . "` = '" . $strUsername . "'");
-
-      $objUsers = new Collection($objResultsFilter);
+      $strCollectionName = $this->strUserModel . 'Collection';
+      $objUsers = new $strCollectionName("`" . $this->strUsernameField . "` = '" . $strUsername . "'");
 
       if (count($objUsers) == 1) {
         $objUser = $objUsers[0];
@@ -204,11 +201,8 @@
             $intUserID = $this->objSession->currentuserid;
           }//if
 
-          $objResultsFilter = new ResultsFilter();
-          $objResultsFilter->model($this->strRememberedLoginsModel)
-                           ->conditions("`" . $this->strUserIDField . "` = " . intval($intUserID));
-
-          $objRememberedLogins = new Collection($objResultsFilter);
+          $strCollectionName = $this->strRememberedLoginsModel . 'Collection';
+          $objRememberedLogins = new $strCollectionName("`" . $this->strUserIDField . "` = " . intval($intUserID));
 
           $objRememberedLogins->delete();
 
@@ -219,11 +213,8 @@
 
     private function clearExpiredRememberedLogins () {
       if ($this->blnRememberedLoginsEnabled) {
-        $objResultsFilter = new ResultsFilter();
-        $objResultsFilter->model($this->strRememberedLoginsModel)
-                         ->conditions("`" . $this->strExpiryField . "` <= '" . date('Y-m-d H:i:s') . "'");
-
-        $objRememberedLogins = new Collection($objResultsFilter);
+        $strCollectionName = $this->strRememberedLoginsModel . 'Collection';
+        $objRememberedLogins = new $strCollectionName("`" . $this->strExpiryField . "` <= '" . date('Y-m-d H:i:s') . "'");
 
         $objRememberedLogins->delete();
       }//if
@@ -237,11 +228,8 @@
             list($intUserID, $strToken, $strSerial) = explode("-", $_COOKIE[$this->strCookieName]);
 
             //First, check for full match, including expiry - if so, authenticate user
-            $objResultsFilter = new ResultsFilter();
-            $objResultsFilter->model($this->strRememberedLoginsModel)
-                             ->conditions("`" . $this->strUserIDField . "` = " . intval($intUserID) . " AND `" . $this->strTokenField . "` = '" . $strToken . "' AND `" . $this->strSerialField . "` = '" . $strSerial . "' AND `" . $this->strExpiryField . "` >= '" . date('Y-m-d H:i:s') . "'");
-
-            $objRememberedLogins = new Collection($objResultsFilter);
+            $strCollectionName = $this->strRememberedLoginsModel . 'Collection';
+            $objRememberedLogins = new $strCollectionName("`" . $this->strUserIDField . "` = " . intval($intUserID) . " AND `" . $this->strTokenField . "` = '" . $strToken . "' AND `" . $this->strSerialField . "` = '" . $strSerial . "' AND `" . $this->strExpiryField . "` >= '" . date('Y-m-d H:i:s') . "'");
 
             if (count($objRememberedLogins) == 1) {
               $objRememberedLogin = $objRememberedLogins[0];
@@ -261,12 +249,8 @@
               $this->setRememberedLoginCookie($objRememberedLogin);
             } else {
               //Check for series + username match, but not token. Expiry doesn't matter here, as we are simply detecting thefts and logging the user out anyway.
-
-              $objResultsFilter = new ResultsFilter();
-              $objResultsFilter->model($this->strRememberedLoginsModel)
-                               ->conditions("`" . $this->strUserIDField . "` = " . intval($intUserID) . " AND `" . $this->strTokenField . "` != '" . $strToken . "' AND `" . $this->strSerialField . "` = '" . $strSerial . "'");
-
-              $objRememberedLogins = new Collection($objResultsFilter);
+              $strCollectionName = $this->strRememberedLoginsModel . 'Collection';
+              $objRememberedLogins = new $strCollectionName("`" . $this->strUserIDField . "` = " . intval($intUserID) . " AND `" . $this->strTokenField . "` != '" . $strToken . "' AND `" . $this->strSerialField . "` = '" . $strSerial . "'");
 
               if (count($objRememberedLogins) == 1) {
                 //Cookie theft has taken place! As a precaution, delete cookie, and log user out from all places
@@ -322,11 +306,8 @@
         if (isset($_COOKIE[$this->strCookieName])) {
           list($intUserID, $strToken, $strSerial) = explode("-", $_COOKIE[$this->strCookieName]);
 
-          $objResultsFilter = new ResultsFilter();
-          $objResultsFilter->model($this->strRememberedLoginsModel)
-                           ->conditions("`" . $this->strUserIDField . "` = " . intval($intUserID) . " AND `" . $this->strTokenField . "` = '" . $strToken . "' AND `" . $this->strSerialField . "` = '" . $strSerial . "'");
-
-          $objRememberedLogins = new Collection($objResultsFilter);
+          $strCollectionName = $this->strRememberedLoginsModel . 'Collection';
+          $objRememberedLogins = new $strCollectionName("`" . $this->strUserIDField . "` = " . intval($intUserID) . " AND `" . $this->strTokenField . "` = '" . $strToken . "' AND `" . $this->strSerialField . "` = '" . $strSerial . "'");
           $objRememberedLogins->delete();
         }//if
 

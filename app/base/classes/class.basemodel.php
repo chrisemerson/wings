@@ -39,10 +39,11 @@
         $blnRelationshipFound = false;
 
         if ($strRelatedModel = $this->objModelRegistry->getModelNameFromPlural($strGetCallName)) {
-          $objCollection = new Collection($strRelatedModel);
+          $strCollectionName = $strRelatedModel . 'Collection';
+          $objCollection = new $strCollectionName();
 
-          if (isset($arrArguments[0]) && ($arrArguments[0] instanceof ResultsFilter)) {
-            $objResultsFilter = $arrArguments[0];
+          if (isset($arrArguments[0]) && is_string($arrArguments[0])) {
+            $strFilterString = $arrArguments[0];
           }//if
 
           foreach (self::$arrRelationships as $arrRelationshipInfo) {
@@ -77,9 +78,8 @@
                              WHERE
                                l.`" . $strLocalColumn . "` = " . $this->prepareData($this->$strLocalColumn, $strLocalColumn);
 
-                  if (isset($objResultsFilter)) {
-                    $strSQL .= $objResultsFilter->getOrderByString();
-                    $strSQL .= $objResultsFilter->getLimitString();
+                  if (isset($strFilterString)) {
+                    $strSQL .= " " . trim(rtrim($strFilterString, ';'));
                   }//if
 
                   $strSQL .= ";";
@@ -110,9 +110,8 @@
                              WHERE
                                `" . $arrRelationshipInfo['foreign']['column'] . "` = " . $this->prepareData($this->$strLocalColumn, $strLocalColumn);
 
-                  if (isset($objResultsFilter)) {
-                    $strSQL .= $objResultsFilter->getOrderByString();
-                    $strSQL .= $objResultsFilter->getLimitString();
+                  if (isset($strFilterString)) {
+                    $strSQL .= " " . trim(rtrim($strFilterString, ';'));
                   }//if
 
                   $strSQL .= ";";
@@ -155,11 +154,8 @@
                   $strColumn = $arrRelationshipInfo['local']['column'];
                   $strOtherColumn = $arrRelationshipInfo['foreign']['column'];
 
-                  $objResultsFilter = new ResultsFilter();
-                  $objResultsFilter->model($strRelatedModel)
-                                   ->conditions($strOtherColumn . " = " . $this->prepareData($this->$strColumn, $strColumn));
-
-                  $objCollection = new Collection($objResultsFilter);
+                  $strCollectionName = $strRelatedModel . 'Collection';
+                  $objCollection = new $strCollectionName($strOtherColumn . " = " . $this->prepareData($this->$strColumn, $strColumn));
 
                   if (count($objCollection) == 1) {
                     return $objCollection[0];

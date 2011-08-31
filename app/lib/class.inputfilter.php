@@ -286,12 +286,8 @@
     }//function
 
     private function CHKunique ($strValue, $strModel, $strField) {
-      $objResultsFilter = new ResultsFilter();
-
-      $objResultsFilter->model($strModel)
-                       ->conditions($strField . " = '" . $strValue . "'");
-
-      $objCollection = new Collection($objResultsFilter);
+      $strCollectionName = $strModel . 'Collection';
+      $objCollection = new $strCollectionName($strField . " = '" . $strValue . "'");
 
       return (count($objCollection) == 0);
     }//function
