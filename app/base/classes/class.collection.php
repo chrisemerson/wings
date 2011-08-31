@@ -1,25 +1,45 @@
 <?php
-  class Collection extends Schema implements Iterator, Countable, ArrayAccess {
-    private $objResultsFilter;
+  abstract class Collection extends Schema implements Iterator, Countable, ArrayAccess {
 
     private $arrMembers = array();
     private $intPosition = 0;
     private $blnJustUnsetCurrent = false;
 
-    public function __construct ($mixParameter) {
-      if ($mixParameter instanceof ResultsFilter) {
-        $this->objResultsFilter = $mixParameter;
+    public function __construct ($strModelName, $strSQLString = '') {
+      $this->strModelName = $strModelName;
 
-        $this->strModelName = $this->objResultsFilter->getModelName();
-        parent::__construct();
+      $objModelRegistry = new ModelRegistry();
 
-        $this->objResultsFilter->setDBConn($this->dbConn);
-
-        $this->fetch();
-      } else if (is_string($mixParameter)) {
-        $this->strModelName = $mixParameter;
+      if ($objModelRegistry->isModel($strModelName)) {
         parent::__construct();
       }//if
+
+      $this->fetch($strSQLString);
+    }//if
+
+    private function fetch ($strSQLString = '') {
+      if (!empty($strSQLString)) {
+        $strSQL = "SELECT * FROM `" . $this->getTableName() . "`";
+
+        if ($strSQLString != '*') {
+          $strSQL .= " " . trim($strSQLString);
+        }//if
+
+        $strSQL = rtrim($strSQL, ";") . ";";
+
+        $this->populate($strSQL);
+      }//if
+    }//function
+
+    private function populate ($strQuery) {
+      $dbResults = $this->dbConn->query($strQuery);
+
+      while ($arrResult = $dbResults->fetch_assoc()) {
+        $objModel = new $this->strModelName();
+        $objModel->loadFromDBArray($arrResult);
+
+        $this->arrMembers[] = $objModel;
+      }//while
     }//function
 
     public function __set ($strName, $strValue) {
@@ -28,58 +48,10 @@
       }//foreach
     }//function
 
-    public function save () {
-      foreach ($this->arrMembers as $objModel) {
-        $objModel->save();
-      }//foreach
-    }//function
-
-    public function delete () {
-      foreach ($this->arrMembers as $objModel) {
-        $objModel->delete();
-      }//foreach
-    }//function
-
-    private function fetch () {
-      $strSQL = "SELECT * FROM `" . $this->getTableName() . "`";
-
-      $strSQL .= $this->objResultsFilter->getConditionString();
-      $strSQL .= $this->objResultsFilter->getOrderByString();
-      $strSQL .= $this->objResultsFilter->getLimitString();
-
-      $strSQL .= ";";
-
-      $dbResults = $this->dbConn->query($strSQL);
-
-      $arrMembers = array();
-
-      while ($arrResult = $dbResults->fetch_assoc()) {
-        $strModelName = $this->objResultsFilter->getModelName();
-
-        $objModel = new $strModelName;
-        $objModel->loadFromDBArray($arrResult);
-        $arrMembers[] = $objModel;
-      }//while
-
-      $this->arrMembers = $arrMembers;
-    }//function
-
-    private function addModel ($objModel) {
-      $this->arrMembers[] = $objModel;
-    }//function
-
-    public function sortBy ($strSortColumn) {
-      usort($this->arrMembers, array($this, 'orderBy' . $strSortColumn));
-    }//function
-
     public function __call ($strName, $arrArgs) {
-      if (preg_match('/^orderBy(.+)$/', $strName, $arrMatches)) {
-        return call_user_func_array(array($this, 'orderBy'), array_merge(array($arrMatches[1]), $arrArgs));
-      }//if
-    }//function
-
-    private function orderBy ($strField, $objModel1, $objModel2) {
-      return ($objModel1->$strField > $objModel2->$strField);
+      foreach ($this->arrMembers as $objModel) {
+        return call_user_func_array(array($objModel, $strName), $arrArgs);
+      }//foreach
     }//function
 
     /************************************/
@@ -123,7 +95,7 @@
 
     public function offsetSet ($mixOffset, $mixValue) {
       if (is_null($mixOffset)) {
-        $this->addModel($mixValue);
+        $this->arrMembers[] = $mixValue;
       } else {
         $this->arrMembers[$mixOffset] = $mixValue;
       }//if

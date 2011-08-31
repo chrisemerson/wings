@@ -1,4 +1,2 @@
-Rewrite ResultsFilter class to be completely robust / use alternate method within Collection
-
 - Library files to include:
  - Page Manager

@@ -9,7 +9,7 @@
     }//function
 
     public function load () {
-      //Load Order/Priority: DB Drivers, Controllers, Views, Models, Lib, Third Party
+      //Load Order/Priority: DB Drivers, Controllers, Views, Collections, Models, Lib, Third Party
 
       if (strtolower(substr($this->strClassName, -6)) == 'driver') {
         $strModuleName = strtolower(substr($this->strClassName, 0, -6));
@@ -36,7 +36,15 @@
         } else {
           Application::showError('view');
         }//if
-      } else {
+      } else if (strtolower(substr($this->strClassName, -10)) == 'collection') {
+        $strModuleName = substr($this->strClassName, 0, -10);
+
+        if (self::isModel(strtolower($strModuleName)) || $this->objModelRegistry->isModel($strModuleName)) {
+          eval('class ' . $this->strClassName . ' extends Collection { public function __construct ($strFilterOptions = \'\') { parent::__construct(\'' . $strModuleName . '\', $strFilterOptions); }}');
+        } else {
+          return false;
+        }//if
+      } else  {
         $strModuleName = strtolower($this->strClassName);
 
         if (self::isModel($strModuleName)) {
@@ -136,6 +144,7 @@
 
     private static function getThirdPartyFilename ($strName) {
       $objThirdPartyConfig = new Config('thirdparty');
+
       return Application::getBasePath() . "lib/thirdparty/" . $objThirdPartyConfig->$strName;
     }//function
   }//class
