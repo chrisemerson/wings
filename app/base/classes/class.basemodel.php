@@ -155,7 +155,7 @@
                   $strOtherColumn = $arrRelationshipInfo['foreign']['column'];
 
                   $strCollectionName = $strRelatedModel . 'Collection';
-                  $objCollection = new $strCollectionName($strOtherColumn . " = " . $this->prepareData($this->$strColumn, $strColumn));
+                  $objCollection = new $strCollectionName("WHERE `" . $strOtherColumn . "` = " . $this->prepareData($this->$strColumn, $strColumn));
 
                   if (count($objCollection) == 1) {
                     return $objCollection[0];

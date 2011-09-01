@@ -287,7 +287,7 @@
 
     private function CHKunique ($strValue, $strModel, $strField) {
       $strCollectionName = $strModel . 'Collection';
-      $objCollection = new $strCollectionName($strField . " = '" . $strValue . "'");
+      $objCollection = new $strCollectionName("WHERE `" . $strField . "` = '" . $strValue . "'");
 
       return (count($objCollection) == 0);
     }//function
