@@ -50,7 +50,7 @@
         $radPreviousLambda = $radLambda;
 
         $radLambda = $radDifferenceInLongitude + (1 - $decC) * $decFlattening * $decSinAlpha * ($decSigma + $decC * $decSinAlpha * ($decCos2SigmaM + $decC * $decCosSigma * (-1 + 2 * $decCos2SigmaM * $decCos2SigmaM)));
-      } while (Math.abs($radLambda - $radPreviousLambda) > 1e-12 && --$intIterationLimit > 0);
+      } while (abs($radLambda - $radPreviousLambda) > 1e-12 && --$intIterationLimit > 0);
 
       $decUSquared = $decCosSquaredAlpha * (self::MAJOR_SEMIAXIS * self::MAJOR_SEMIAXIS - self::MINOR_SEMIAXIS * self::MINOR_SEMIAXIS) / (self::MINOR_SEMIAXIS * self::MINOR_SEMIAXIS);
 
@@ -108,7 +108,7 @@
         $radPreviousLambda = $radLambda;
 
         $radLambda = $radDifferenceInLongitude + (1 - $decC) * $decFlattening * $decSinAlpha * ($decSigma + $decC * $decSinAlpha * ($decCos2SigmaM + $decC * $decCosSigma * (-1 + 2 * $decCos2SigmaM * $decCos2SigmaM)));
-      } while (Math.abs($radLambda - $radPreviousLambda) > 1e-12 && --$intIterationLimit > 0);
+      } while (abs($radLambda - $radPreviousLambda) > 1e-12 && --$intIterationLimit > 0);
 
       $decUSquared = $decCosSquaredAlpha * (self::MAJOR_SEMIAXIS * self::MAJOR_SEMIAXIS - self::MINOR_SEMIAXIS * self::MINOR_SEMIAXIS) / (self::MINOR_SEMIAXIS * self::MINOR_SEMIAXIS);
 
