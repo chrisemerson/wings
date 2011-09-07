@@ -32,12 +32,12 @@
     }//function
 
     public function addHeader ($strName, $strValue) {
-      $this->arrHeaders[$strName] = $strValue;
+      $this->arrHeaders[$strName] = $strName . ": " . $strValue;
     }//function
 
     public function exec () {
       if (count($this->arrHeaders) > 0) {
-        $this->CURLOPT_HTTPHEADER = $this->arrHeaders;
+        $this->CURLOPT_HTTPHEADER = array_values($this->arrHeaders);
       }//if
 
       $mixReturn = curl_exec($this->curlHandler);
