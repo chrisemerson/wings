@@ -17,7 +17,9 @@
         $this->dispatchRoute($this->arrIndexAction);
       } else {
         foreach ($this->arrRoutes as $arrRoute) {
-          $strRouteMatch = '/^' . str_replace('/', '\/', $arrRoute['match']) . '$/';
+          $arrThisRoute = $arrRoute;
+
+          $strRouteMatch = '/^' . str_replace('/', '\/', $arrThisRoute['match']) . '$/';
 
           $strRouteMatch = str_replace('{string}', '([^\/]+)', $strRouteMatch);
           $strRouteMatch = str_replace('{int}', '([0-9]+)', $strRouteMatch);
@@ -26,10 +28,10 @@
 
           if (preg_match($strRouteMatch, $this->strURI, $arrMatches)) {
             //Check if the secure setting is correct, redirect if not
-            if (isset($arrRoute['execute']['secure'])) {
-              if ($arrRoute['execute']['secure'] == 'yes') {
+            if (isset($arrThisRoute['execute']['secure'])) {
+              if ($arrThisRoute['execute']['secure'] == 'yes') {
                 $blnSecure = true;
-              } else if ($arrRoute['execute']['secure'] == 'no') {
+              } else if ($arrThisRoute['execute']['secure'] == 'no') {
                 $blnSecure = false;
               }//if
 
@@ -38,8 +40,16 @@
               }//if
             }//if
 
-            if (isset($arrRoute['execute']['params'])) {
-              $arrParams = $arrRoute['execute']['params'];
+            if (preg_match('/%([0-9]+)/', $arrThisRoute['execute']['controller'], $arrControllerMatches)) {
+              $arrThisRoute['execute']['controller'] = str_replace('%' . $arrControllerMatches[1], $arrMatches[$arrControllerMatches[1]], $arrThisRoute['execute']['controller']);
+            }//if
+
+            if (preg_match('/%([0-9]+)/', $arrThisRoute['execute']['action'], $arrActionMatches)) {
+              $arrThisRoute['execute']['action'] = str_replace('%' . $arrActionMatches[1], $arrMatches[$arrActionMatches[1]], $arrThisRoute['execute']['action']);
+            }//if
+
+            if (isset($arrThisRoute['execute']['params'])) {
+              $arrParams = $arrThisRoute['execute']['params'];
 
               foreach ($arrParams as $intParamIndex => $strParam) {
                 if (preg_match('/%([0-9]+)/', $strParam, $arrParamMatches)) {
@@ -47,10 +57,10 @@
                 }//if
               }//foreach
 
-              $arrRoute['execute']['params'] = $arrParams;
+              $arrThisRoute['execute']['params'] = $arrParams;
             }//if
 
-            $this->dispatchRoute($arrRoute);
+            $this->dispatchRoute($arrThisRoute);
             return true;
           }//if
         }//foreach
