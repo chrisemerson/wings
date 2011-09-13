@@ -44,7 +44,7 @@
               $arrThisRoute['execute']['controller'] = str_replace('%' . $arrControllerMatches[1], $arrMatches[$arrControllerMatches[1]], $arrThisRoute['execute']['controller']);
             }//if
 
-            if (preg_match('/%([0-9]+)/', $arrThisRoute['execute']['action'], $arrActionMatches)) {
+            if (isset($arrThisRoute['execute']['action']) && preg_match('/%([0-9]+)/', $arrThisRoute['execute']['action'], $arrActionMatches)) {
               $arrThisRoute['execute']['action'] = str_replace('%' . $arrActionMatches[1], $arrMatches[$arrActionMatches[1]], $arrThisRoute['execute']['action']);
             }//if
 
