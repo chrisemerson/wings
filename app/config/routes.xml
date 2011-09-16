@@ -30,12 +30,17 @@
     <param>%1</param>
   </route>
 
+  <route match="{string}/{string}/{url}">
+    <execute controller="%1Controller" action="show%2" />
+
+    <param>%3</param>
+  </route>
+
   <route match="[match]">
     <redirect route="[route]" secure="no" />
   </route>
 
   <route match="[match]">
     <redirect uri="[uri]" />
-  </route>
- -->
+  </route>-->
 </routes>
