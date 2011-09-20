@@ -99,10 +99,12 @@
         } else if (count($arrArguments) == 0) {
           $this->strLabel = $strCall;
         }//if
-      } else if (is_callable(array($this, "CHK" . $strCall))) {
+      } else if (method_exists($this, "CHK" . $strCall)) {
         if (!call_user_func_array(array($this, "CHK" . $strCall), array_merge(array($this->mixValue), $arrArguments))) {
           $this->objErrorRegistry->addError($this->getErrorText($strCall, $this->strName, $arrArguments), $this->strName);
         }//if
+      } else {
+        throw new ValidationFunctionNotFoundException();
       }//if
 
       return $this;
@@ -292,3 +294,5 @@
       return (count($objCollection) == 0);
     }//function
   }//class
+
+  class ValidationFunctionNotFoundException extends Exception {}
