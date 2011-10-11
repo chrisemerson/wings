@@ -386,11 +386,13 @@
       foreach ($arrOptions as $strOption) {
         switch ($strOption) {
           case 'tt':
-            $strTopLine = trim($arrBlockLines[0]);
+            if (count($arrBlockLines) > 0) {
+              $strTopLine = trim($arrBlockLines[0]);
 
-            if (empty($strTopLine)) {
-              unset($arrBlockLines[0]);
-              $arrBlockLines = array_values($arrBlockLines);
+              if (empty($strTopLine)) {
+                unset($arrBlockLines[0]);
+                $arrBlockLines = array_values($arrBlockLines);
+              }//if
             }//if
             break;
 
@@ -406,13 +408,17 @@
             break;
 
           case 'tlc':
-            $intLastArrayElement = count($arrBlockLines) - 1;
-            $arrBlockLines[$intLastArrayElement] = substr($arrBlockLines[$intLastArrayElement], 0, -1);
-            $arrBlockLines[$intLastArrayElement] = preg_replace('/^(.*).(\\s*)$/s', '$1$2' . PHP_EOL, $arrBlockLines[$intLastArrayElement]);
+            if (count($arrBlockLines) > 0) {
+              $intLastArrayElement = count($arrBlockLines) - 1;
+              $arrBlockLines[$intLastArrayElement] = substr($arrBlockLines[$intLastArrayElement], 0, -1);
+              $arrBlockLines[$intLastArrayElement] = preg_replace('/^(.*).(\\s*)$/s', '$1$2' . PHP_EOL, $arrBlockLines[$intLastArrayElement]);
+            }//if
             break;
 
           case 'tfc':
-            $arrBlockLines[0] = preg_replace('/^(\\s*).(.*)$/', '$1$2', $arrBlockLines[0]);
+            if (count($arrBlockLines) > 0) {
+              $arrBlockLines[0] = preg_replace('/^(\\s*).(.*)$/', '$1$2', $arrBlockLines[0]);
+            }//if
             break;
         }//switch
       }//foreach
