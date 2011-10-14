@@ -20,10 +20,14 @@
 
     public function __construct ($strTemplateName, $mixMasterTemplateSetting = true) {
       $this->strTemplateName = $strTemplateName;
-      $strTemplateFile = Application::getBasePath() . "templates/" . str_replace(".", "/", $strTemplateName) . ".tpl";
+      $strTemplateFile = Application::getBasePath() . "app/templates/" . str_replace(".", "/", $strTemplateName) . ".tpl";
 
       if (!file_exists($strTemplateFile)) {
-        throw new TemplateNotFoundException();
+        $strTemplateFile = Application::getBasePath() . "sys/templates/" . str_replace(".", "/", $strTemplateName) . ".tpl";
+
+        if (!file_exists($strTemplateFile)) {
+          throw new TemplateNotFoundException();
+        }//if
       }//if
 
       $this->arrOriginalTemplateLines = file($strTemplateFile);

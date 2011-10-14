@@ -3,7 +3,7 @@
 
   $objDirectQuery = new DirectQuery();
 
-  $strDBPath = realpath(Application::getBasePath() . "../db");
+  $strDBPath = realpath(Application::getBasePath() . "/db");
   $dirHandle = opendir($strDBPath);
 
   $arrDBVersions = array();

@@ -8,7 +8,6 @@
       $arrCacheContents = array('item' => $mixItem, 'expires' => $intExpiry);
 
       file_put_contents($strCacheFilename, serialize($arrCacheContents));
-
     }//function
 
     public function get ($strName) {
@@ -27,6 +26,6 @@
     }//function
 
     private function getCacheFilename ($strCacheName) {
-      return Application::getBasePath() . self::CACHE_DIR . "/" . $strCacheName . ".cache";
+      return Application::getBasePath() . 'app/' . self::CACHE_DIR . "/" . $strCacheName . ".cache";
     }//function
   }//class

@@ -25,7 +25,7 @@
 
     private function loadRelationships () {
       if (empty(self::$arrRelationships)) {
-        $objRelationshipsConfig = simplexml_load_file(Application::getBasePath() . "config/relationships.xml");
+        $objRelationshipsConfig = simplexml_load_file(Application::getBasePath() . "app/config/relationships.xml");
 
         foreach ($objRelationshipsConfig->onetomany as $objOneToManyRelationship) {
           $arrRelationship = array();

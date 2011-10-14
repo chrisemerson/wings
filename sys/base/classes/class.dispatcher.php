@@ -73,7 +73,7 @@
     }//function
 
     private function loadRoutes () {
-      $strRoutesFilename = Application::getBasePath() . "config/routes.xml";
+      $strRoutesFilename = Application::getBasePath() . "app/config/routes.xml";
       $objRoutesFile = simplexml_load_file($strRoutesFilename);
 
       if (!isset($objRoutesFile->index)) {
@@ -173,7 +173,7 @@
           $strRedirectURI = Application::getBaseURI($blnSecure) . $arrAction['redirect']['route'];
 
           //Could be redirecting to a file, so do basic checks to make sure before adding the slash - saves a lot of unnecessary redirects
-          if (!file_exists(Application::getBasePath() . $arrAction['redirect']['route']) && !preg_match('|[^/]+\.[^/]+$|', $arrAction['redirect']['route'])) {
+          if (!file_exists(Application::getBasePath() . 'httpdocs/' . $arrAction['redirect']['route']) && !preg_match('|[^/]+\.[^/]+$|', $arrAction['redirect']['route'])) {
             $strRedirectURI .= '/';
           }//if
         } else {

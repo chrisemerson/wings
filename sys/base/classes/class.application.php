@@ -92,7 +92,7 @@
     }//function
 
     public static function getBasePath () {
-      return realpath(dirname(__FILE__) . '/../../') . '/';
+      return realpath(dirname(__FILE__) . '/../../../') . '/';
     }//function
 
     public static function isSecure () {

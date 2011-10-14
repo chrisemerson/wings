@@ -9,7 +9,7 @@
     }//function
 
     private function loadModelInfo () {
-      $objModelConfig = simplexml_load_file(Application::getBasePath() . "config/models.xml");
+      $objModelConfig = simplexml_load_file(Application::getBasePath() . "app/config/models.xml");
 
       foreach ($objModelConfig->model as $objModel) {
         $arrModel = array();

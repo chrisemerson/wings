@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<app>
+  <default>
+    <uri>
+      <host>dev</host>
+      <path>appframework/httpdocs</path>
+    </uri>
+
+    <template>
+      <mastertemplate>system.master</mastertemplate>
+    </template>
+
+    <db>
+      <uri>mysqli://app:*****@localhost/app</uri>
+      <prefix>app_</prefix>
+    </db>
+
+    <errors>
+      <showerrors>0</showerrors>
+      <debugmode>0</debugmode>
+      <defaultformerror>{field} errored</defaultformerror>
+    </errors>
+
+    <cookie>
+      <domain></domain>
+      <path>/appframework/httpdocs/</path>
+    </cookie>
+  </default>
+
+  <dev>
+    <errors>
+      <showerrors>1</showerrors>
+      <debugmode>1</debugmode>
+    </errors>
+  </dev>
+</app>

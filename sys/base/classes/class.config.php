@@ -6,8 +6,10 @@
     public function __construct ($mixConfigData) {
       if (is_file(realpath($mixConfigData))) {
         $strFilename = realpath($mixConfigData);
-      } else if (is_file(Application::getBasePath() . "/config/" . $mixConfigData . ".xml")) {
-        $strFilename = Application::getBasePath() . "/config/" . $mixConfigData . ".xml";
+      } else if (is_file(Application::getBasePath() . "app/config/" . $mixConfigData . ".xml")) {
+        $strFilename = Application::getBasePath() . "app/config/" . $mixConfigData . ".xml";
+      } else if (is_file(Application::getBasePath() . "sys/config/" . $mixConfigData . ".xml")) {
+        $strFilename = Application::getBasePath() . "sys/config/" . $mixConfigData . ".xml";
       } else {
         throw new ConfigNotFoundException();
       }//if
@@ -20,7 +22,7 @@
     }//function
 
     private function loadConfigFile ($strFilename) {
-      if ($strFilename == Application::getBasePath() . "/config/app.xml") {
+      if ($strFilename == Application::getBasePath() . "app/config/app.xml") {
         $objAppConfig = simplexml_load_file($strFilename);
         $strEnvironment = Application::getEnvironment();
 

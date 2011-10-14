@@ -6,7 +6,7 @@
 
     public function __construct ($strLogName) {
       $this->strLogName = $strLogName;
-      $this->strLogFileName = Application::getBasePath() . "logs/" . strtolower($strLogName) . ".log";
+      $this->strLogFileName = Application::getBasePath() . "app/logs/" . strtolower($strLogName) . ".log";
 
       $this->openLogFile();
     }//function

@@ -28,7 +28,7 @@
     }//function
 
     public function setSavePath ($strSavePath = '') {
-      $this->strSavePath = realpath(Application::getBasePath() . "/" . $strSavePath);
+      $this->strSavePath = realpath(Application::getBasePath() . "/app/" . $strSavePath);
     }//function
 
     public function setSaveType ($conSaveType = FILE_SAVE_TYPE_SEQUENTIAL) {
