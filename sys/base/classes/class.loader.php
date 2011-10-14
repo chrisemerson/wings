@@ -123,28 +123,28 @@
     /* Module Filenames */
 
     private static function getDBDriverFilename ($strName) {
-      return Application::getBasePath() . "sys/dbdrivers/db." . $strName . ".php";
+      return Application::getAppFilename("dbdrivers/db." . $strName . ".php");
     }//function
 
     private static function getControllerFilename ($strName) {
-      return Application::getBasePath() . "sys/controllers/controller." . $strName . ".php";
+      return Application::getAppFilename("controllers/controller." . $strName . ".php");
     }//function
 
     private static function getViewFilename ($strName) {
-      return Application::getBasePath() . "sys/views/view." . $strName . ".php";
+      return Application::getAppFilename("views/view." . $strName . ".php");
     }//function
 
     private static function getModelFilename ($strName) {
-      return Application::getBasePath() . "sys/models/model." . $strName . ".php";
+      return Application::getAppFilename("models/model." . $strName . ".php");
     }//function
 
     private static function getLibraryFilename ($strName) {
-      return Application::getBasePath() . "sys/lib/class." . $strName . ".php";
+      return Application::getAppFilename("lib/class." . $strName . ".php");
     }//function
 
     private static function getThirdPartyFilename ($strName) {
       $objThirdPartyConfig = new Config('thirdparty');
 
-      return Application::getBasePath() . "sys/lib/thirdparty/" . $objThirdPartyConfig->$strName;
+      return Application::getAppFilename("lib/thirdparty/" . $objThirdPartyConfig->$strName);
     }//function
   }//class

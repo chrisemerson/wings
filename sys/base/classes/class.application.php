@@ -95,6 +95,16 @@
       return realpath(dirname(__FILE__) . '/../../../') . '/';
     }//function
 
+    public static function getAppFilename ($strFilename) {
+      if (is_file(self::getBasePath() . 'app/' . $strFilename)) {
+        return self::getBasePath() . 'app/' . $strFilename;
+      } else if (is_file(self::getBasePath() . 'sys/' . $strFilename)) {
+        return self::getBasePath() . 'sys/' . $strFilename;
+      } else {
+        return false;
+      }//if
+    }//function
+
     public static function isSecure () {
       return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on');
     }//function
