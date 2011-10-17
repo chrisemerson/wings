@@ -123,28 +123,30 @@
     /* Module Filenames */
 
     private static function getDBDriverFilename ($strName) {
-      return Application::getAppFilename("dbdrivers/db." . $strName . ".php");
+      return Application::getAppFilename("dbdrivers/db." . strtolower($strName) . ".php");
     }//function
 
     private static function getControllerFilename ($strName) {
-      return Application::getAppFilename("controllers/controller." . $strName . ".php");
+      return Application::getAppFilename("controllers/controller." . strtolower($strName) . ".php");
     }//function
 
     private static function getViewFilename ($strName) {
-      return Application::getAppFilename("views/view." . $strName . ".php");
+      return Application::getAppFilename("views/view." . strtolower($strName) . ".php");
     }//function
 
     private static function getModelFilename ($strName) {
-      return Application::getAppFilename("models/model." . $strName . ".php");
+      return Application::getAppFilename("models/model." . strtolower($strName) . ".php");
     }//function
 
     private static function getLibraryFilename ($strName) {
-      return Application::getAppFilename("lib/class." . $strName . ".php");
+      return Application::getAppFilename("lib/class." . strtolower($strName) . ".php");
     }//function
 
     private static function getThirdPartyFilename ($strName) {
       $objThirdPartyConfig = new Config('thirdparty');
 
-      return Application::getAppFilename("lib/thirdparty/" . $objThirdPartyConfig->$strName);
+      $strLowerName = strtolower($strName);
+
+      return Application::getAppFilename("lib/thirdparty/" . $objThirdPartyConfig->$strLowerName);
     }//function
   }//class
