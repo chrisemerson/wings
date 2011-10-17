@@ -8,14 +8,14 @@
 
     <title>Website</title>
 
-    <link href="styles/main.css" rel="stylesheet" type="text/css" media="screen">
+    <link href="styles/main.css" rel="stylesheet" media="screen">
 <!-- [stylesheet] -->
-    <link href="styles/{stylesheetname}" rel="stylesheet" type="text/css" media="{stylesheetmedia}">
+    <link href="styles/{stylesheetname}" rel="stylesheet" media="{stylesheetmedia}">
 <!-- [/stylesheet] -->
 
-    <script type="text/javascript" src="scripts/jquery-1.6.2.js"></script>
+    <script src="scripts/jquery-1.6.2.js"></script>
 <!-- [script] -->
-    <script type="text/javascript" src="scripts/{scriptname}"></script>
+    <script src="scripts/{scriptname}"></script>
 <!-- [/script] -->
   </head>
 
