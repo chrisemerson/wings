@@ -13,7 +13,7 @@
     <link href="styles/{stylesheetname}" rel="stylesheet" media="{stylesheetmedia}">
 <!-- [/stylesheet] -->
 
-    <script src="scripts/jquery-1.6.2.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 <!-- [script] -->
     <script src="scripts/{scriptname}"></script>
 <!-- [/script] -->
