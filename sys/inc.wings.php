@@ -1,9 +1,6 @@
 <?php
   //Load all files in the base/ folder
-
-  $strBasePath = realpath(dirname(__FILE__) . "/base");
-
-  loadFilesInDirectory($strBasePath);
+  loadFilesInDirectory(realpath(dirname(__FILE__) . "/base"));
 
   function loadFilesInDirectory ($strDirectory) {
     $arrFilesInBaseDir = scandir($strDirectory);

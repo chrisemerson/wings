@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<dbsessions>
+  <enabled>1</enabled>
+
+  <model>DBSession</model>
+
+  <fields>
+    <id>db_session_id</id>                      <!-- VARCHAR (32) -->
+    <accesstime>db_session_access</accesstime>  <!-- DATETIME -->
+    <data>db_session_data</data>                <!-- TEXT -->
+  </fields>
+</dbsessions>

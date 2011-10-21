@@ -6,8 +6,8 @@
 
     <fields>
       <id>user_id</id>
-      <username>user_name</username>
-      <password>user_pass</password>
+      <username>user_name</username>              <!-- VARCHAR / TEXT -->
+      <password>user_pass</password>              <!-- VARCHAR (40) -->
     </fields>
   </users>
 
@@ -18,10 +18,10 @@
       <model>RememberedLogin</model>
 
       <fields>
-        <userid>user_id</userid>
-        <token>remembered_login_token</token>
-        <serial>remembered_login_serial</serial>
-        <expiry>remembered_login_expiry</expiry>
+        <userid>user_id</userid>                  <!-- INT (11) -->
+        <token>remembered_login_token</token>     <!-- VARCHAR (40) -->
+        <serial>remembered_login_serial</serial>  <!-- VARCHAR (40) -->
+        <expiry>remembered_login_expiry</expiry>  <!-- DATETIME -->
       </fields>
     </rememberedlogins>
 
