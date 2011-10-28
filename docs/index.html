@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML>
 
 <html lang="en">
   <head>
@@ -6,57 +6,14 @@
   </head>
 
   <body>
-    <h1>Folder Structure</h1>
+    <h1>PHP Wings</h1>
 
     <ul>
-      <li>
-        <strong>app/</strong> - Application Folder
-
-        <ul>
-          <li>
-            <strong>base/</strong> - Base application classes and files. Automatically included by the framework.
-
-            <ul>
-              <li><strong>classes/</strong> - Base classes required by the system</li>
-              <li><strong>controllers/</strong> - Built in controllers. Currently only consists of Error controller</li>
-              <li><strong>inc/</strong> - General files to include - 'Bootstrap' files. Contains magic quotes fix, session start, __autoload() function</li>
-              <li><strong>interfaces/</strong> - Interface files, for defining DB drivers etc</li>
-              <li><strong>views/</strong> - Built in Views - Default and Error views</li>
-            </ul>
-          </li>
-
-          <li><strong>cache/</strong> - Cache folder - should be writable</li>
-          <li><strong>config/</strong> - Folder for config files, all of which should be xml. For use with the config class.</li>
-          <li><strong>controllers/</strong> - Controllers reside here. Should be called controller.&lt;name&gt;.php</li>
-          <li><strong>cron/</strong> - Cron task scripts go in here</li>
-          <li><strong>data/</strong> - Generic data files can go here for use by anything else - text, xml, image files, uploads etc</li>
-          <li><strong>dbdrivers/</strong> - DB driver files - common interfaces for different database types, db.&lt;name&gt;.php</li>
-          <li>
-            <strong>lib/</strong> - Library, contains helper classes and modules, like Captcha, Session, Date, Page Manager etc - class.&lt;name&gt;.php
-
-            <ul>
-              <li><strong>res/</strong> - Library resources - eg Backgrounds and fonts for captcha</li>
-              <li><strong>thirdparty/</strong> - Third party classes and software, eg phpmailer, included files configured by thirdparty.xml config file</li>
-            </ul>
-          </li>
-
-          <li><strong>logs/</strong> - Log files for the application</li>
-          <li><strong>models/</strong> - model files, model.&lt;name&gt;.php - eg Student, Book, Product etc.</li>
-          <li>
-            <strong>templates/</strong> - .tpl template files, for use with the template class.
-
-            <ul>
-              <li><strong>system/</strong> - Built in templates, used by the base system. Overridable, but shouldn't remove or rename</li>
-            </ul>
-          </li>
-
-          <li><strong>tools/</strong> - One off tool files for, eg, clearing the database, updating a schema, gathering data etc</li>
-          <li><strong>views/</strong> - View helper files, called view.&lt;name&gt;.php. Master view in here, overridable, not renamable.</li>
-        </ul>
-      </li>
-
-      <li><strong>docs/</strong> - This Folder - Documentation</li>
-      <li><strong>httpdocs/</strong> - Publically Accessible folder - Apache should serve from here.</li>
+      <li><a href="pages/folders.html">Folder Structure</a></li>
+      <li><a href="pages/basicconcepts.html">Basic Concepts</a></li>
+      <li><a href="pages/models.html">Models</a></li>
+      <li><a href="pages/views.html">Views</a></li>
+      <li><a href="pages/controllers.html">Controllers</a></li>
     </ul>
   </body>
 </html>

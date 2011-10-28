@@ -8,7 +8,9 @@
     if (file_exists($strDirectory . "/loadorder")) {
       $arrFilesToLoad = file($strDirectory . "/loadorder");
 
-      foreach ($arrFilesToLoad as $strFilename) {
+      foreach ($arrFilesToLoad as $strLine) {
+        $strFilename = trim($strLine);
+
         if ($strFilename{0} != "#" && is_file($strDirectory . "/" . trim($strFilename))) {
           require_once $strDirectory . "/" . trim($strFilename);
         }//if
