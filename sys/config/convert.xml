@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<convert>
+  <group label="Distance">
+    <unit code="CM" name="Centimetres">185200</unit>
+    <unit code="FT" name="Feet">6076.11549</unit>
+    <unit code="IN" name="Inches">72913.3858</unit>
+    <unit code="KM" name="Kilometres">1.852</unit>
+    <unit code="M" name="Metres">1852</unit>
+    <unit code="MI" name="Miles">1.15077945</unit>
+    <unit code="MM" name="Millimetres">1852000</unit>
+    <unit code="NM" name="Nautical Miles">1</unit>
+    <unit code="YD" name="Yards">2025.37183</unit>
+  </group>
+
+  <group label="Weight">
+    <unit code="G" name="Grams">1016046.91</unit>
+    <unit code="KG" name="Kilograms">1016.04691</unit>
+    <unit code="LB" name="Pounds">2240</unit>
+    <unit code="OZ" name="Ounces">35840</unit>
+    <unit code="ST" name="Stone">160</unit>
+    <unit code="TONS" name="(Imperial Long) Tons">1</unit>
+    <unit code="TONNES" name="(Metric) Tonnes">1.01604691</unit>
+  </group>
+
+  <group label="Volume">
+    <unit code="CC" name="Cubic Centimetres">1000000</unit>
+    <unit code="CFT" name="Cubic Feet">35.3146667</unit>
+    <unit code="CIN" name="Cubic Inches">61023.7441</unit>
+    <unit code="CM" name="Cubic Metres">1</unit>
+    <unit code="CMM" name="Cubic Millimetres">1000000000</unit>
+    <unit code="GAL" name="Gallons">219.969157</unit>
+    <unit code="L" name="Litres">1000</unit>
+    <unit code="ML" name="Millilitre">1000000</unit>
+    <unit code="OZ" name="Fluid Ounce">35195.0652</unit>
+    <unit code="PT" name="Pints">1759.75326</unit>
+    <unit code="QT" name="Quarts">879.87663</unit>
+    <unit code="USGAL" name="US Gallons">264.172052</unit>
+    <unit code="USOZ" name="US Fluid Ounces">33814.0227</unit>
+    <unit code="USPT" name="US Pints">2113.37642</unit>
+    <unit code="USQT" name="US Quarts">1056.68821</unit>
+  </group>
+
+  <group label="Angles">
+    <unit code="DEG" name="Degrees">57.2957795</unit>
+    <unit code="RAD" name="Radians">1</unit>
+  </group>
+
+  <group label="Speed">
+    <unit code="C" name="Speed Of Light">1</unit>
+    <unit code="KT" name="Knots">582749918</unit>
+    <unit code="KPH" name="Kilometers Per Hour">1079252850</unit>
+    <unit code="MPH" name="Miles Per Hour">670616629</unit>
+    <unit code="MPS" name="Metres Per Second">299792458</unit>
+  </group>
+
+  <group label="Pressure">
+    <unit code="ATM" name="Atmosphere">1</unit>
+    <unit code="BAR" name="Bar">1.01325</unit>
+    <unit code="INHG" name="Inches Of Mercury">29.9246899</unit>
+    <unit code="MB" name="Millibar">1013.25</unit>
+    <unit code="PSI" name="Pounds Per Square Inch">14.6959488</unit>
+  </group>
+</convert>
