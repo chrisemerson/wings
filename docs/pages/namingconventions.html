@@ -12,5 +12,107 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>Certain classes and files within the Wings framework have different naming conventions, so the Loader class can determine
+    what it needs to do when it comes across a class name that isn't loaded yet.</p>
+
+    <p>All class names in the system are CamelCased with an uppercased initial letter, and most end in a name which describes
+    their role in the system (eg Controller, View, Driver).</p>
+
+    <p>All filenames in Wings are lowercase letters only, and usually have the format
+    <span class="file"><var>type</var>.<var>name</var>.php</span>, although there are exceptions to this. The details for each
+    class type are listed below, in the order they are checked for by the <a href="loader.html">Loader</a> class.</p>
+
+    <h2>DB Drivers</h2>
+
+    <p>The names of <a href="dbdrivers.html">DB Drivers</a> are CamelCased with an uppercased initial letter, and live in a file
+    called <span class="file">sys/dbdrivers/db.<var>name</var>.php</span>.</p>
+
+    <p>For example, a DB Driver called MySQLi would live in the file
+    <span class="file">sys/dbdrivers/db.mysqli.php</span>, and consist of the following structure:</p>
+
+    <pre><code>&lt;?php
+  class MysqliDriver implements iDBDriver {
+
+  }//class</code></pre>
+
+    <h2>Controllers</h2>
+
+    <p>The names of <a href="controllers.html">Controllers</a> must be CamelCased with an uppercased initial letter, and live in
+    a file called <span class="file">app/controllers/controller.<var>name</var>.php</span>.</p>
+
+    <p>For example, a Controller called SomeExample would live in the file
+    <span class="file">app/controllers/controller.someexample.php</span>, and consist of the following structure:</p>
+
+    <pre><code>&lt;?php
+  class SomeExampleController extends BaseController {
+
+  }//class</code></pre>
+
+    <p>There are some built in controllers in <span class="folder">sys/controllers/</span> which are loaded if no view is found
+    in <span class="folder">app/controllers/</span>. These can be overridden by copying the file into
+    <span class="folder">app/controllers/</span>, and modifying the copy.</p>
+
+    <h2>Views</h2>
+
+    <p>The names of <a href="views.html">Views</a> must be CamelCased with an uppercased initial letter, and live in
+    a file called <span class="file">app/views/view.<var>name</var>.php</span>.</p>
+
+    <p>For example, a View called SomeExample would live in the file
+    <span class="file">app/views/view.someexample.php</span>, and consist of the following structure:</p>
+
+    <pre><code>&lt;?php
+  class SomeExampleView extends BaseView {
+
+  }//class</code></pre>
+
+    <p>There are some built in views in <span class="folder">sys/views/</span> which are loaded if no view is found in
+    <span class="folder">app/views/</span>. These can be overridden by copying the file into
+    <span class="folder">app/views/</span>, and modifying the copy.</p>
+
+    <h2>Collections</h2>
+
+    <p><a href="collections.html">Collections</a> are special objects within Wings that are created on the fly, so they have no
+    associated file. They represent a set of the same <a href="models.html">Model</a>, and various operations can be performed
+    on them. They automatically extend the <a href="collection.html">Collection</a> class which provides this functionality, and
+    the creation of these objects are handled by the <a href="loader.html">Loader</a> class.</p>
+
+    <p>The name must conisist of the name of a <a href="models.html">Model</a> recognised by the system, followed by the word
+    'Collection'. For example, if there was a <a href="models.html">Model</a> with the name 'SomeExample', you can create a
+    'SomeExampleCollection' object, which would be created on the fly. If an unrecognised <a href="models.html">Model</a> name
+    is used, the usual PHP error will be thrown for a class which isn't found.</p>
+
+    <h2>Models</h2>
+
+    <p><a href="models.html">Models</a> are another special type of object in Wings which can be created on the fly, but can
+    also be overridden with a file containing custom code.</p>
+
+    <p>Models are also special in that they have no prexix to their class name. This is so that manipulation of data and
+    persistent objects within the system can be more natural (eg 'User' rather than 'UserModel').
+
+    <p>When a class name is passed to the <a href="loader.html">Loader</a> class that isn't recognised as any of the above, it
+    first checks the <span class="folder">app/models/</span> folder for a file called
+    <span class="file">model.<var>name</var>.php</span>. If it is found, this file is loaded. The basic structure of this file
+    should follow this syntax (for a <a href="models.html">Model</a> named 'SomeExample'):</p>
+
+    <pre><code>&lt;?php
+  class SomeExample extends BaseModel {
+
+  }//class</code></pre>
+
+    <p>If no such file is found, and the name is a recognised model name, a class with the basic structure above is created and
+    used instead. Thus, for models which require no custom functionality, no file is needed to be created.</p>
+
+    <h2>Library Files</h2>
+
+    <p>If the class name does not have one of the recognised extensions, and is not a recognised model name, it is checked to
+    see if it is a library file. These files live in <span class="folder">app/lib/</span> and
+    <span class="folder">sys/lib/</span>, with files in the former being used in preference to those in the latter. The filename
+    should simply be <span class="file">lib/class.<var>name</var>.php"</span>. For example, for the library file
+    <a href="convert.php">Convert</a>, the filename is <span class="file">sys/lib/class.convert.php</span>. For a new library
+    class called 'SomeExample', the filename would be <span class="file">app/lib/class.someexample.php</span>.</p>
+
+    <h2>Third Party Files</h2>
+
+    <!-- FINISH THIS -->
   </body>
 </html>
