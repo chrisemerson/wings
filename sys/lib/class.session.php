@@ -2,56 +2,30 @@
   class Session {
     private static $arrData = array();
 
-    private $strContext;
-
-    public function __construct ($strContext = '') {
-      $this->strContext = $strContext;
-
+    public function __construct () {
       $this->readSession();
     }//function
 
-    public function setContext ($strContext) {
-      $this->strContext = $strContext;
-    }//function
-
     public function __get ($strName) {
-      if (empty($this->strContext)) {
-        if (isset(self::$arrData['default'][$strName])) {
-          return self::$arrData['default'][$strName];
-        }//if
-      } else {
-        if (isset(self::$arrData['contexts'][$this->strContext][$strName])) {
-          return self::$arrData['contexts'][$this->strContext][$strName];
-        }//if
+      if (isset(self::$arrData[$strName])) {
+        return self::$arrData[$strName];
       }//if
 
       return null;
     }//function
 
     public function __set ($strName, $mixValue) {
-      if (empty($this->strContext)) {
-        self::$arrData['default'][$strName] = $mixValue;
-      } else {
-        self::$arrData['contexts'][$this->strContext][$strName] = $mixValue;
-      }//if
+      self::$arrData[$strName] = $mixValue;
 
       $this->writeSession();
     }//function
 
     public function __isset ($strName) {
-      if (empty($this->strContext)) {
-        return isset(self::$arrData['default'][$strName]);
-      } else {
-        return isset(self::$arrData['contexts'][$this->strContext][$strName]);
-      }//if
+      return isset(self::$arrData[$strName]);
     }//function
 
     public function __unset ($strName) {
-      if (empty($this->strContext)) {
-        unset(self::$arrData['default'][$strName]);
-      } else {
-        unset(self::$arrData['contexts'][$this->strContext][$strName]);
-      }//if
+      unset(self::$arrData[$strName]);
 
       $this->writeSession();
     }//function

@@ -13,14 +13,26 @@ dl dt {
   font-weight: bold;
 }
 
-code {
+pre {
   padding: .5em;
   border: 1px solid #aaaa00;
   background-color: #ffffee;
   display: block;
   width: 90%;
-  margin: 0 auto;
+  margin: 1em auto;
+}
+
+code {
   font-size: 1.2em;
+}
+
+.usage {
+  padding: .5em;
+  border: 1px solid #00aa00;
+  background-color: #eeffee;
+  overflow: hidden;
+  width: 90%;
+  margin: 1em auto;
 }
 
 .ref {
@@ -71,6 +83,23 @@ code {
 
 #folders li {
   list-style-image: url('../images/folder.png');
+}
+
+#folders li.writable strong,
+span.writable {
+  color: #0000ff;
+}
+
+#folders li.maybewritable strong,
+span.maybewritable {
+  color: #9999ff;
+}
+
+span.writable,
+span.maybewritable {
+  font-weight: bold;
+  background: url('../images/folder.png') no-repeat left center;
+  padding-left: 16px;
 }
 
 .folder {

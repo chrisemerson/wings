@@ -21,11 +21,11 @@
             <strong>app/</strong> - Application specific Folder - all application code goes in here
 
             <ul>
-              <li><strong>cache/</strong> - Cache folder - should be writable</li>
+              <li class="writable"><strong>cache/</strong> - Cache folder - should be writable</li>
               <li><strong>config/</strong> - Folder for config files, all of which should be xml. For use with the config class.</li>
               <li><strong>controllers/</strong> - Controllers reside here. Should be called controller.&lt;name&gt;.php</li>
               <li><strong>cron/</strong> - Cron task scripts go in here</li>
-              <li><strong>data/</strong> - Generic data files can go here for use by anything else - text, xml, image files, uploads etc</li>
+              <li class="maybewritable"><strong>data/</strong> - Generic data files can go here for use by anything else - text, xml, image files, uploads etc</li>
               <li>
                 <strong>lib/</strong> - Library, contains helper classes and modules, like Captcha, Session, Date, Page Manager etc - class.&lt;name&gt;.php
 
@@ -35,7 +35,7 @@
                 </ul>
               </li>
 
-              <li><strong>logs/</strong> - Log files for the application</li>
+              <li class="writable"><strong>logs/</strong> - Log files for the application</li>
               <li><strong>models/</strong> - model files, model.&lt;name&gt;.php - eg Student, Book, Product etc.</li>
               <li>
                 <strong>templates/</strong> - .tpl template files, for use with the template class.
@@ -102,5 +102,8 @@
         </ul>
       </li>
     </ul>
+
+    <p>(<span class="writable">foldername/</span> indicates that the folder needs to be writable by the web server. The
+    <span class="maybewritable">data/</span> folder may need to be writable if your application uses it for uploads.)</p>
   </body>
 </html>

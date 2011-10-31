@@ -12,5 +12,43 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>The Session class acts as a simple wrapper for Sessions within the framework. The class offers no extended functionality
+    to sessions, other than an object oriented interface, but is used by the rest of the framework and should be used by any
+    application code.</p>
+
+    <p>The idea of using this is that the behaviour or methods used by the session class can be extended or changed in the
+    future very easily if need be. The class uses the native PHP Sessions mechanism underneath the bonnet.</p>
+
+    <h2>Usage</h2>
+
+    <div class="usage">
+      <h3>Session-><var>var</var></h3>
+
+      <p>You can get or set a session variable this way, check if it is set with <code>isset()</code> and unset it.</p>
+    </div>
+
+    <div class="usage">
+      <h3>Session->regenerateID()</h3>
+
+      <p>Regenerates the Session ID.</p>
+    </div>
+
+    <div class="usage">
+      <h3>Session->destroy()</h3>
+
+      <p>Destroys the session.</p>
+    </div>
+
+    <h2>Example</h2>
+
+    <pre><code>$objSession = new Session();
+
+$objSession->foo = "bar";
+$objSession->xyz = 0;
+
+echo $objSession->foo;
+echo $objSession->bar;
+
+var_dump(isset($objSession->baz));</code></pre>
   </body>
 </html>
