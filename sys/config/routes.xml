@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<routes>
-  <index>
-    <execute controller="HomeController" action="index" secure="no" />
-  </index>
+<!-- Some examples of routes:
 
-  <notfound>
-    <execute controller="ErrorController" action="show404Error" />
-  </notfound>
-
-  <!-- Some examples of routes:
   <route match="[match]">
     <execute controller="[controller]" />
   </route>
@@ -43,4 +35,13 @@
   <route match="[match]">
     <redirect uri="[uri]" />
   </route>-->
+
+<routes>
+  <index>
+    <execute controller="HomeController" action="index" secure="no" />
+  </index>
+
+  <notfound>
+    <execute controller="ErrorController" action="show404Error" />
+  </notfound>
 </routes>

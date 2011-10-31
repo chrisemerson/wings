@@ -12,7 +12,12 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
-    <p>Converts numbers between different units.</p>
+    <p>Converts numbers between different units. This file gets its conversion information from the
+    <span class="config"><a href="convertconf.html">convert.xml</a></span> config file, which can be updated to include more
+    conversions.</p>
+
+    <p>The Temperature conversions are hard coded into the class, because all the units involved have different zero points, so
+    cannot be converted in a standard way.</p>
 
     <h2>Usage</h2>
 
@@ -27,7 +32,7 @@
     </pre>
 
     <div class="ref">
-      <h2>Available Units</h2>
+      <h2>Default Available Units</h2>
 
       <div class="col3">
         <h3>Distance</h3>

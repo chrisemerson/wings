@@ -12,5 +12,44 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <h2>Default File Contents</h2>
+
+    <pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+
+&lt;app&gt;
+  &lt;default&gt;
+    &lt;uri&gt;
+      &lt;host&gt;dev&lt;/host&gt;
+      &lt;path&gt;appframework/httpdocs&lt;/path&gt;
+    &lt;/uri&gt;
+
+    &lt;template&gt;
+      &lt;mastertemplate&gt;system.master&lt;/mastertemplate&gt;
+    &lt;/template&gt;
+
+    &lt;db&gt;
+      &lt;uri&gt;mysqli://app:*****@localhost/app&lt;/uri&gt;
+      &lt;prefix&gt;app_&lt;/prefix&gt;
+    &lt;/db&gt;
+
+    &lt;errors&gt;
+      &lt;showerrors&gt;0&lt;/showerrors&gt;
+      &lt;debugmode&gt;0&lt;/debugmode&gt;
+      &lt;defaultformerror&gt;{field} errored&lt;/defaultformerror&gt;
+    &lt;/errors&gt;
+
+    &lt;cookie&gt;
+      &lt;domain&gt;&lt;/domain&gt;
+      &lt;path&gt;/appframework/httpdocs/&lt;/path&gt;
+    &lt;/cookie&gt;
+  &lt;/default&gt;
+
+  &lt;dev&gt;
+    &lt;errors&gt;
+      &lt;showerrors&gt;1&lt;/showerrors&gt;
+      &lt;debugmode&gt;1&lt;/debugmode&gt;
+    &lt;/errors&gt;
+  &lt;/dev&gt;
+&lt;/app&gt;</code></pre>
   </body>
 </html>

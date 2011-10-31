@@ -12,5 +12,50 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <h2>Default File Contents</h2>
+
+    <pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+
+&lt;auth&gt;
+  &lt;users&gt;
+    &lt;model&gt;User&lt;/model&gt;
+
+    &lt;fields&gt;
+      &lt;id&gt;user_id&lt;/id&gt;
+      &lt;username&gt;user_name&lt;/username&gt;              &lt;!-- VARCHAR / TEXT --&gt;
+      &lt;password&gt;user_pass&lt;/password&gt;              &lt;!-- VARCHAR (40) --&gt;
+    &lt;/fields&gt;
+  &lt;/users&gt;
+
+  &lt;rememberme&gt;
+    &lt;enabled&gt;1&lt;/enabled&gt;
+
+    &lt;rememberedlogins&gt;
+      &lt;model&gt;RememberedLogin&lt;/model&gt;
+
+      &lt;fields&gt;
+        &lt;userid&gt;user_id&lt;/userid&gt;                  &lt;!-- INT (11) --&gt;
+        &lt;token&gt;remembered_login_token&lt;/token&gt;     &lt;!-- VARCHAR (40) --&gt;
+        &lt;serial&gt;remembered_login_serial&lt;/serial&gt;  &lt;!-- VARCHAR (40) --&gt;
+        &lt;expiry&gt;remembered_login_expiry&lt;/expiry&gt;  &lt;!-- DATETIME --&gt;
+      &lt;/fields&gt;
+    &lt;/rememberedlogins&gt;
+
+    &lt;remembereddays&gt;30&lt;/remembereddays&gt;
+
+    &lt;defaultcookiename&gt;auth&lt;/defaultcookiename&gt;
+  &lt;/rememberme&gt;
+
+  &lt;uris&gt;
+    &lt;requirelogin&gt;admin/login&lt;/requirelogin&gt;
+    &lt;requirelogout&gt;admin/pages&lt;/requirelogout&gt;
+    &lt;requirereauth&gt;admin/login&lt;/requirereauth&gt;
+    &lt;redirectafterlogin&gt;admin/pages&lt;/redirectafterlogin&gt;
+  &lt;/uris&gt;
+
+  &lt;salt&gt;****************************************************************************************************&lt;/salt&gt;
+
+  &lt;sessionname&gt;userauth&lt;/sessionname&gt;
+&lt;/auth&gt;</code></pre>
   </body>
 </html>

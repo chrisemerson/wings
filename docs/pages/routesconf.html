@@ -12,5 +12,54 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <h2>Default File Contents</h2>
+
+    <pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+
+&lt;!-- Some examples of routes:
+
+  &lt;route match="[match]"&gt;
+    &lt;execute controller="[controller]" /&gt;
+  &lt;/route&gt;
+
+  &lt;route match="[match]"&gt;
+   &lt;execute controller="[controller]" action="[action]" /&gt;
+  &lt;/route&gt;
+
+  &lt;route match="[match]"&gt;
+    &lt;execute controller="[controller]" action="[action]" secure="yes" /&gt;
+
+    &lt;param&gt;Example Param&lt;/param&gt;
+  &lt;/route&gt;
+
+  &lt;route match="[match]/{string}"&gt;
+    &lt;execute controller="[controller]" action="[action]" /&gt;
+
+    &lt;param&gt;%1&lt;/param&gt;
+  &lt;/route&gt;
+
+  &lt;route match="{string}/{string}/{url}"&gt;
+    &lt;execute controller="%1Controller" action="show%2" /&gt;
+
+    &lt;param&gt;%3&lt;/param&gt;
+  &lt;/route&gt;
+
+  &lt;route match="[match]"&gt;
+    &lt;redirect route="[route]" secure="no" /&gt;
+  &lt;/route&gt;
+
+  &lt;route match="[match]"&gt;
+    &lt;redirect uri="[uri]" /&gt;
+  &lt;/route&gt;--&gt;
+
+&lt;routes&gt;
+  &lt;index&gt;
+    &lt;execute controller="HomeController" action="index" secure="no" /&gt;
+  &lt;/index&gt;
+
+  &lt;notfound&gt;
+    &lt;execute controller="ErrorController" action="show404Error" /&gt;
+  &lt;/notfound&gt;
+&lt;/routes&gt;</code></pre>
   </body>
 </html>

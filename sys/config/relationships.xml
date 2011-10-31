@@ -2,15 +2,15 @@
 
 <!-- Example of use:
 
-     <manytomany jointable="jointable">
-       <model name="Model1" column="Column1" />
-       <model name="Model2" column="Column2" />
-     </manytomany>
+  <manytomany jointable="jointable">
+    <model name="Model1" column="Column1" />
+    <model name="Model2" column="Column2" />
+  </manytomany>
 
-     <onetoone>
-       <localmodel name="LocalModel" column="local_column" />
-       <foreignmodel name="ForeignModel" column="foreign_column" />
-     </onetoone> -->
+  <onetoone>
+    <localmodel name="LocalModel" column="local_column" />
+    <foreignmodel name="ForeignModel" column="foreign_column" />
+  </onetoone> -->
 
 <relationships>
 </relationships>

@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+  <head>
+    <title>PHP Wings Documentation</title>
+
+    <link rel="stylesheet" href="../css/docs.css" media="screen">
+  </head>
+
+  <body>
+    <h1>convert.xml</h1>
+
+    <a href="../index.html" class="back">&lt; Back</a>
+
+    <p>This file is used by the <a href="convert.html">Convert</a> class as the source of all the conversion rates used. The
+    file consists of several groups, which represent conversion types (such as 'Distance' or 'Speed'), each of which contains
+    many units that can be converted between within that group.</p>
+
+    <p>Each group is constructed so that each value within it is equal (for example, 1 Nautical Mile = 1852 Metres = 6076.11549
+    Feet). The conversion class handles all converting within the groups beyond that. The largest unit in each case has the
+    value of 1, so that all the other units in the group have a value of more than 1.</p>
+
+    <p>Units can share codes with units in other groups, as long as no more than 1 unit code is shared between 2 groups -
+    otherwise the <a href="convert.html">Convert</a> class will not know which conversion rate to use. For example, both
+    Distance and Volume groups contain a 'CM' unit (Centimetres vs Cubic Metres), which is fine because those 2 groups don't
+    share any other unit codes.</p>
+
+    <p>The Temperature conversions are hard coded into the <a href="convert.html">Convert</a> class, because all the units
+    involved have different zero points, so cannot be converted in a standard way.</p>
+
+    <p>To add more groups or units, first copy this config file into the <span class="folder">app/config/</span> folder, and
+    edit the copied version.</p>
+
+    <h2>Default File Contents</h2>
+
+    <pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+
+&lt;convert&gt;
+  &lt;group label="Distance"&gt;
+    &lt;unit code="CM" name="Centimetres"&gt;185200&lt;/unit&gt;
+    &lt;unit code="FT" name="Feet"&gt;6076.11549&lt;/unit&gt;
+    &lt;unit code="IN" name="Inches"&gt;72913.3858&lt;/unit&gt;
+    &lt;unit code="KM" name="Kilometres"&gt;1.852&lt;/unit&gt;
+    &lt;unit code="M" name="Metres"&gt;1852&lt;/unit&gt;
+    &lt;unit code="MI" name="Miles"&gt;1.15077945&lt;/unit&gt;
+    &lt;unit code="MM" name="Millimetres"&gt;1852000&lt;/unit&gt;
+    &lt;unit code="NM" name="Nautical Miles"&gt;1&lt;/unit&gt;
+    &lt;unit code="YD" name="Yards"&gt;2025.37183&lt;/unit&gt;
+  &lt;/group&gt;
+
+  &lt;group label="Weight"&gt;
+    &lt;unit code="G" name="Grams"&gt;1016046.91&lt;/unit&gt;
+    &lt;unit code="KG" name="Kilograms"&gt;1016.04691&lt;/unit&gt;
+    &lt;unit code="LB" name="Pounds"&gt;2240&lt;/unit&gt;
+    &lt;unit code="OZ" name="Ounces"&gt;35840&lt;/unit&gt;
+    &lt;unit code="ST" name="Stone"&gt;160&lt;/unit&gt;
+    &lt;unit code="TONS" name="(Imperial Long) Tons"&gt;1&lt;/unit&gt;
+    &lt;unit code="TONNES" name="(Metric) Tonnes"&gt;1.01604691&lt;/unit&gt;
+  &lt;/group&gt;
+
+  &lt;group label="Volume"&gt;
+    &lt;unit code="CC" name="Cubic Centimetres"&gt;1000000&lt;/unit&gt;
+    &lt;unit code="CFT" name="Cubic Feet"&gt;35.3146667&lt;/unit&gt;
+    &lt;unit code="CIN" name="Cubic Inches"&gt;61023.7441&lt;/unit&gt;
+    &lt;unit code="CM" name="Cubic Metres"&gt;1&lt;/unit&gt;
+    &lt;unit code="CMM" name="Cubic Millimetres"&gt;1000000000&lt;/unit&gt;
+    &lt;unit code="GAL" name="Gallons"&gt;219.969157&lt;/unit&gt;
+    &lt;unit code="L" name="Litres"&gt;1000&lt;/unit&gt;
+    &lt;unit code="ML" name="Millilitre"&gt;1000000&lt;/unit&gt;
+    &lt;unit code="OZ" name="Fluid Ounce"&gt;35195.0652&lt;/unit&gt;
+    &lt;unit code="PT" name="Pints"&gt;1759.75326&lt;/unit&gt;
+    &lt;unit code="QT" name="Quarts"&gt;879.87663&lt;/unit&gt;
+    &lt;unit code="USGAL" name="US Gallons"&gt;264.172052&lt;/unit&gt;
+    &lt;unit code="USOZ" name="US Fluid Ounces"&gt;33814.0227&lt;/unit&gt;
+    &lt;unit code="USPT" name="US Pints"&gt;2113.37642&lt;/unit&gt;
+    &lt;unit code="USQT" name="US Quarts"&gt;1056.68821&lt;/unit&gt;
+  &lt;/group&gt;
+
+  &lt;group label="Angles"&gt;
+    &lt;unit code="DEG" name="Degrees"&gt;57.2957795&lt;/unit&gt;
+    &lt;unit code="RAD" name="Radians"&gt;1&lt;/unit&gt;
+  &lt;/group&gt;
+
+  &lt;group label="Speed"&gt;
+    &lt;unit code="C" name="Speed Of Light"&gt;1&lt;/unit&gt;
+    &lt;unit code="KT" name="Knots"&gt;582749918&lt;/unit&gt;
+    &lt;unit code="KPH" name="Kilometers Per Hour"&gt;1079252850&lt;/unit&gt;
+    &lt;unit code="MPH" name="Miles Per Hour"&gt;670616629&lt;/unit&gt;
+    &lt;unit code="MPS" name="Metres Per Second"&gt;299792458&lt;/unit&gt;
+  &lt;/group&gt;
+
+  &lt;group label="Pressure"&gt;
+    &lt;unit code="ATM" name="Atmosphere"&gt;1&lt;/unit&gt;
+    &lt;unit code="BAR" name="Bar"&gt;1.01325&lt;/unit&gt;
+    &lt;unit code="INHG" name="Inches Of Mercury"&gt;29.9246899&lt;/unit&gt;
+    &lt;unit code="MB" name="Millibar"&gt;1013.25&lt;/unit&gt;
+    &lt;unit code="PSI" name="Pounds Per Square Inch"&gt;14.6959488&lt;/unit&gt;
+  &lt;/group&gt;
+&lt;/convert&gt;</code></pre>
+  </body>
+</html>

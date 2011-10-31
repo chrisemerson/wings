@@ -12,5 +12,80 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <h2>Default File Contents</h2>
+
+    <pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+
+&lt;captcha&gt;
+  &lt;!-- List of allowed characters in code --&gt;
+  &lt;allowedcharacters&gt;abcdeghjkmnpqrsuvwxyz23456789&lt;/allowedcharacters&gt;
+
+  &lt;!-- Length of captcha code to be generated --&gt;
+  &lt;captchalength&gt;5&lt;/captchalength&gt;
+
+  &lt;!-- Session name to be used with captcha --&gt;
+  &lt;sessionname&gt;captcha_code&lt;/sessionname&gt;
+
+  &lt;!-- Whether a case sensitive check is made --&gt;
+  &lt;casesensitive&gt;false&lt;/casesensitive&gt;
+
+  &lt;image&gt;
+    &lt;!-- Width of the final image --&gt;
+    &lt;width&gt;275&lt;/width&gt;
+
+    &lt;!-- Height of the final image --&gt;
+    &lt;height&gt;75&lt;/height&gt;
+
+    &lt;!-- Directory containing background images --&gt;
+    &lt;backgroundimagesdirectory&gt;captcha/backgrounds/&lt;/backgroundimagesdirectory&gt;
+  &lt;/image&gt;
+
+  &lt;spacing&gt;
+    &lt;!-- Spacing to the left of the first letter --&gt;
+    &lt;paddingleft&gt;20&lt;/paddingleft&gt;
+
+    &lt;!-- Spacing between each letter --&gt;
+    &lt;letterpadding&gt;3&lt;/letterpadding&gt;
+
+    &lt;!-- Amount that the height of each letter can vary by --&gt;
+    &lt;heightvariation&gt;0&lt;/heightvariation&gt;
+  &lt;/spacing&gt;
+
+  &lt;text&gt;
+    &lt;!-- Range of tilt angle the letters can have (eg. 30 means +/- 15 degrees) --&gt;
+    &lt;fonttilt&gt;40&lt;/fonttilt&gt;
+
+    &lt;!-- Font size in pixels --&gt;
+    &lt;fontsize&gt;40&lt;/fontsize&gt;
+
+    &lt;!-- Directory containing fonts --&gt;
+    &lt;fontdirectory&gt;captcha/fonts/&lt;/fontdirectory&gt;
+  &lt;/text&gt;
+
+  &lt;color&gt;
+    &lt;!-- Darkest color allowed for the random lettering colors --&gt;
+    &lt;darkestcolor&gt;0&lt;/darkestcolor&gt;
+
+    &lt;!-- Lightest color allowed for the random lettering colors --&gt;
+    &lt;lightestcolor&gt;200&lt;/lightestcolor&gt;
+
+    &lt;!-- Number of random colors to generate --&gt;
+    &lt;numberofcolors&gt;100&lt;/numberofcolors&gt;
+  &lt;/color&gt;
+
+  &lt;noise&gt;
+    &lt;!-- Amount of noise set in the image. 0 for none, up to 10,000 for lots --&gt;
+    &lt;noiseamount&gt;2000&lt;/noiseamount&gt;
+
+    &lt;!-- Number of lines to draw going through the text, before adding noise --&gt;
+    &lt;numberoflines&gt;0&lt;/numberoflines&gt;
+
+    &lt;!-- Thickness (in pixels) of the lines through the text --&gt;
+    &lt;linethickness&gt;1&lt;/linethickness&gt;
+
+    &lt;!-- Set from 0 upwards. Probability that the lines will go more horizontal, rather than diagonal --&gt;
+    &lt;horizontallinesprobability&gt;5&lt;/horizontallinesprobability&gt;
+  &lt;/noise&gt;
+&lt;/captcha&gt;</code></pre>
   </body>
 </html>
