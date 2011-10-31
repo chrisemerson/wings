@@ -12,5 +12,26 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>The Loader class is responsible for interpreting the names of classes that aren't yet loaded in the framework, working
+    out what they are and where the relevant file lives, and loading it. The <code>__autoload()</code> function in
+    <span class="file">/sys/base/3.inc/inc.autoload.php</span> uses this class.</p>
+
+    <p>This class is intended for internal use only and should not be needed by application code.</p>
+
+    <h2>Usage</h2>
+
+    <div class="usage">
+      <h3><code>Loader->__construct(<var>$strClassName</var>)</code> (Constructor)</h3>
+
+      <p>The constructor takes a single argument, which is the name of the class you are attempting to load.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Loader->load()</code></h3>
+
+      <p>This method call prompts the class to search for the class in question and load it, according to the naming conventions
+      and locations in the framework.</p>
+    </div>
+
   </body>
 </html>

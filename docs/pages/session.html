@@ -17,24 +17,27 @@
     application code.</p>
 
     <p>The idea of using this is that the behaviour or methods used by the session class can be extended or changed in the
-    future very easily if need be. The class uses the native PHP Sessions mechanism underneath the bonnet.</p>
+    future very easily if need be. The class uses the native PHP Sessions mechanism underneath the bonnet, and should be the
+    only way sessions are accessed. The Database Sessions functionality also makes use of this class.</p>
+
+    <p>This class is automatically available within <a href="controllers.html">Controllers</a> as <code>$this->session</code>.</p>
 
     <h2>Usage</h2>
 
     <div class="usage">
-      <h3>Session-><var>var</var></h3>
+      <h3><code>Session-><var>var</var></code></h3>
 
       <p>You can get or set a session variable this way, check if it is set with <code>isset()</code> and unset it.</p>
     </div>
 
     <div class="usage">
-      <h3>Session->regenerateID()</h3>
+      <h3><code>Session->regenerateID()</code></h3>
 
       <p>Regenerates the Session ID.</p>
     </div>
 
     <div class="usage">
-      <h3>Session->destroy()</h3>
+      <h3><code>Session->destroy()</code></h3>
 
       <p>Destroys the session.</p>
     </div>
@@ -49,6 +52,10 @@ $objSession->xyz = 0;
 echo $objSession->foo;
 echo $objSession->bar;
 
-var_dump(isset($objSession->baz));</code></pre>
+var_dump(isset($objSession->baz));
+
+$objSession->regenerateID();
+
+$objSession->destroy();</code></pre>
   </body>
 </html>

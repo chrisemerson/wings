@@ -12,8 +12,6 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
-    <p>Wings uses an MVC design philosiphy, with a custom built ORM and Templating system included as well.</p>
-
     <p>All the back ond code is contained within <span class="folder">app/</span> and <span class="folder">sys/</span>, with
     <span class="folder">sys/</span> containing most of the framework and <span class="folder">app/</span> containing
     application specific files. Anything in <span class="folder">app/</span> will be used in preference to things in
@@ -23,11 +21,11 @@
     none of which should be overridden.</p>
 
     <p>The <span class="folder">httpdocs/</span> folder is where Apache should serve from, and contains the main entry point to
-    the application (index.php) as well as an .htaccess file to route all requests through it. Static files also go in here, and
-    a skeleton folder structure is provided as a starting point. Any requests to an existing file will first check to see if the
-    file (or directory) exists, and if it does, the request will be served as normal. Any requests for a file or directory that
-    doesn't exist is routed through the framework. If the framework has nothing defined to handle the request, a 404 error is
-    shown.</p>
+    the application (<span class="file">index.php</span>) as well as an <span class="file">.htaccess</span> file to route all
+    requests through it. Static files also go in here, and a skeleton folder structure is provided as a starting point. Any
+    requests to an existing file will first check to see if the file (or directory) exists, and if it does, the request will be
+    served as normal. Any requests for a file or directory that doesn't exist is routed through the framework. If the framework
+    has nothing defined to handle the request, a 404 error is shown.</p>
 
     <p>Including the <span class="file">inc.wings.php</span> folder is the way to use wings - eg if you want to write a simple
     test script or standalone script that uses the wings functionality, just require this file first, then you can do almost
@@ -36,23 +34,24 @@
     the files will load in the order contained within it (1 file per line, comments start with #).</p>
 
     <p>All filenames by convention are lowercased, and are named accerding to what they are, eg controllers are named in
-    CamelCase (ExampleNameController) and lives in the file <span class="file">app/controllers/controller.examplename.php</span>.
-    There are more details in the documentation for each of the different sections.</p>
+    CamelCase (ExampleNameController) and lives in the file
+    <span class="file">app/controllers/controller.examplename.php</span>. There are more details in the documentation for each
+    of the different sections.</p>
 
-    <p>Apart from the models, views and controllers, most of the system lives within <span class="folder">base/2.classes/</span>.
-    Library files within <span class="folder">lib/</span> also act as standalone classes and can be called upon to help with
-    certain tasks. Certain library files are pre-loaded into the controllers and are accessible within them as $this->{name}.
-    These include:</p>
+    <p>Apart from the models, views and controllers, most of the system lives within
+    <span class="folder">base/2.classes/</span>. Library files within <span class="folder">lib/</span> also act as standalone
+    classes and can be called upon to help with certain tasks. Certain library files are pre-loaded into the controllers and are
+    accessible within them as <code>$this-><var>name</var></code>. These include:</p>
 
     <ul>
-      <li><strong>$this->errors</strong> - ErrorRegistry class. Stores and handles errors globally within a request so they can
+      <li><strong><code>$this->errors</code></strong> - ErrorRegistry class. Stores and handles errors globally within a request so they can
       all be displayed in the same place.</li>
-      <li><strong>$this->post</strong> - InputFilter class. Performs input filtering & validation on $_POST variables.</li>
-      <li><strong>$this->get</strong> - InputFilter class. As above but for $_GET variables.</li>
-      <li><strong>$this->session</strong> - Session class. Used to access the session data.</li>
-      <li><strong>$this->auth</strong> - Authentication class. Handles secure logins, sessions and cookies, including 'Remember
+      <li><strong><code>$this->post</code></strong> - InputFilter class. Performs input filtering & validation on $_POST variables.</li>
+      <li><strong><code>$this->get</code></strong> - InputFilter class. As above but for $_GET variables.</li>
+      <li><strong><code>$this->session</code></strong> - Session class. Used to access the session data.</li>
+      <li><strong><code>$this->auth</code></strong> - Authentication class. Handles secure logins, sessions and cookies, including 'Remember
       Me' feature.</li>
-      <li><strong>$this->files</strong> - FileUpload class. This isn't yet implemented, do not use.</li>
+      <li><strong><code>$this->files</code></strong> - FileUpload class. This isn't yet implemented, do not use.</li>
     </ul>
 
     <p>Further information on these is available within the documentation for the class in question. To use these within a model

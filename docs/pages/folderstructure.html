@@ -23,20 +23,20 @@
             <ul>
               <li class="writable"><strong>cache/</strong> - Cache folder - should be writable</li>
               <li><strong>config/</strong> - Folder for config files, all of which should be xml. For use with the config class.</li>
-              <li><strong>controllers/</strong> - Controllers reside here. Should be called controller.&lt;name&gt;.php</li>
+              <li><strong>controllers/</strong> - Controllers reside here. Should be called <span class="file">controller.&lt;name&gt;.php</span></li>
               <li><strong>cron/</strong> - Cron task scripts go in here</li>
               <li class="maybewritable"><strong>data/</strong> - Generic data files can go here for use by anything else - text, xml, image files, uploads etc</li>
               <li>
-                <strong>lib/</strong> - Library, contains helper classes and modules, like Captcha, Session, Date, Page Manager etc - class.&lt;name&gt;.php
+                <strong>lib/</strong> - Library, contains helper classes and modules, like Captcha, Session, Date, Page Manager etc - <span class="file">class.&lt;name&gt;.php</span>
 
                 <ul>
                   <li><strong>res/</strong> - Library resources - eg Backgrounds and fonts for captcha</li>
-                  <li><strong>thirdparty/</strong> - Third party classes and software, eg phpmailer, included files configured by thirdparty.xml config file</li>
+                  <li><strong>thirdparty/</strong> - Third party classes and software, eg phpmailer, included files configured by <span class="config"><a href="thirdpartyconf.html">thirdparty.xml</a></span> config file</li>
                 </ul>
               </li>
 
               <li class="writable"><strong>logs/</strong> - Log files for the application</li>
-              <li><strong>models/</strong> - model files, model.&lt;name&gt;.php - eg Student, Book, Product etc.</li>
+              <li><strong>models/</strong> - model files, <span class="file">model.&lt;name&gt;.php</span> - eg Student, Book, Product etc.</li>
               <li>
                 <strong>templates/</strong> - .tpl template files, for use with the template class.
 
@@ -46,7 +46,7 @@
               </li>
 
               <li><strong>tools/</strong> - One off tool files for, eg, clearing the database, updating a schema, gathering data etc</li>
-              <li><strong>views/</strong> - View helper files, called view.&lt;name&gt;.php. Master view in here, overridable, not renamable.</li>
+              <li><strong>views/</strong> - View helper files, called <span class="file">view.&lt;name&gt;.php</span>. Master view in here, overridable, not renamable.</li>
             </ul>
           </li>
 
@@ -64,7 +64,7 @@
           </li>
 
           <li>
-            <strong>sys/</strong> - System folder - Nothing in here should be changes. All code should go in app/
+            <strong>sys/</strong> - System folder - Nothing in here should be changes. All code should go in <span class="folder">app/</span>
 
             <ul>
               <li>
@@ -79,12 +79,12 @@
 
               <li><strong>config/</strong> - Folder for config files, all of which should be xml. For use with the config class.</li>
               <li><strong>controllers/</strong> - Built in controllers. Currently only consists of Error controller</li>
-              <li><strong>dbdrivers/</strong> - DB driver files - common interfaces for different database types, db.&lt;name&gt;.php</li>
+              <li><strong>dbdrivers/</strong> - DB driver files - common interfaces for different database types, <span class="file">db.&lt;name&gt;.php</span></li>
               <li>
-                <strong>lib/</strong> - Library, contains helper classes and modules, like Captcha, Session, Date, Page Manager etc - class.&lt;name&gt;.php
+                <strong>lib/</strong> - Library, contains helper classes and modules, like Captcha, Session, Date, Page Manager etc - <span class="file">class.&lt;name&gt;.php</span>
 
                 <ul>
-                  <li><strong>thirdparty/</strong> - Third party classes and software, eg phpmailer, included files configured by thirdparty.xml config file</li>
+                  <li><strong>thirdparty/</strong> - Third party classes and software, eg phpmailer, included files configured by <span class="config"><a href="thirdpartyconf.html">thirdparty.xml</a></span> config file</li>
                 </ul>
               </li>
 
