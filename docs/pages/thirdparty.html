@@ -15,7 +15,13 @@
     <p>As well as the built in and custom library files, Wings also allows for third party library files to be included and to
     make use of the framework's autoloading functionality.</p>
 
-    <p>Wings includes PHPMailer and FPDF classes within <span class="folder">sys/lib/thirdparty/</span>
+    <p>Wings includes PHPMailer and FPDF classes within <span class="folder">sys/lib/thirdparty/</span>, and additional classes
+    can be added into <span class="folder">app/lib/thirdparty</span>. There is also a <a href="config.html">Config</a> file to
+    edit (<span class="config"><a href="thirdpartyconf.html">thirdparty.xml</a></span>) to enable the
+    <a href="loader.html">Loader</a> class to determine where the class lives.</p>
 
+    <p>If you wish to upgrade or alter any of the included third party classes, you should first copy them from
+    <span class="folder">sys/lib/thirdparty/</span> to <span class="folder">app/lib/thirdparty/</span>, and modify the copied
+    version.</p>
   </body>
 </html>
