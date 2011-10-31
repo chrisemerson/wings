@@ -3,92 +3,203 @@
 <html lang="en">
   <head>
     <title>PHP Wings Documentation</title>
+
+    <link rel="stylesheet" href="../css/docs.css" media="screen">
   </head>
 
   <body>
     <h1>Convert Class</h1>
 
-    <a href="../index.html">&lt; Back</a>
+    <a href="../index.html" class="back">&lt; Back</a>
 
     <p>Converts numbers between different units</p>
 
-    Available Units:
+    <h2>Usage</h2>
 
-    DISTANCE
+    <pre>
+      <code>Convert::<var>[UNIT1]</var>to<var>[UNIT2]</var>(value);</code>
+    </pre>
 
-    CM - Centimetre
-    FT - Foot
-    IN - Inch
-    KM - Kilometre
-    M - Metre
-    MI - Mile
-    MM - Millimetre
-    NM - Nautical Mile
-    YD - Yard
+    <p>Eg, to convert 54km to miles:</p>
 
-    WEIGHT
+    <pre>
+      <code>Convert::KMtoMI(54); //Returns 33.554044438445</code>
+    </pre>
 
-    G - Gram
-    KG - Kilogram
-    LB - Pound
-    OZ - Ounce
-    ST - Stone
-    TONS - Ton
-    TONNES - Tonne
+    <div class="ref">
+      <h2>Available Units</h2>
 
-    VOLUME
+      <div class="col3">
+        <h3>Distance</h3>
 
-    CC - Cubic Centimetre
-    CFT - Cubic Foot
-    CIN - Cubic Inch
-    CM - Cubic Metre
-    CMM - Cubic Millimetre
-    GAL - Gallon
-    L - Litre
-    ML - Millilitre
-    OZ - Fluid Ounce
-    PT - Pint
-    QT - Quart
-    USGAL - US Gallon
-    USOZ - US Fluid Ounce
-    USPT - US Pint
-    USQT - US Quart
+        <dl>
+          <dt>CM</dt>
+          <dd>Centimetres</dd>
 
-    ANGLES
+          <dt>FT</dt>
+          <dd>Feet</dd>
 
-    DEG - Degree
-    RAD - Radian
+          <dt>IN</dt>
+          <dd>Inches</dd>
 
-    SPEED
+          <dt>KM</dt>
+          <dd>Kilometres</dd>
 
-    C - Speed Of Light
-    KT - Knot
-    KPH - Kilometres Per Hour
-    MPH - Miles Per Hour
-    MPS - Metres Per Second
+          <dt>M</dt>
+          <dd>Metres</dd>
 
-    PRESSURE
+          <dt>MI</dt>
+          <dd>Miles</dd>
 
-    ATM - Atmosphere
-    BAR - Bar
-    INHG - Inches Of Mercury
-    MB - Millibar
-    PSI - Pounds Per Square Inch
+          <dt>MM</dt>
+          <dd>Millimetres</dd>
 
-    TEMPERATURE
+          <dt>NM</dt>
+          <dd>Nautical Miles</dd>
 
-    C - Celcius
-    F - Farenheit
-    K - Kelvin
+          <dt>YD</dt>
+          <dd>Yards</dd>
+        </dl>
 
-    Usage:
+        <h3>Weight</h3>
 
-    Convert::UNIT1toUNIT2(value);
+        <dl>
+          <dt>G</dt>
+          <dd>Grams</dd>
 
-    Eg, to convert 54km to miles:
+          <dt>KG</dt>
+          <dd>Kilograms</dd>
 
-    Convert::KMtoMI(54);
+          <dt>LB</dt>
+          <dd>Pounds</dd>
 
+          <dt>OZ</dt>
+          <dd>Ounces</dd>
 
+          <dt>ST</dt>
+          <dd>Stone</dd>
+
+          <dt>TONS</dt>
+          <dd>(Imperial Long) Tons</dd>
+
+          <dt>TONNES</dt>
+          <dd>(Metric) Tonnes</dd>
+        </dl>
+      </div>
+
+      <div class="col3">
+        <h3>Volume</h3>
+
+        <dl>
+          <dt>CC</dt>
+          <dd>Cubic Centimetres</dd>
+
+          <dt>CFT</dt>
+          <dd>Cubic Feet</dd>
+
+          <dt>CIN</dt>
+          <dd>Cubic Inches</dd>
+
+          <dt>CM</dt>
+          <dd>Cubic Metres</dd>
+
+          <dt>CMM</dt>
+          <dd>Cubic Millimetres</dd>
+
+          <dt>GAL</dt>
+          <dd>Gallons</dd>
+
+          <dt>L</dt>
+          <dd>Litres</dd>
+
+          <dt>ML</dt>
+          <dd>Millilitres</dd>
+
+          <dt>OZ</dt>
+          <dd>Fluid Ounces</dd>
+
+          <dt>PT</dt>
+          <dd>Pints</dd>
+
+          <dt>QT</dt>
+          <dd>Quarts</dd>
+
+          <dt>USGAL</dt>
+          <dd>US Gallons</dd>
+
+          <dt>USOZ</dt>
+          <dd>US Fluid Ounces</dd>
+
+          <dt>USPT</dt>
+          <dd>US Pints</dd>
+
+          <dt>USQT</dt>
+          <dd>US Quarts</dd>
+        </dl>
+
+        <h3>Angles</h3>
+
+        <dl>
+          <dt>DEG</dt>
+          <dd>Degrees</dd>
+
+          <dt>RAD</dt>
+          <dd>Radians</dd>
+        </dl>
+      </div>
+
+      <div class="col3">
+        <h3>Speed</h3>
+
+        <dl>
+          <dt>C</dt>
+          <dd>Speed Of Light</dd>
+
+          <dt>KT</dt>
+          <dd>Knots</dd>
+
+          <dt>KPH</dt>
+          <dd>Kilometres Per Hour</dd>
+
+          <dt>MPH</dt>
+          <dd>Miles Per Hour</dd>
+
+          <dt>MPS</dt>
+          <dd>Metres Per Second</dd>
+        </dl>
+
+        <h3>Pressure</h3>
+
+        <dl>
+          <dt>ATM</dt>
+          <dd>Atmospheres</dd>
+
+          <dt>BAR</dt>
+          <dd>Bar</dd>
+
+          <dt>INHG</dt>
+          <dd>Inches Of Mercury</dd>
+
+          <dt>MB</dt>
+          <dd>Millibar</dd>
+
+          <dt>PSI</dt>
+          <dd>Pounds Per Square Inch</dd>
+        </dl>
+
+        <h3>Temperature</h3>
+
+        <dl>
+          <dt>C</dt>
+          <dd>Celcius</dd>
+
+          <dt>F</dt>
+          <dd>Farenheit</dd>
+
+          <dt>K</dt>
+          <dd>Kelvin</dd>
+        </dl>
+      </div>
+    </div>
   </body>
 </html>

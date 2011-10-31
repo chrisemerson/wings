@@ -3,12 +3,43 @@
 <html lang="en">
   <head>
     <title>PHP Wings Documentation</title>
+
+    <link rel="stylesheet" href="../css/docs.css" media="screen">
   </head>
 
   <body>
     <h1>Library Files</h1>
 
-    <a href="../index.html">&lt; Back</a>
+    <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>Library files in wings are additional 'helper' classes that are not part of the main framework, but can be used
+    independently. They are all contained within the <span class="folder">lib/</span> folder, and are autoloaded when called, as
+    long as they are not named the same thing as any of the other components in the framework.</p>
+
+    <p>Included files in the framework currently consist of:</p>
+
+    <ul>
+      <li><a href="authentication.html">Authentication</a></li>
+      <li><a href="cache.html">Cache</a></li>
+      <li><a href="captcha.html">Captcha</a></li>
+      <li><a href="convert.html">Convert</a></li>
+      <li>Cookie (not yet implemented)</li>
+      <li><a href="curl.html">Curl</a></li>
+      <li><a href="databasesession.html">DatabaseSession</a></li>
+      <li><a href="debug.html">Debug</a></li>
+      <li><a href="directquery.html">DirectQuery</a></li>
+      <li><a href="errorregistry.html">ErrorRegistry</a></li>
+      <li>FileUpload (not yet implemented)</li>
+      <li>Image (not yet implemented)</li>
+      <li><a href="inputfilter.html">InputFilter</a></li>
+      <li><a href="latlonghelper.html">LatLongHelper</a></li>
+      <li><a href="logfile.html">LogFile</a></li>
+      <li>PageManager (not yet implemented)</li>
+      <li><a href="session.html">Session</a></li>
+    </ul>
+
+    <p>Information for the use of these files can be found on the relevant page for each one, and new library files can be added
+    to the <span class="folder">app/lib/</span> folder if required. Library files can be overridden by making a copy within
+    <span class="folder">app/lib/</span> and modifying the copy within that folder.</p>
   </body>
 </html>

@@ -11,7 +11,7 @@
       foreach ($arrFilesToLoad as $strLine) {
         $strFilename = trim($strLine);
 
-        if ($strFilename{0} != "#" && is_file($strDirectory . "/" . trim($strFilename))) {
+        if (substr($strFilename, 0, 1) != "#" && is_file($strDirectory . "/" . trim($strFilename))) {
           require_once $strDirectory . "/" . trim($strFilename);
         }//if
       }//foreach

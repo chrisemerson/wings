@@ -3,38 +3,46 @@
 <html lang="en">
   <head>
     <title>PHP Wings Documentation</title>
+
+    <link rel="stylesheet" href="../css/docs.css" media="screen">
   </head>
 
   <body>
     <h1>Basic Concepts</h1>
 
-    <a href="../index.html">&lt; Back</a>
+    <a href="../index.html" class="back">&lt; Back</a>
 
     <p>Wings uses an MVC design philosiphy, with a custom built ORM and Templating system included as well.</p>
 
-    <p>All the back ond code is contained within app/ and sys/, with sys/ containing most of the framework and app/ containing
-    application specific files. Anything in app/ will be used in preference to things in sys/, so any framework files can be
-    overridden by copying the file from sys then modifying it. The exceptions to this are inc.wings.php, anything in the base/
-    folder, and anything in the dbdrivers/ folder, neither of which can be overridden.</p>
+    <p>All the back ond code is contained within <span class="folder">app/</span> and <span class="folder">sys/</span>, with
+    <span class="folder">sys/</span> containing most of the framework and <span class="folder">app/</span> containing
+    application specific files. Anything in <span class="folder">app/</span> will be used in preference to things in
+    <span class="folder">sys/</span>, so any framework files can be overridden by copying the file from
+    <span class="folder">sys/</span> then modifying it. The exceptions to this are <span class="file">inc.wings.php</span>,
+    anything in the <span class="folder">base/</span> folder, and anything in the <span class="folder">dbdrivers/</span> folder,
+    none of which should be overridden.</p>
 
-    <p>The httpdocs/ folder is where Apache should serve from, and contains the main entry point to the application (index.php)
-    as well as an .htaccess file to route all requests through it. Static files also go in here, and a skeleton folder structure
-    is provided as a starting point. Any requests to an existing file will first check to see if the file (or directory) exists,
-    and if it does, the request will be served as normal. Any requests for a file or directory that doesn't exist is routed
-    through the framework. If the framework has nothing defined to handle the request, a 404 error is shown.</p>
+    <p>The <span class="folder">httpdocs/</span> folder is where Apache should serve from, and contains the main entry point to
+    the application (index.php) as well as an .htaccess file to route all requests through it. Static files also go in here, and
+    a skeleton folder structure is provided as a starting point. Any requests to an existing file will first check to see if the
+    file (or directory) exists, and if it does, the request will be served as normal. Any requests for a file or directory that
+    doesn't exist is routed through the framework. If the framework has nothing defined to handle the request, a 404 error is
+    shown.</p>
 
-    <p>Including the inc.wings.php folder is the way to use wings - eg if you want to write a simple test script or standalone
-    script that uses the wings functionality, just require this file first, then you can do almost anything you'd normally do in
-    a controller. The include file simply includes anything in the sys/base/ folder and its sub-folders. If a loadorder file is
-    present, the files will load in the order contained within it (1 file per line, comments start with #).</p>
+    <p>Including the <span class="file">inc.wings.php</span> folder is the way to use wings - eg if you want to write a simple
+    test script or standalone script that uses the wings functionality, just require this file first, then you can do almost
+    anything you'd normally do in a controller. The include file simply includes anything in the
+    <span class="folder">sys/base/</span> folder and its sub-folders. If a <span class="file">loadorder</span> file is present,
+    the files will load in the order contained within it (1 file per line, comments start with #).</p>
 
     <p>All filenames by convention are lowercased, and are named accerding to what they are, eg controllers are named in
-    CamelCase (ExampleNameController) and lives in the file controllers/controller.examplename.php. There are more details in
-    each of the different sections.</p>
+    CamelCase (ExampleNameController) and lives in the file <span class="file">app/controllers/controller.examplename.php</span>.
+    There are more details in the documentation for each of the different sections.</p>
 
-    <p>Apart from the models, views and controllers, most of the system lives within base/2.classes/. Library files within lib/
-    also act as standalone classes and can be called upon to help with certain tasks. Certain library files are pre-loaded into
-    the controllers and are accessible within them as $this->{name}. These include:</p>
+    <p>Apart from the models, views and controllers, most of the system lives within <span class="folder">base/2.classes/</span>.
+    Library files within <span class="folder">lib/</span> also act as standalone classes and can be called upon to help with
+    certain tasks. Certain library files are pre-loaded into the controllers and are accessible within them as $this->{name}.
+    These include:</p>
 
     <ul>
       <li><strong>$this->errors</strong> - ErrorRegistry class. Stores and handles errors globally within a request so they can

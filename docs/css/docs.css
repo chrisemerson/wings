@@ -1,0 +1,86 @@
+body {
+  font-family: Verdana, sans-serif;
+  font-size: 80%;
+}
+
+dl {
+  margin-left: 2em;
+}
+
+dl dt {
+  float: left;
+  width: 5em;
+  font-weight: bold;
+}
+
+code {
+  padding: .5em;
+  border: 1px solid #aaaa00;
+  background-color: #ffffee;
+  display: block;
+  width: 90%;
+  margin: 0 auto;
+  font-size: 1.2em;
+}
+
+.ref {
+  padding: .5em;
+  border: 1px solid #0000aa;
+  background-color: #eeeeff;
+  overflow: hidden;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.col3 {
+  width: 30%;
+  float: left;
+}
+
+.back {
+  display: inline-block;
+  color: #333333;
+  text-decoration: none;
+  border: 1px solid black;
+  border-radius: .5em;
+  padding: .5em 1.5em;
+  font-weight: bold;
+
+  background-color: #dddddd;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#dddddd), to(#aaaaaa)); /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient(top, #dddddd, #aaaaaa); /* Chrome 10+, Saf5.1+, iOS 5+ */
+  background-image:    -moz-linear-gradient(top, #dddddd, #aaaaaa); /* FF3.6 */
+  background-image:     -ms-linear-gradient(top, #dddddd, #aaaaaa); /* IE10 */
+  background-image:      -o-linear-gradient(top, #dddddd, #aaaaaa); /* Opera 11.10+ */
+  background-image:         linear-gradient(top, #dddddd, #aaaaaa);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#dddddd', EndColorStr='#aaaaaa'); /* IE6-IE9 */
+}
+
+.back:hover {
+  color: #444444;
+
+  background-color: #ffffff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#cccccc)); /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient(top, #ffffff, #cccccc); /* Chrome 10+, Saf5.1+, iOS 5+ */
+  background-image:    -moz-linear-gradient(top, #ffffff, #cccccc); /* FF3.6 */
+  background-image:     -ms-linear-gradient(top, #ffffff, #cccccc); /* IE10 */
+  background-image:      -o-linear-gradient(top, #ffffff, #cccccc); /* Opera 11.10+ */
+  background-image:         linear-gradient(top, #ffffff, #cccccc);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#cccccc'); /* IE6-IE9 */
+}
+
+#folders li {
+  list-style-image: url('../images/folder.png');
+}
+
+.folder {
+  background: url('../images/folder.png') no-repeat left center;
+  padding-left: 16px;
+  border-bottom: 1px dotted #cccccc;
+}
+
+.file {
+  background: url('../images/file.png') no-repeat left center;
+  padding-left: 16px;
+  border-bottom: 1px dotted #cccccc;
+}
