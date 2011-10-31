@@ -1,14 +1,14 @@
 <?php
   class Convert {
     public static function __callStatic ($strName, $arrArgs) {
-      $objConvertConfig = simplexml_load_file(Application::getAppFilename('config/convert.xml'));
+      $xmlConvertConfig = simplexml_load_file(Application::getAppFilename('config/convert.xml'));
       $arrConversionRates = array();
 
-      foreach ($objConvertConfig->group as $objGroup) {
+      foreach ($xmlConvertConfig->group as $xmlGroup) {
         $arrGroup = array();
 
-        foreach ($objGroup->unit as $objUnit) {
-          $arrGroup[(string) $objUnit['code']] = (float) $objUnit;
+        foreach ($xmlGroup->unit as $xmlUnit) {
+          $arrGroup[(string) $xmlUnit['code']] = (float) $xmlUnit;
         }//foreach
 
         $arrConversionRates[] = $arrGroup;

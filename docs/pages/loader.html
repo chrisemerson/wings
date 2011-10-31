@@ -16,6 +16,10 @@
     out what they are and where the relevant file lives, and loading it. The <code>__autoload()</code> function in
     <span class="file">/sys/base/3.inc/inc.autoload.php</span> uses this class.</p>
 
+    <p>The Loader class interprets the name using the framework's <a href="namingconventions.html">naming convention</a>, with
+    any other names being treated as either a <a href="models.html">Model</a>, <a href="libraryfiles.html">Library Class</a> or
+    <a href="thirdparty.html">Third Party Class</a> in that order of priority.</p>
+
     <p>This class is intended for internal use only and should not be needed by application code.</p>
 
     <h2>Usage</h2>

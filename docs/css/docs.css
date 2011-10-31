@@ -89,16 +89,16 @@ code {
             filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#cccccc'); /* IE6-IE9 */
 }
 
-#folders li {
+.folders li {
   list-style-image: url('../images/folder.png');
 }
 
-#folders li.writable strong,
+.folders li.writable strong,
 span.writable {
   color: #0000ff;
 }
 
-#folders li.maybewritable strong,
+.folders li.maybewritable strong,
 span.maybewritable {
   color: #9999ff;
 }

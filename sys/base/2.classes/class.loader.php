@@ -44,7 +44,7 @@
         } else {
           return false;
         }//if
-      } else  {
+      } else {
         $strModuleName = strtolower($this->strClassName);
 
         if (self::isModel($strModuleName)) {

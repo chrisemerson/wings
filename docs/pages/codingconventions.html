@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+  <head>
+    <title>PHP Wings Documentation</title>
+
+    <link rel="stylesheet" href="../css/docs.css" media="screen">
+  </head>
+
+  <body>
+    <h1>Coding Conventions</h1>
+
+    <a href="../index.html" class="back">&lt; Back</a>
+
+    <p>The framework roughly follows the <a href="http://framework.zend.com/manual/en/coding-standard.html">Zend Framework
+    Coding Standard for PHP</a>, with the main exception that indentations are 2 spaces rather than 4. A summary is provided
+    below:</p>
+
+    <h2>Indentation</h2>
+
+    <p>Indentation should consist of 2 spaces. Tabs are not allowed.</p>
+
+    <h2>Maximum Line Length</h2>
+
+    <p>The target line length is 128 characters. That is to say, developers should strive keep each line of their code under 128
+    characters where possible and practical. However, longer lines are acceptable in some circumstances.</p>
+
+    <h2>Line Termination</h2>
+
+    <p>Line termination follows the Unix text file convention. Lines must end with a single linefeed (LF) character. Linefeed
+    characters are represented as ordinal 10, or hexadecimal 0x0A.</p>
+
+    <p>Note: Do not use carriage returns (CR) as is the convention in Apple OS's (0x0D) or the carriage return - linefeed
+    combination (CRLF) as is standard for the Windows OS (0x0D, 0x0A).</p>
+
+    <h2>PHP Code Demarcation</h2>
+
+    <p>PHP code must always be delimited by the full-form, standard PHP tags:</p>
+
+    <pre><code>&lt;?php
+
+?&gt;</code></pre>
+
+    <p>Short tags are never allowed. For files containing only PHP code, the closing tag must always be omitted.</p>
+
+    <h2>Brace Style</h2>
+
+    <p>The framework uses the <a href="http://en.wikipedia.org/wiki/Brace_style#Variant:_1TBS">One True Brace Style</a> for
+    control structures.</p>
+
+    <p>Additionally, each closing brace is immediately followed by a comment which contains the name of the control structure it
+    closed.</p>
+
+    <h2>Variable, Class and Function/Method Names</h2>
+
+    <p>Identifiers in the system are named using camelCase syntax. All identifiers start with a lowercase letter, with the
+    exception of class names, which always start with an uppercase letter.</p>
+
+    <p>Additionally, all variable names start with a 2 or 3 character prefix indicating the type of the variable concerned. The
+    following is a list of the most common, but it is not exhaustive:</p>
+
+    <dl>
+      <dt>int</dt>
+      <dd>Integer</dd>
+
+      <dt>dec</dt>
+      <dd>Decimal / Float</dd>
+
+      <dt>str</dt>
+      <dd>String</dd>
+
+      <dt>arr</dt>
+      <dd>Array</dd>
+
+      <dt>bln</dt>
+      <dd>Boolean</dd>
+
+      <dt>obj</dt>
+      <dd>Object</dd>
+
+      <dt>db</dt>
+      <dd>Database Resource (eg Connection, Results)</dd>
+
+      <dt>mix</dt>
+      <dd>Mixed (eg, for methods that can take a string or array)</dd>
+
+      <dt>con</dt>
+      <dd>Constant</dd>
+
+      <dt>xml</dt>
+      <dd>Simple XML Object</dd>
+
+      <dt>img</dt>
+      <dd>GD Image Resource</dd>
+
+      <dt>dte</dt>
+      <dd>Date Object</dd>
+
+      <dt>fle</dt>
+      <dd>File Handle</dd>
+    </dl>
+
+    <p>For example, <code>$intAge</code> or <code>$strSurname</code>.</p>
+  </body>
+</html>
