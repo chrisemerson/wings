@@ -12,5 +12,146 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>The Models in the system represent the data & services used by the application, and the structure of Models in Wings
+    consists of a basic ORM.</p>
+
+    <p>All the database models are stored in <span class="config"><a href="modelsconf.html">models.xml</a></span>, which defines
+    their names, the plurals of their names, and the database tables they live in. Additionally, the relationships between these
+    models can be defined in <span class="config"><a href="relationshipsconf.html">relationships.xml</a></span>, which enables
+    simple function calls to get related objects. More information about these 2 config files can be found on their relevant
+    pages.</p>
+
+    <p>Throughout this page, the example will consist of an imaginary Blog Post, which is created by a User, and contains
+    several Comments. The example schemas are as follows:</p>
+
+    <pre><code>blog_posts
+
++--------------------+---------------+-----------------+-------------------+
+| blog_post_id (PRI) | user_id (IDX) | blog_post_title | blog_post_content |
++--------------------+---------------+-----------------+-------------------+
+|                  1 |             1 | Test Post       | This is a test... |
++--------------------+---------------+-----------------+-------------------+
+|                  2 |             2 | Yesterday       | Yesterday we l... |
++--------------------+---------------+-----------------+-------------------+
+|                  3 |             1 | News Update     | Just an update... |
++--------------------+---------------+-----------------+-------------------+
+
+users
+
++---------------+-----------------+--------------+
+| user_id (PRI) | user_first_name | user_surname |
++---------------+-----------------+--------------+
+|             1 | Chris           | Brown        |
++---------------+-----------------+--------------+
+|             2 | Phillip         | Smith        |
++---------------+-----------------+--------------+
+|             3 | Ian             | Taylor       |
++---------------+-----------------+--------------+
+
+comments
+
++------------------+--------------------+---------+--------------+
+| comment_id (PRI) | blog_post_id (IDX) | user_id | comment_text |
++------------------+--------------------+---------+--------------+
+|                1 |                  1 |       1 | I think t... |
++------------------+--------------------+---------+--------------+
+|                2 |                  1 |       2 | But what ... |
++------------------+--------------------+---------+--------------+
+|                3 |                  2 |       3 | What if h... |
++------------------+--------------------+---------+--------------+
+|                4 |                  3 |       3 | I don't b... |
++------------------+--------------------+---------+--------------+
+|                5 |                  2 |       2 | Hmm, inte... |
++------------------+--------------------+---------+--------------+
+|                6 |                  1 |       3 | I visited... |
++------------------+--------------------+---------+--------------+
+|                7 |                  3 |       1 | York is so...|
++------------------+--------------------+---------+--------------+</code></pre>
+
+    <h2>Basic CRUD Functionality</h2>
+
+    <p>Models can be created by simply creating a new object with the name of the model. For example:</p>
+
+    <pre><code>&lt;?php
+  $objBlogPost = new BlogPost();</code></pre>
+
+    <p>This will create a new model object which represents a blog post. If no differing plural is defined in
+    <span class="config"><a href="modelsconf.html">models.xml</a></span>, the default is to add an 's' on to the end (ie,
+    BlogPosts), and for the table name, the default is to add underscores between words of the plural form and lowercase the
+    entire word. Words are determined by the camelCasing of the model name. So, for the 'BlogPost' model, Wings expects the
+    plural to be 'BlogPosts' and the table name to be 'blog_posts'. Database prefixes are automatically added according to the
+    ->db->prefix setting in <span class="config"><a href="appconf.html">app.xml</a></span>.</p>
+
+    <p>Essentially, any class that extends the <a href="basemodel.html">BaseModel</a> class will recieve all the ORM
+    functionality, with the name of the object determining which database table is used.</p>
+
+    <p>You can create an object of an existing blog post by passing the value of its primary key in to the constructor of the
+    object:</p>
+
+    <pre><code>&lt;?php
+  $objBlogPost = new BlogPost(2);</code></pre>
+
+    <p>The database fields associated with that object are then made available through the properties of the object. For
+    example:</p>
+
+    <pre><code>&lt;?php
+  $objBlogPost = new BlogPost(2);
+  echo $objBlogPost->blog_post_title; //Will echo 'Yesterday' to the screen</code></pre>
+
+    <p>You can also set these properties and save the object back to the database:</p>
+
+    <pre><code>&lt;?php
+  $objBlogPost = new BlogPost(2);
+  $objBlogPost->blog_post_title = "Monday";
+  $objBlogPost->save();</code></pre>
+
+    <p>This code will update the database and set the title of Blog Post 2 to 'Monday'.</p>
+
+    <p>Finally, you can delete the object by calling its delete method:
+
+    <pre><code>&lt;?php
+  $objBlogPost = new BlogPost(2);
+  $objBlogPost->delete();</code></pre>
+
+    <p>Currently, this action will leave several comments 'orphaned' as they won't automatically be removed with the Blog Post.
+    Cascading of actions like this needs to be handled manually. This can easily be done by using the relationships
+    functionality detailed below.</p>
+
+    <p>Finally, if a table has more than one field making up its primary key, you need to pass an array to the constructor
+    instead consisting of the component parts. For example:</p>
+
+    <pre><code>&lt;?php
+  $objGroupMembership = new GroupMembership(array('user_id' => 5, 'group_id' => 7));</code></pre>
+
+    <h2>Relationships</h2>
+
+    <p>Wings can also make use of relationships defined within the
+    <span class="config"><a href="relationshipsconf.html">relationships.xml</a></span> config file in order to make accessing
+    related objects very simple. The syntax of the config file is detailed on its documentation page, but you can define
+    one-to-one, one-to-many or many-to-many relationships within it. In the example we are using on this page, there are 3
+    one-to-many relationships defined - one between 'BlogPost' and 'User' on the field 'user_id', one between 'BlogPost' and
+    'Comment' on the field 'blog_post_id', and one between 'Comment' and 'User' on the field 'user_id'.</p>
+
+    <p>The basic syntax is <code>BaseModel->get<var>Name/NamePlural</var>()</code>, where <var>Name/NamePlural</var> is the name
+    (or pluralised name) of the related object. Whether you use the plural form or not depends on the type of relationship, and
+    therefore on the type of object you expect returned. This call can either return another model (where you need to use the
+    singular version), or a <a href="collections.html">Collection</a> of models (where you need to use the plural version).</p>
+
+    <p>For example, each Blog Post has one (and only one) User who posted it, but each User has several Blog Posts that they
+    have posted. So, to get the User object for the User who posted Blog Post 3, you would use:</p>
+
+    <pre><code>&lt;?php
+  $objBlogPost = new BlogPost(3);
+  $objUser = $objBlogPost->getUser();
+  echo $objUser->user_first_name . ' ' . $objUser->user_surname; //Will echo 'Chris Brown' to the screen</code></pre>
+
+    <p>Similarly, to get a <a href="collections.html">Collection</a> of all the Blog Posts that User 1 has written:</p>
+
+    <pre><code>&lt;?php
+  $objUser = new User(1);
+  $objBlogPosts = $objUser->getBlogPosts(); //Will contain a collection of all of User 1's Blog Posts</code></pre>
+
+    <p>The documentation for <a href="collections.html">Collections</a> has more detail on how to use and manipulate Collection
+    objects.</p>
   </body>
 </html>
