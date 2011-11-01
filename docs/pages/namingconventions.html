@@ -62,7 +62,7 @@
 
     <pre><code>&lt;?php
   class SomeExampleView extends BaseView {
-
+    //Although usually you will extend 'MasterView'
   }//class</code></pre>
 
     <p>There are some built in views in <span class="folder">sys/views/</span> which are loaded if no view is found in
@@ -113,6 +113,11 @@
 
     <h2>Third Party Files</h2>
 
-    <!-- FINISH THIS -->
+    <p>Finally, the class name is checked to see if it is a third party library file. In order to check this, there is a config
+    file called <span class="config"><a href="thirdpartyconf.html">thirdparty.xml</a></span> which lists the available third
+    party class names and maps them to a file. This is because software downloaded from elsewhere can't be expected to follow
+    the same naming conventions as the framework, so the <a href="loader.html">Loader</a> needs to be specifically told about
+    each one used. More information on the config file can be found on its page,
+    <span class="config"><a href="thirdpartyconf.html">thirdparty.xml</a></span></p>
   </body>
 </html>
