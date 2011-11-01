@@ -12,5 +12,92 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>Collections represent a set of <a href="models.html">Models</a>, and are an automatically generated class. The name of
+    the class consists of the name of the model that this collection consists of followed by the word 'Collection'. For example,
+    a collection of users would be called UserCollection.</p>
+
+    <p>There are several ways <a href="collection.html">Collection</a> objects enter the system - either by creating an empty
+    collection and adding individual <a href="models.html">models</a> to it, as a return from a call to a
+    <a href="models.html">model</a> to get related objects, or creating a collection of objects that meet certain
+    conditions.</p>
+
+    <p>The <a href="collection.html">Collection</a> class cannot be instantiated directly - only classes which extend from it
+    can be used, and all of these are created by the <a href="loader.html">Loader</a> class automatically.</p>
+
+    <p>The <a href="collection.html">Collection</a> class implements several internal PHP interfaces in order to make traversing
+    and manipulating it easier. These interfaces are Iterator, Countable and ArrayAccess. The upshot of this is that a
+    Collection can be treated as if it were an array of <a href="models.html">models</a>, but with the benefit of additional
+    functionality as well.</p>
+
+    <h2>Construction</h2>
+
+    <p>To create an empty collection, and then add objects to it, you simply call the constructor with no arguments:</p>
+
+    <pre><code>&lt;?php
+  $objComments = new CommentCollection();</code></pre>
+
+    <p>You can then use the standard array syntax to add models to it:</p>
+
+    <pre><code>&lt;?php
+  $objComments = new CommentCollection();
+
+  $objComments[] = new Comment(1);
+  $objComments[] = new Comment(3);</code></pre>
+
+    <p>You can also create a Collection filled with models that meet certain conditions. To do this, you pass as SQL 'WHERE'
+    clause into the constructor:</p>
+
+    <pre><code>&lt;?php
+  $objComments = new CommentCollection('WHERE `blog_post_id` != 3');</code></pre>
+
+    <p>The constructor can also take an 'ORDER BY' and/or 'LIMIT' statement to filter the collection further.</p>
+
+    <p>To simply get a collection containing everything in the table, you simply pass an asterisk character into the
+    constructor:</p>
+
+    <pre><code>&lt;?php
+  $objComments = new CommentCollection('*');</code></pre>
+
+    <p>You can also pass filtering statements ('WHERE', 'ORDER BY', 'LIMIT') into the call for related objects from another
+    model. For example:</p>
+
+    <pre><code>&lt;?php
+  $objComments = $objBlogPost->getComments('ORDER BY `user_id` DESC');</code></pre>
+
+    <h2>Traversing</h2>
+
+    <p>Manipulation &amp; traversing of collections happens in much the same way as with arrays:</p>
+
+    <pre><code>&lt;?php
+  $objComments = $objBlogPost->getComments();
+
+  $objFirstComment = $objComments[0];                    //You can use sqaure bracket notation to emulate Array Access
+
+  if (count($objCollection) >= 1) {                      //You can use count() on collections
+    echo "&lt;h2&gt;Comments&lt;/h2&gt;\n\n";
+
+    foreach ($objComments as $objComment) {              //You can iterate through collections with foreach loops
+      echo $objComment->comment_text . "&lt;br&gt;&lt;br&gt;\n\n";
+    }//foreach
+  }//if</code></pre>
+
+    <h2>Manipulation</h2>
+
+    <p>If you set any of the properties of the collection object, this will reflect on all the models within in. The same thing
+    works for method calling. For example, if I wanted to change all comments by User 2 to be by User 14 instead:</p>
+
+    <pre><code>&lt;?php
+  //Either this:
+  $objComments = new CommentCollection('WHERE `user_id` = 2');
+
+  //Or this:
+  $objUser = new User(2);
+  $objComments = $objUser->getComments();
+
+  $objComments->user_id = 14; //This sets user_id on all the models within the collection to 14 individually
+  $objComments->save(); //This calls the save() method on all the models within Colection individually</code></pre>
+
+    <p>The same principle can be used to delete all models within a collection by calling the <code>delete()</code> method on
+    the collection, or any other custom method implemented in your models can be called.</p>
   </body>
 </html>
