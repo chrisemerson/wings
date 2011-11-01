@@ -21,7 +21,7 @@
         $arrDBInfo = parse_url($objDBConfig->uri);
         $this->strTablePrefix = $objDBConfig->prefix;
 
-        $strClassName = strtoupper($arrDBInfo['scheme']) . "Driver";
+        $strClassName = ucwords($arrDBInfo['scheme']) . "Driver";
         $this->dbConn = new $strClassName($arrDBInfo['host'], $arrDBInfo['user'], $arrDBInfo['pass'], trim($arrDBInfo['path'], "/\\"));
       }//if
 

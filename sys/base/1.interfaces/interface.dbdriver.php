@@ -1,6 +1,6 @@
 <?php
   interface iDBDriver {
-    public function __construct ($strHost = "localhost", $strUser = "", $strPass = "", $strDBName = "", $intPort = 3306);
+    public function __construct ($strHost = "localhost", $strUser = "", $strPass = "", $strDBName = "", $intPort = 0);
     public function query ($strQuery);
     public function multi_query ($strQuery);
     public function escape_string ($strStringToEscape);

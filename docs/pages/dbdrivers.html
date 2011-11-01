@@ -12,5 +12,54 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>The purpose of the DB Drivers within Wings is to abstract the database functionality away from the Applications, and
+    present a common interface to the parts of the Application needing to use database functionality. This allows the database
+    technology to be swapped for another easily, and without any code changes required.</p>
+
+    <p>Each Database Driver consists of 2 classes defined within a single file, one of which serves as the Database Connection
+    object, and the other as a Results object. Wings has 2 interfaces which need to be implemented by every DB Driver - to
+    ensure a common interface is presented to the Application no matter what database technology is being used.</p>
+
+    <p>The main database connection object inside a DB Driver should consist of the name of the scheme you are implementing (eg
+    'mysqli'), all in lowercase, apart from an initial uppercase character (in this case, 'Mysqli'). This is followed by the
+    word 'Driver'. The class must implement the iDBDriver interface.</p>
+
+    <p>The other class in the file represents the result returned by a query to the database. This can be called whatever you
+    like, but a good idea is to stick with a similar naming scheme, replacing 'Driver' with 'Result'. This class must implement
+    the iDBResult interface.</p>
+
+    <p>Using the mysqli example:</p>
+
+    <pre><code>&lt;?php
+  class MysqliDriver implements iDBDriver {
+
+  }//class
+
+  class MysqliResult implements iDBResult {
+
+  }//class</code></pre>
+
+    <p>The interfaces are defined as:</p>
+
+    <pre><code>&lt;?php
+  interface iDBDriver {
+    public function __construct ($strHost = "localhost", $strUser = "", $strPass = "", $strDBName = "", $intPort = 0);
+    public function query ($strQuery);
+    public function multi_query ($strQuery);
+    public function escape_string ($strStringToEscape);
+    public function close ();
+  }//interface
+
+  interface iDBResult {
+    public function __construct ($dbResults);
+    public function fetch_assoc ();
+    public function data_seek ($intOffset);
+    public function free ();
+  }//interface</code></pre>
+
+    <p>New DB Drivers should go in <span class="folder">app/dbdrivers/</span> and be named
+    <span class="file">db.<var>name</var>.php</span>. For example, <span class="file">app/dbdrivers/db.mysqli.php</span>. To
+    override one of the built in controllers, you can copy it from <span class="folder">sys/dbdrivers/</span> to
+    <span class="folder">app/dbdrivers/</span> ad modify the copy.</p>
   </body>
 </html>

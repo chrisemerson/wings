@@ -45,7 +45,7 @@
       if ($dbResults === true || $dbResults === false) {
         return $dbResults;
       } else {
-        return new mySQLResult($dbResults);
+        return new MysqlResult($dbResults);
       }//if
     }//function
 
@@ -72,7 +72,7 @@
 
 
 
-  class mySQLResult implements iDBResult {
+  class MysqlResult implements iDBResult {
     private $dbResults;
 
     public $num_rows;

@@ -12,5 +12,96 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>Controllers in an MVC architecture act like the 'signalmen' of the application - they deal with incoming requests (each
+    request is sent to a different controller and action), do any processing required (or hand this task off to the models),
+    decide what view(s) need to be loaded and pass the appropriate data & models to them for rendering.</p>
+
+    <p>The first stage in any request to the application is that the <a href="dispatcher.html">Dispatcher</a> class decides where
+    the request should be routed (via <span class="config"><a href="routesconf.html">routes.xml</a></span>), and this is nearly
+    always a Controller - although redirecting to another URI is also a possibility.</p>
+
+    <p>Each dispatch consists of a Controller, an Action and optionally, 1 or more paramaters. The Controller is loaded, the
+    action is used to call a publically accessible method in that controller, and the parameters are passed along to the method
+    as well. The end result is that, after configuring <span class="config"><a href="routesconf.html">routes.xml</a></span>, the
+    controllers serve as the effective entry point into the application, and allow you to group similar functions into the same
+    controller.</p>
+
+    <p>All controllers live in either the <span class="folder">sys/controllers/</span> folder (for built in Controllers) or the
+    <span class="folder">app/controllers/</span> folder (for Application specific Controllers). If you want to override any of
+    the built in controllers, first copy them into the <span class="folder">app/controllers</span> folder, and modify the copied
+    version.</p>
+
+    <p>There are some library files that are automatically loaded into each controller, and some preset methods as well. For
+    instance, the <code>view</code> property is used to contain the current view intending to be displayed, and the
+    <code>renderView()</code> method renders whatever is in the <code>view</code> property:</p>
+
+    <pre><code>&lt;?php
+  class ExampleController extends BaseController {
+    public function showExamplePage () {
+      $this->view = new ExamplePageView();
+
+      $this->renderView();
+    }//function
+  }//class</code></pre>
+
+    <p>Each Controller also has a built in <code>index()</code> method, which is used if no action is specified in
+    <span class="config"><a href="routesconf.html">routes.xml</a></span>.</p>
+
+    <h2>Preloaded Library Classes</h2>
+
+    <p>The library classes that are loaded with each request are as follows:</p>
+
+    <div class="usage">
+      <h3>BaseController->errors</h3>
+
+      <p><a href="errorregistry.html">ErrorRegistry</a> class. Stores and handles errors globally within a request so they can all be displayed in the same place.</p>
+    </div>
+
+    <div class="usage">
+      <h3>BaseController->post</h3>
+
+      <p><a href="inputfilter.html">InputFilter</a> class. Performs input filtering & validation on $_POST variables.</p>
+    </div>
+
+    <div class="usage">
+      <h3>BaseController->get</h3>
+
+      <p><a href="inputfilter.html">InputFilter</a> class. As above but for $_GET variables.</p>
+    </div>
+
+    <div class="usage">
+      <h3>BaseController->session</h3>
+
+      <p><a href="session.html">Session</a> class. Used to access the session data.</p>
+    </div>
+
+    <div class="usage">
+      <h3>BaseController->auth</h3>
+
+      <p><a href="authentication.html">Authentication</a> class. Handles secure logins, sessions and cookies, including 'Remember Me' feature.</p>
+    </div>
+
+    <div class="usage">
+      <h3>BaseController->files</h3>
+
+      <p>FileUpload class. This isn't yet implemented, do not use.</p>
+    </div>
+
+    <p>These libraries are used with the <code>$this</code> prefix when within a controller. For example:</p>
+
+    <pre><code>&lt;?php
+  class ExampleController extends BaseController {
+    public function showExamplePage () {
+      $this->auth->requireLoggedIn();
+
+      $this->view = new ExamplePageView();
+
+      if (isset($this->post->action) && ($this->post->action == "test")) {
+        $this->renderView();
+      } else {
+        Application::showError('404');
+      }//if
+    }//function
+  }//class</code></pre>
   </body>
 </html>
