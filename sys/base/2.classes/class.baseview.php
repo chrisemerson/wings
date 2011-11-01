@@ -3,7 +3,6 @@
     protected $template;
 
     private   $arrData = array();
-    private   $arrBaseTemplateVars = array();
 
     /* Template Handling */
 

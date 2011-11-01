@@ -12,5 +12,76 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>Views in the Wings framework are for outputting information made up from models and other bits of data to either the
+    screen, or another file (eg XML in the case of an API or AJAX call).</p>
+
+    <p>A view usually utilises the template system (though doesn't have to), and so has some methods built in for loading and
+    dealing with templates. These include the <code>loadTemplate()</code> method, as well as the <code>render()</code> method,
+    and the <code>template</code> property.</p>
+
+    <p>Each separate 'screen' or page on the website will usually have a separate view associated with it, though small
+    alterations such as showing and hiding small blocks of code can be done within the same view.</p>
+
+    <p>All views should live inside <span class="folder">app/views/</span>, and be named
+    <span class="file">view.<var>name</var>.php</span>. There are some built in views in <span class="folder">sys/views/</span>
+    which can be overridden by copying the relevant file to <span class="folder">app/views/</span> and modifying the copy.</p>
+
+    <h2>Methods & Properties</h2>
+
+    <div class="usage">
+      <h3><code>BaseView->__construct()</code> (Constructor)</h3>
+
+      <p>The constructor in the BaseView is empty, but should be called by any constructor in a view (as
+      <code>parent::__construct()</code>), because something may be put in here in the future.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>BaseView-><var>var</var></code></h3>
+
+      <p>Properties can be set and retrieved in this way. For example a Controller would pass its data and models to the view in
+      this way, and the view would then retrieve them in the same way.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>BaseView->loadData($mixNameOrArray, $strValue = "")</code></h3>
+
+      <p>Properties can be set and retrieved in this way. For example a Controller would pass its data and models to the view in
+      this way, and the view would then retrieve them in the same way.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>BaseView->loadTemplate($strTemplateName, $mixMasterTemplateSetting = true)</code></h3>
+
+      <p>This method loads the specified template and places it in the <code>BaseView->template</code> property. Additionally,
+      the Master Template Setting (2nd Parameter) can be set to either true, false or the name of another template to use as the
+      Master template. If it is true, the default master template is used - this is the default setting. If it is false, no
+      master template is used.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>BaseView->render()</code></h3>
+
+      <p>This method renders the final view by parsing the whole template and then outputting it.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>BaseView->passthrough($strVar1[, $strVar2[, ...]])</code></h3>
+
+      <p>This method takes a list of variable names as parameters, and passes the properties of the view with those names
+      directly to the template.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>BaseView->passthroughAll()</code></h3>
+
+      <p>This method passes all set properties through to the template.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>BaseView->coalesce($mixVar1[, $mixVar2[, ...]])</code></h3>
+
+      <p>This is a helper function which simply outputs the first non-empty value it is passed in the list, similar to the MSSQL
+      COALESCE() function.</p>
+    </div>
   </body>
 </html>
