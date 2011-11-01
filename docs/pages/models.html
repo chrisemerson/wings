@@ -15,6 +15,9 @@
     <p>The Models in the system represent the data & services used by the application, and the structure of Models in Wings
     consists of a basic ORM.</p>
 
+    <p>It is designed to have minimal configuration or code required in order to use the default functionality, while still
+    allowing full customisation.</p>
+
     <p>All the database models are stored in <span class="config"><a href="modelsconf.html">models.xml</a></span>, which defines
     their names, the plurals of their names, and the database tables they live in. Additionally, the relationships between these
     models can be defined in <span class="config"><a href="relationshipsconf.html">relationships.xml</a></span>, which enables
@@ -153,5 +156,42 @@ comments
 
     <p>The documentation for <a href="collections.html">Collections</a> has more detail on how to use and manipulate Collection
     objects.</p>
+
+    <h2>Custom Functionality</h2>
+
+    <p>If you want to create a model with custom methods and functionality, you can create a file called
+    <span class="file">model.<var>name</var>.php</span> within <span class="folder">app/models/</span>, which will be loaded by
+    the framework in preference to creating the class on the fly.</p>
+
+    <p>The class within it must be named correctly (it is case-sensitive), and must extend the
+    <a href="basemodel.html">BaseModel</a> class. This ensures it gains all the functionality detailed above.</p>
+
+    <p>If you want to override any of the default methods, you must then call <code>parent::<var>methodName</var>()</code> at
+    some point to ensure the basic functionality is still called. For example, to ensure that all Comments associated with a
+    Blog Post are removed when deleting the Blog Post:</p>
+
+    <pre><code>&lt;?php
+  class BlogPost extends BaseModel {
+    public function delete () {
+      $objComments = $this->getComments();
+      $objComments->delete();
+
+      parent::delete();
+    }//function
+  }//class</code></pre>
+
+    <p>This file must be saved as <span class="file">app/models/model.blogpost.php</span> in order to be loaded and used by the
+    system.</p>
+
+    <p>Alternatively, the overridden method isn't required to call the original functionality. For example, you can have the
+    <code>delete()</code> method not delete anything at all, but simply set a flag in the database instead:</p>
+
+    <pre><code>&lt;?php
+  class BlogPost extends BaseModel {
+    public function delete () {
+      $this->deleted = 1;
+      $this->save();
+    }//function
+  }//class</code></pre>
   </body>
 </html>
