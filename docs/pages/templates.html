@@ -12,5 +12,189 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>Templates in Wings are used to output textual information (usually HTML, but also XML) in a way that separates the code
+    logic from the outputted text. This is achived by using placeholders for variables, and marking out various blocks in the
+    code that can be repeated 0 or more times as required.</p>
+
+    <p>The syntax and concepts are loosely based on the PHP X Template system, found at
+    <a href="http://www.phpxtemplate.org/HomePage">http://www.phpxtemplate.org/HomePage</a>.</p>
+
+    <h2>Syntax</h2>
+
+    <p>You can put anything you like inside a template, and it will be output onto the screen. For most static pages, this is
+    sufficient.</p>
+
+    <h3>Variables</h3>
+
+    <p>If you want to get some dynamic data in there however, you will need to use some variable placeholders on order
+    to mark where in the template the data should go. The syntax of these placeholders uses curly brackets -
+    <code>{<var>name</var>}</code>. For example, the template for the default action in a controller is:</p>
+
+    <pre><code>&lt;h2&gt;{controllername}&lt;/h2&gt;
+
+&lt;p&gt;Please define an 'index' action in your contoller to override this message!&lt;/p&gt;</code></pre>
+
+    <p>A template object within the system handles the variable substitution and block management. The format for the
+    constructor is:</p>
+
+    <div class="usage">
+      <h3><code>Template->__construct ($strTemplateName, $mixMasterTemplateSetting = true)</code> (Constructor)</h3>
+
+      <p>The template name describes the path to the template (.tpl) file within the templates folder, using a '.' as a
+      folder separator. For example, passing in 'admin.users.list' would load the template file
+      <span class="file">/app/templates/admin/users/list.tpl</span>. If this file doesn't exist, it will attempt to load
+      <span class="file">/sys/templates/admin/users/list.tpl</span> instead.</p>
+
+      <p>The Master Template Setting can be set to <code>true</code>, <code>false</code> or the name of a different master
+      template to use. If set to <code>true</code>, the default master template will be used (as set in
+      <span class="config"><a href="appconf.html">app.xml</a></span>). If set to false, no master template will be used.</p>
+    </div>
+
+    <p>Once a template has been loaded, you can set variables to be replaced by setting the appropriate property of the
+    Template object. Then, in order to display anything, you need to <code>parse()</code> the template, then <code>out()</code>
+    it. For example:</p>
+
+    <pre><code>&lt;?php
+  $objTemplate = new Template('system.default', false);
+  $objTemplate->controllername = 'MyController';
+  $objTemplate->parse();
+  $objTemplate->out();</code></pre>
+
+    <p>This would result in the following output:</p>
+
+    <pre><code>&lt;h2&gt;MyController&lt;/h2&gt;
+
+&lt;p&gt;Please define an 'index' action in your contoller to override this message!&lt;/p&gt;</code></pre>
+
+    <h2>Blocks</h2>
+
+    <p>If you have a section of the output whose display depends on some condition, or a piece that needs to repeated a number
+    of times. you need to you blocks. Blocks are sections of code that can be repeated 0 or more times. They can contain
+    anything that can appear in the rest of the template, including other blocks.</p>
+
+    <p>The basic syntax for a block use square brackts, but it must be placed within an HTML comment. The opening marker uses
+    this syntax, and the closing marker uses the same, but with a forward slash (/) in front of the name of the block, as in
+    HTML. For example:</p>
+
+    <pre><code>&lt;ul&gt;
+&lt;!-- [listitem] --&gt;
+  &lt;li&gt;{listitem}&lt;/li&gt;
+&lt;!-- [/listitem] --&gt;
+&lt;/ul&gt;</code></pre>
+
+    <p>If this template is used as is, without doing anything special, the block will simply not appear in the output at all.
+    For example:</p>
+
+    <pre><code>&lt;?php
+  $objTemplate = new Template('example', false);
+  $objTemplate->parse();
+  $objTemplate->out();</code></pre>
+
+    <pre><code>&lt;ul&gt;
+&lt;/ul&gt;</code></pre>
+
+    <p>In order to get the block to appear in the output, you need to use the <code>parse()</code> method of the Template
+    object:</p>
+
+    <div class="usage">
+      <h3><code>Template->parse ($strBlockName = "", $blnResetVars = false)</code></h3>
+
+      <p>Parses a block in the template and adds it to the final output of the template. You also need to call this just before
+      you retrieve or output the final template. In effect, the entire template is contained within a block with no name, and
+      calling parse with no arguments parses this block.</p>
+    </div>
+
+    <p>The <code>parse()</code> method can be called as many times as needed to achieve the correct output. For example, using
+    the template above:</p>
+
+    <pre><code>&lt;?php
+  $objTemplate = new Template('example', false);
+
+  foreach (array(1, "apple", "Test", 56, "Wings Rocks!") as $mixListItem) {
+    $objTemplate->listitem = $mixListItem;
+
+    $objTemplate->parse('listitem');
+  }//foreach
+
+  $objTemplate->parse();
+  $objTemplate->out();</code></pre>
+
+    <p>This code would result in the following output:</p>
+
+    <pre><code>&lt;ul&gt;
+  &lt;li&gt;1&lt;/li&gt;
+  &lt;li&gt;apple&lt;/li&gt;
+  &lt;li&gt;Test&lt;/li&gt;
+  &lt;li&gt;56&lt;/li&gt;
+  &lt;li&gt;Wings Rocks!&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+    <p>As you can see, each time the <code>parse()</code> method is called, the code within the named block is parsed, any
+    variables are substituted, and the result is added to the final output in the position the block appears in the template.
+    Any additional parses of the block appear at the same place, in the order they were parsed.</p>
+
+    <p>You can also nest blocks to achieve complex layouts. To parse a nested block, you must use the full 'path' to the block
+    name, with each level separated by a '.'.</p>
+
+    <p>Here is a more complex example:</p>
+
+    <pre><code>&lt;h1&gt;Lists&lt;/h1&gt;
+&lt;!-- [list] --&gt;
+
+&lt;h2&gt;{listname}&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;!-- [listitem] --&gt;
+  &lt;li&gt;{listitem}&lt;/li&gt;
+&lt;!-- [/listitem] --&gt;
+&lt;/ul&gt;
+&lt;!-- [/list] --&gt;</code></pre>
+
+    <pre><code>&lt;?php
+  $objTemplate = new Template('complexexample', false);
+
+  $arrLists = array('Animals' => array('Aardvark', 'Baboon', 'Cat', 'Dog', 'Elephant'),
+                    'Countries' => array('Austria', 'Belgium', 'Canada', 'Denmark', 'England'));
+
+  foreach ($arrLists as $strListName => $arrList) {
+    foreach ($arrList as $strListItem) {
+      $objTemplate->listitem = $strListItem;
+      $objTemplate->parse('list.listitem');
+    }//foreach
+
+    $objTemplate->listname = $strListName;
+    $objTemplate->parse('list');
+  }//foreach
+
+  $objTemplate->parse();
+  $objTemplate->out();</code></pre>
+
+    <p>Which results in the following output:</p>
+
+    <pre><code>&lt;h1&gt;Lists&lt;/h1&gt;
+
+&lt;h2&gt;Animals&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Aardvark&lt;/li&gt;
+  &lt;li&gt;Baboon&lt;/li&gt;
+  &lt;li&gt;Cat&lt;/li&gt;
+  &lt;li&gt;Dog&lt;/li&gt;
+  &lt;li&gt;Elephant&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Countries&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Austria&lt;/li&gt;
+  &lt;li&gt;Belgium&lt;/li&gt;
+  &lt;li&gt;Canada&lt;/li&gt;
+  &lt;li&gt;Denmark&lt;/li&gt;
+  &lt;li&gt;England&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+    <p>In reality, since you almost always use a template through a <a href="views.html">view</a>, you very rarely have to call
+    the final <code>parse()</code> or <code>out()</code> methods, as the <a href="baseview.html">BaseView</a>'s
+    <code>render()</code> method takes care of that.</p>
   </body>
 </html>
