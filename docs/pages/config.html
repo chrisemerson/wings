@@ -39,6 +39,62 @@
     file. You can also pass in a full filename to the constructor if you want to use a config file that isn't in either of the
     default directories.</p>
 
+    <h2>app.xml</h2>
+
+    <span class="config"><a href="appconf.html">app.xml</a></span> is a special configuration file that can give different
+    settings depending on the environment you have the application set up in (eg dev, test, staging, live). This is achieved by
+    setting an environment variable in the server called APP_ENVIRONMENT whose value should be the name of the environment it
+    represents. The <span class="config"><a href="appconf.html">app.xml</a></span> file is then split up into different
+    sections, with the names of these sections being the names of the different environments you have set up.</
+
+    <p>The first tag after the opening <code>&lt;app&gt;</code> tag should be a <code>&lt;default&gt;</code> tag, which contains
+    all the default settings of the Application (usually the settings for the live environment). Each tag after
+    <code>&lt;default&gt;</code> should then be named after the envirenment it is for. You can override none, some or all of the
+    default settings, and the Config class will work out which setting to use.</p>
+
+    <p>For example, the default <span class="config"><a href="appconf.html">app.xml</a></span> contains:</p>
+
+    <pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+
+&lt;app&gt;
+  &lt;default&gt;
+    &lt;uri&gt;
+      &lt;host&gt;dev&lt;/host&gt;
+      &lt;path&gt;appframework/httpdocs&lt;/path&gt;
+    &lt;/uri&gt;
+
+    &lt;template&gt;
+      &lt;mastertemplate&gt;system.master&lt;/mastertemplate&gt;
+    &lt;/template&gt;
+
+    &lt;db&gt;
+      &lt;uri&gt;mysqli://app:*****@localhost/app&lt;/uri&gt;
+      &lt;prefix&gt;app_&lt;/prefix&gt;
+    &lt;/db&gt;
+
+    &lt;errors&gt;
+      &lt;showerrors&gt;0&lt;/showerrors&gt;
+      &lt;debugmode&gt;0&lt;/debugmode&gt;
+      &lt;defaultformerror&gt;{field} errored&lt;/defaultformerror&gt;
+    &lt;/errors&gt;
+
+    &lt;cookie&gt;
+      &lt;domain&gt;&lt;/domain&gt;
+      &lt;path&gt;/appframework/httpdocs/&lt;/path&gt;
+    &lt;/cookie&gt;
+  &lt;/default&gt;
+
+  &lt;dev&gt;
+    &lt;errors&gt;
+      &lt;showerrors&gt;1&lt;/showerrors&gt;
+      &lt;debugmode&gt;1&lt;/debugmode&gt;
+    &lt;/errors&gt;
+  &lt;/dev&gt;
+&lt;/app&gt;</code></pre>
+
+    <p>This contains all the default application settings, followed by an override for an environment called 'dev' where errors
+    are shown and debugging is turned on.</p>
+
     <h2>Methods &amp; Properties</h2>
 
     <div class="usage">
