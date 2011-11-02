@@ -3,13 +3,13 @@
     private static $arrConfigs;
     private $strCurrentConfig;
 
-    public function __construct ($mixConfigData) {
-      if (is_file(realpath($mixConfigData))) {
-        $strFilename = realpath($mixConfigData);
-      } else if (is_file(Application::getBasePath() . "app/config/" . $mixConfigData . ".xml")) {
-        $strFilename = Application::getBasePath() . "app/config/" . $mixConfigData . ".xml";
-      } else if (is_file(Application::getBasePath() . "sys/config/" . $mixConfigData . ".xml")) {
-        $strFilename = Application::getBasePath() . "sys/config/" . $mixConfigData . ".xml";
+    public function __construct ($strConfigData) {
+      if (is_file(realpath($strConfigData))) {
+        $strFilename = realpath($strConfigData);
+      } else if (is_file(Application::getBasePath() . "app/config/" . $strConfigData . ".xml")) {
+        $strFilename = Application::getBasePath() . "app/config/" . $strConfigData . ".xml";
+      } else if (is_file(Application::getBasePath() . "sys/config/" . $strConfigData . ".xml")) {
+        $strFilename = Application::getBasePath() . "sys/config/" . $strConfigData . ".xml";
       } else {
         throw new ConfigNotFoundException();
       }//if

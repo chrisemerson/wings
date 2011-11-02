@@ -12,5 +12,47 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>The Config class is provided to make accessing configuration information easier for the application. Config files in the
+    system use an xml format, and live inside the <span class="folder">sys/config/</span> folder or the
+    <span class="folder">app/config/</span> folder, with files in the latter overriding ones in the former.</p>
+
+    <p>By default, the format is xml files with no attributes. Some of the config files used in the system do use attributes in
+    their xml files, but these are generally accessed through SimpleXML instead (eg,
+    <span class="config"><a href="convertconf.html">convert.xml</a></span>. You can chain calls to different tags within the
+    file together to access different properties. For example, given the following config file (example.xml):</p>
+
+    <pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+
+&lt;example&gt;
+  &lt;information&gt;
+    &lt;source&gt;Newspaper&lt;/source&gt;
+  &lt;/information&gt;
+&lt;/example&gt;</code></pre>
+
+    <p>You can use the follwing code to access the config setting:</p>
+
+    <pre><code>&lt;?php
+  $objConfig = new Config('example');
+  echo $objConfig->information->source;</code></pre>
+
+    <p>The name of the root element makes no difference, but all the config files built in to Wings use the name of the
+    file. You can also pass in a full filename to the constructor if you want to use a config file that isn't in either of the
+    default directories.</p>
+
+    <h2>Methods &amp; Properties</h2>
+
+    <div class="usage">
+      <h3><code>Config->__construct($strConfigData)</code> (Constructor)</h3>
+
+      <p>$strConfigData can either be the name of a .xml file within one of the config folders, or a full path to another xml
+      file.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Config-><var>var</var></code></h3>
+
+      <p>Returns a config object with the root element set to <var>var</var>. Can also use isset on this to see if a config
+      setting exists.</p>
+    </div>
   </body>
 </html>
