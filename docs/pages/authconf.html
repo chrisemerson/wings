@@ -12,6 +12,30 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>This file is used by the <a href="authentication.html">Authentication</a> class, which controls access to areas of the
+    application which require a login.</p>
+
+    <p>The <code>&lt;users&gt;</code> section defines a model to be used to represent a User in the system, with the various
+    fields of this model being listed below. This allows your application to have any table layout you want for the users table,
+    and still be able to use the functionality of the <a href="authentication.html">Authentication</a> class.</p>
+
+    <p>The second section configures the settings for the 'Remember Me' function in the module, including cookie names for
+    remembering the user on a particular machine, and details of a RememberedLogin database model which is required in order for
+    this to work. You can also set how many days the user is remembered for.</p>
+
+    <p>The URIs section defines the URIs that the user is sent to if they, for example, try to access a page that requires them
+    to be logged in when they aren't. The <code>&lt;requirelogin&gt;</code> option sets the URI that the user is sent to if they
+    need to login to access something. <code>&lt;requirelogout&gt;</code> is the URI a logged in user is sent to if they can't
+    access a page without logging out (such as a registration page). <code>&lt;requireauth&gt;</code> defines the page the user
+    is sent to if they need to reauthenticate in order to perform an action (such as changing a password, accessing personal
+    information/settings). <code>&lt;redirectafterlogin&gt;</code> defines the URI that the user is sent to after a successful
+    login.</p>
+
+    <p>The <code>&lt;salt&gt;</code> is a completely random string of characters that is used as a salt to help encode the
+    users' passwords.</p>
+
+    <p>Finally, <code>&lt;sessionname&gt;</code> is the name of the session used by the module.</p>
+
     <h2>Default File Contents</h2>
 
     <pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
