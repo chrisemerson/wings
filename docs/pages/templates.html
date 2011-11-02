@@ -197,6 +197,35 @@
     the final <code>parse()</code> or <code>out()</code> methods, as the <a href="baseview.html">BaseView</a>'s
     <code>render()</code> method takes care of that.</p>
 
+    <h3>Block Options</h3>
+
+    <p>There are some formatting options which can be applied to blocks. These appear in the opening marker for the block,
+    separated from the black name by a pipe (|) character. For example:</p>
+
+    <pre><code>&lt;!-- [block|tb] --&gt;</code></pre>
+
+    <p>There are currently 4 options available:</p>
+
+    <dl>
+      <dt>tt</dt>
+      <dd>Trim Top - removes the top line from the final combined output of this block (ie, after it has been parsed multiple
+      times), but only if it is empty.</dd>
+
+      <dt>tb</dt>
+      <dd>Trim Bottom - removes the bottom line from the final combined output of this block (ie, after it has been parsed
+      multiple times), but only if it is empty.</dd>
+
+      <dt>tfc</dt>
+      <dd>Trim First Character - removes the first non-whitespace character from the combined output of this block, for example
+      to remove a leading comma in a list constructed with blocks.</dd>
+
+      <dt>tlc</dt>
+      <dd>Trim Last Character - removes the last non-whitespace character from the combined output of this block, for example
+      to remove a trailing comma in a list constructed with blocks.</dd>
+    </dl>
+
+    <p>You can use multiple options by comma-separating them in the block marker.</p>
+
     <h2>Includes</h2>
 
     <p>The template system allows you to include the lines from one template inside another, allowing common code to be shared
