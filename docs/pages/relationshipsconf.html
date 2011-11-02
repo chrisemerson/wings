@@ -12,6 +12,29 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>This file defines the relationships between models in the system to allow the ORM system to provide its relationship
+    functions.</p>
+
+    <p>You can define either a <code>&lt;onetoone&gt;</code>, <code>&lt;onetomany&gt;</code> or <code>&lt;manytomany&gt;</code>
+    relationship, and the format of each is described below.</p>
+
+    <h2>onetoone</h2>
+
+    <p>The one to one relationship contains a <code>&lt;localmodel&gt;</code> and a <code>&lt;foreignmodel&gt;</code> element,
+    each of which contains a <code>name</code> attribute and a <code>column</code> attribute, which define the 2 fields that
+    form the relationship.</p>
+
+    <h2>onetomany</h2>
+
+    <p>The one to many relationship uses an identical syntax to the onetoone relationship.</p>
+
+    <h2>manytomany</h2>
+
+    <p>The <code>&lt;manytomany&gt;</code> element has a single attribute called <code>jointable</code> which is required, and
+    defines the join table for this relationship. It also contains 2 <code>&lt;model&gt;</code> elements, both of which contain
+    a <code>name</code> and a <code>column</code> attribute which work as in the other types of relationship. The join table
+    field names must match those of the fields in the models.</p>
+
     <p>If you want to change any of the information in this file, only edit the version in
     <span class="folder">app/config/</span>. The version in <span class="folder">sys/config/</span> has no effect, it is only
     there as a backup of the default file contents should you need to revert to them.</p>
@@ -27,10 +50,10 @@
     &lt;model name="Model2" column="Column2" /&gt;
   &lt;/manytomany&gt;
 
-  &lt;onetoone&gt;
+  &lt;onetomany&gt;
     &lt;localmodel name="LocalModel" column="local_column" /&gt;
     &lt;foreignmodel name="ForeignModel" column="foreign_column" /&gt;
-  &lt;/onetoone&gt; --&gt;
+  &lt;/onetomany&gt; --&gt;
 
 &lt;relationships&gt;
 &lt;/relationships&gt;</code></pre>
