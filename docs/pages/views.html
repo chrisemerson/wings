@@ -15,9 +15,9 @@
     <p>Views in the Wings framework are for outputting information made up from models and other bits of data to either the
     screen, or another file (eg XML in the case of an API or AJAX call).</p>
 
-    <p>A view usually utilises the template system (though doesn't have to), and so has some methods built in for loading and
-    dealing with templates. These include the <code>loadTemplate()</code> method, as well as the <code>render()</code> method,
-    and the <code>template</code> property.</p>
+    <p>A view usually utilises the <a href="templates.html">template system</a> (though doesn't have to), and so has some
+    methods built in for loading and dealing with <a href="templates.html">templates</a>. These include the
+    <code>loadTemplate()</code> method, as well as the <code>render()</code> method, and the <code>template</code> property.</p>
 
     <p>Each separate 'screen' or page on the website will usually have a separate view associated with it, though small
     alterations such as showing and hiding small blocks of code can be done within the same view.</p>
@@ -25,6 +25,103 @@
     <p>All views should live inside <span class="folder">app/views/</span>, and be named
     <span class="file">view.<var>name</var>.php</span>. There are some built in views in <span class="folder">sys/views/</span>
     which can be overridden by copying the relevant file to <span class="folder">app/views/</span> and modifying the copy.</p>
+
+    <h2>Master Views</h2>
+
+    <p>Views in the system usually extend the MasterView class, which is associated with the master template. This is to ensure
+    things that are in the master template (header, login blocks etc) are dealt with automatically on every page load. If the
+    master template is not required for a certain view, you must remember to make the view extend the <code>BaseView</code>
+    class instead of the <code>MasterView</code> class, and pass <code>false</code> as the second parameter of the
+    <code>loadTemplate</code> method.</p>
+
+    <p>The <code>MasterView</code> class also adds a couple of helper methods in order to add JavaScript and CSS to the page, in
+    conjunction with the default master template. Be sure not to remove this part of the master template if you want this
+    functionality to remain!</p>
+
+    <div class="usage">
+      <h3><code>MasterView->addStylesheet($strStylesheetName, $strStylesheetMedia = 'screen')</code></h3>
+
+      <p>This method adds the specified stylesheet to the page, through the master template. By default, the
+      <span class="folder">httpdocs/styles/</span> folder is used.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>MasterView->addScript($strScriptName)</code></h3>
+
+      <p>This method adds the specified JavaScript file to the page, through the master template. By default, the
+      <span class="folder">httpdocs/scripts/</span> folder is used.</p>
+    </div>
+
+    <h2>A Typical View</h2>
+
+    <pre><code>&lt;?php
+  class HomeView extends MasterView {
+    public function __construct () {
+      $this->loadTemplate('home');
+
+      parent::__construct();
+    }//function
+
+    public function render () {
+      parent::render();
+    }//function
+  }//class</code></pre>
+
+    <p>Nearly all views have the 2 methods <code>__construct()</code> and <code>render()</code> defined. Both of these methods
+    are defined in the MasterView and BaseView classes, so every step in the chain needs to make sure it calls its parent method
+    at the appropriate point.</p>
+
+    <p>The constructor will usually load a <a href="templates.html">template</a> (using the <code>loadTemplate()</code> method),
+    and then call the parent constructor with <code>parent::__construct()</code>.</p>
+
+    <p>The <code>render()</code> method will render everything specific to that view (In this example, nothing), and then call
+    the <code>render()</code> method of the parent function in order to complete rendering. The <code>render()</code> method is
+    invoked when the <code>renderView()</code> method within a controller is called. A more complex example can be found
+    below:</p>
+
+    <pre><code>&lt;?php
+  class AdminUsersView extends MasterView {
+    public function __construct () {
+      $this->loadTemplate('admin.users');
+
+      parent::__construct();
+    }//function
+
+    public function render () {
+      $this->addStylesheet('admin.css');
+
+      $this->renderUsers();
+
+      parent::render();
+    }//function
+
+    private function renderUsers () {
+      $objUsers = $this->users;
+
+      $blnAlt = false;
+
+      if (count($objUsers)) {
+        foreach ($objUsers as $objUser) {
+          $this->template->userid = $objUser->user_id;
+          $this->template->useremail = $objUser->user_email_address;
+          $this->template->username = $objUser->user_name;
+          $this->template->alt = $blnAlt;
+
+          $blnAlt = !$blnAlt;
+
+          $this->template->parse('user');
+        }//foreach
+      } else {
+        $this->template->parse('nousers');
+      }//if
+    }//function
+  }//class</code></pre>
+
+    <p>This template's <code>render()</code> method also adds a stylesheet (admin.css - which should live in the styles/
+    folder), and also calls a private method which adds data to the template - <code>renderUsers()</code>. This method makes use
+    of the Users <a href="collections.html">Collection</a> which is passed to it, loops over it and parses a particular section
+    in the <a href="templates.html">template</a>. Most methods in the view are best left as private, with only the constructor
+    and the <code>render()</code> method being publically accessible.</p>
 
     <h2>Methods & Properties</h2>
 
