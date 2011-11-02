@@ -12,6 +12,25 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>This file defines the models that are stored in the database, which will be autocreated by Wings, and can use the ORM
+    functionality provided by the framework.</p>
+
+    <p>Each line consists of a <code>&lt;model&gt;</code> element with at a minimum, a <code>name</code> attribute, which
+    defines the name of the model, and should be camelCased.</p>
+
+    <p>The rest of the information is derived from this name - the plural is simply the name with an s added to the end, and the
+    table name is the pluralised name with the camelCase converted into a lowercase name with underscores between words.</p>
+
+    <p>If required, either the plural or the table name can be overridden by providing a <code>plural</code> or
+    <code>table</code> attribute onto the <code>&lt;model&gt;</code> element. For example:</p>
+
+    <pre><code>&lt;models&gt;
+  &lt;model name="ExampleModel" /&gt;
+  &lt;model name="AnotherDemo" table="demo_table" /&gt;
+  &lt;model name="Address" plural="addresses" /&gt;
+  &lt;model name="Mouse" plural="mice" table="mouse_table" /&gt;
+&lt;/models&gt;</code></pre>
+
     <p>If you want to change any of the information in this file, only edit the version in
     <span class="folder">app/config/</span>. The version in <span class="folder">sys/config/</span> has no effect, it is only
     there as a backup of the default file contents should you need to revert to them.</p>
