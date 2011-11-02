@@ -196,5 +196,91 @@
     <p>In reality, since you almost always use a template through a <a href="views.html">view</a>, you very rarely have to call
     the final <code>parse()</code> or <code>out()</code> methods, as the <a href="baseview.html">BaseView</a>'s
     <code>render()</code> method takes care of that.</p>
+
+    <h2>Includes</h2>
+
+    <p>The template system allows you to include the lines from one template inside another, allowing common code to be shared
+    among several templates. You can even include a template within itself, as long as the include is contained within at least
+    one block. This allows for recursive structures to be built, eg a nested list with no limit on the number of levels it can
+    be nested to.</p>
+
+    <p>The syntax for an included file is:</p>
+
+    <pre><code>&lt;!-- {<var>template.name</var>} --&gt;</code></pre>
+
+    <p>This marker can be placed anywhere in a template file, and the named template will be included at that point.
+    Additionally, if the marker is indented by any number of spaces, that indent will be applied to the contents of the included
+    template as well. This allows you to maintain well formatted code to ease with future maintenance, and increase the
+    likelihood of spotting errors.</p>
+
+    <p>If you aren't sure of the name of the template you want to include until runtime, you can set this by putting a
+    placeholder inside the include marker. For example:</p>
+
+    <pre><code>&lt;!-- {{<var>name</var>}} --&gt;</code></pre>
+
+    <p>This will look for the variable called <var>name</var>, and include the template with te name that matches the value of
+    that variable.</p>
+
+    <h2>Master Templates</h2>
+
+    <p>Master templates are a useful way to create pages that all fit within a certain site template, but each page may have
+    different content. In effect, it is much like including a header and a footer on every page automatically, without you
+    having to do anything.</p>
+
+    <p>If you are using a master template, every time you load any template, the Template object actually loads the master
+    template instead, and then includes the named template at a certain point in this file, determined by a marker. The format
+    for the marker is as follows:</p>
+
+    <pre><code>&lt;!-- &lt;SLAVE&gt; --&gt;</code></pre>
+
+    <p>As with other types of include, you can indent this marker, and all the slave templates will then have the same indent
+    applied to them.</p>
+
+    <p>The setting for which template to use as the master template is within
+    <span class="config"><a href="appconf.html">app.xml</a></span>, or you can pass an alternative through the
+    <code>loadTemplate()</code> method within the <a href="baseview.html">BaseView</a> class.</p>
+
+    <p>For an example, if this was master.tpl, and was set as the master template:</p>
+
+    <pre><code>&lt;!DOCTYPE html&gt;
+
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;title&gt;My Application&lt;/title&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;!-- &lt;SLAVE&gt; --&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+    <p>...and this was slave.tpl:</p>
+
+    <pre><code>&lt;h1&gt;Home Page&lt;/h1&gt;
+
+&lt;p&gt;Welcome to my website!&lt;/p&gt;</code></pre>
+
+    <p>...then this code:</p>
+
+    <pre><code>&lt;?php
+  $objTemplate = new Template('slave');
+  $objTemplate->parse();
+  $objTemplate->out();</code></pre>
+
+    <p>...would produce this output:</p>
+
+    <pre><code>&lt;!DOCTYPE html&gt;
+
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;title&gt;My Application&lt;/title&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;h1&gt;Home Page&lt;/h1&gt;
+
+    &lt;p&gt;Welcome to my website!&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
   </body>
 </html>

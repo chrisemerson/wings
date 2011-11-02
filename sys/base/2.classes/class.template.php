@@ -12,7 +12,7 @@
     const RE_BLOCK_END = "/^\\s*<!--\\s*\\[\\s*\\/([a-z0-9_-]+)\\s*\\]\\s*-->\\s*\$/i";
     const RE_INCLUDE = "/^(\\s*)<!--\\s*{\\s*([a-z0-9._-]+)\\s*}\\s*-->\\s*\$/i";
     const RE_INCLUDE_VARIABLE = "/^(\\s*)<!--\\s*{\\s*{([a-z0-9._-]+)}\\s*}\\s*-->\\s*\$/i";
-    const RE_SLAVE_INCLUDE = "/^(\\s*)<!--\\s*<\\s*([a-z0-9._-]+)\\s*>\\s*-->\\s*\$/i";
+    const RE_SLAVE_INCLUDE = "/^(\\s*)<!--\\s*<\\s*SLAVE\\s*>\\s*-->\\s*\$/i";
 
     /********************************/
     /* Constructor & Initialisation */
