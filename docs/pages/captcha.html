@@ -12,5 +12,85 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>The Captcha class enables you to add CAPTCHA functionality to your application, in order to help protect against spam
+    bots who may use your forms for malicious purposes.</p>
+
+    <p>Usage of this class requires that you create a separate image handler to output the image, but this means you can use
+    whatever filename you like for the CAPTCHA image.</p>
+
+    <p>The behaviour of this class can be modified in many ways, and the configuration of it is handled by
+    <span class="config"><a href="captchaconf.html">captcha.xml</a></span>. Details of the options available are detailed in the
+    configuration file itself.</p>
+
+    <p>You can also include backgrounds in your captcha images by including the jpegs in the folder that is set in
+    <span class="config"><a href="captchaconf.html">captcha.xml</a></span>. Any backgrounds that are not the same size as the
+    configured width and height are ignored.</p>
+
+    <p>The fonts that are used are taken from the fonts folder, as set in
+    <span class="config"><a href="captchaconf.html">captcha.xml</a></span>. They shold be TrueType (.ttf) fonts.</p>
+
+    <h2>Methods &amp; Properties</h2>
+
+    <div class="usage">
+      <h3><code>Captcha->__construct($blnRefreshWithNewCode = false)</code> (Constructor)</h3>
+
+      <p>If you pass <code>true</code> to the constructor, a new code will be generated when a new object is instantiated. You
+      should do this when you want to create a new Captcha object to use on a new form. When creating the object for the
+      purposes of checking a value the user has entered, it is important that you don't pass <code>true</code> in!</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Captcha->getCode()</code></h3>
+
+      <p>Returns the current code of the object.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Captcha->checkCode($strCodeToCheck)</code></h3>
+
+      <p>Checks a code that you pass te the method against the code of the Captcha. This should be used to check entered codes
+      rather than getting the code and checking it manually, because this takes the case sensitivity option into account.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Captcha->generateNewCode()</code></h3>
+
+      <p>Forces a new code to be generated. This could be called via (for example) an AJAX call to refresh the image and get a
+      new code.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Captcha->setAllowedCharacters($strAllowedCharacters)</code></h3>
+
+      <p>Overrides the default set of allowed characters. Pass in a string containing the allowed characters, eg "abc123". This
+      forces the code te be regenerated with the new settings</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Captcha->setCodeLength($intCodeLength)</code></h3>
+
+      <p>Overrides the default length of the code. This forces the code te be regenerated with the new settings.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Captcha->outputImage()</code></h3>
+
+      <p>Outputs the image as a jpeg. This method will set the appropriate Content-type header. Make sure nothing else is
+      output on the page you use this function!</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Captcha->getImageWidth()</code></h3>
+
+      <p>Returns the image width as defined in the config file, for use in an <code>&lt;img&gt;</code> tag. Using this allows
+      you to easily change the size of the captcha without having to rewrite the <code>&lt;img&gt;</code> tags.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Captcha->getImageHeight()</code></h3>
+
+      <p>Returns the image height as defined in the config file, for use in an <code>&lt;img&gt;</code> tag. Using this allows
+      you to easily change the size of the captcha without having to rewrite the <code>&lt;img&gt;</code> tags.</p>
+    </div>
   </body>
 </html>

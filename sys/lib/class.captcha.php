@@ -72,12 +72,12 @@
     public function setAllowedCharacters ($strAllowedCharacters) {
       $this->strAllowedCharacters = $strAllowedCharacters;
       $this->generateNewCode();
-    }//if
+    }//function
 
     public function setCodeLength ($intCodeLength) {
       $this->intLength = $intCodeLength;
       $this->generateNewCode();
-    }//if
+    }//function
 
     public function outputImage () {
       //Load resources
@@ -146,7 +146,7 @@
     private function setCode ($strCode) {
       $this->strCode = $strCode;
       $_SESSION[$this->strSessionName] = $this->strCode;
-    }//if
+    }//function
 
     private function loadFonts () {
       $this->arrFonts = $this->getFilesInDirectory($this->strFontDirectory, array('.svn'));
