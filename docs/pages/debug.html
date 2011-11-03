@@ -12,5 +12,31 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>This class provides several static methods for outputting debug information to the screen, with the ability to turn on or
+    off all output with the -&gt;errors-&gt;debugmode setting in
+    <span class="config"><a href="appconf.html">app.xml</a></span>.</p>
+
+    <h2>Methods &amp; Properties</h2>
+
+    <div class="usage">
+      <h3>Debug::e ($mixInput)</h3>
+
+      <p>This is an alias of the <code>echo</code> statement, but output is only sent if the debugmode setting is on in
+      <span class="config"><a href="appconf.html">app.xml</a></span>.</p>
+    </div>
+
+    <div class="usage">
+      <h3>Debug::vd ($mixInput)</h3>
+
+      <p>This is an alias of the <code>var_dump()</code> function, but output is only sent if the debugmode setting is on in
+      <span class="config"><a href="appconf.html">app.xml</a></span>.</p>
+    </div>
+
+    <div class="usage">
+      <h3>Debug::pr ($mixInput, $blnReturn = false)</h3>
+
+      <p>This is an alias of the <code>print_r()</code> function, but output is only sent if the debugmode setting is on in
+      <span class="config"><a href="appconf.html">app.xml</a></span>.</p>
+    </div>
   </body>
 </html>
