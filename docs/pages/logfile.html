@@ -15,6 +15,27 @@
     <p>The LogFile class allows easy logging of information to .log files within the <span class="folder">app/logs/</span>
     folder.
 
-    <p></p>
+    <p>Log messages are always stamped with the time, date and IP address of the client who generated it.</p>
+
+    <h2>Methods &amp; Properties</h2>
+
+    <div class="usage">
+      <h3><code>LogFile->__construct ($strLogName)</code> (Constructor)</h3>
+
+      <p>This opens the logfile with the specified name. If it doesn't exist, it is created and a message at the top of the file
+      is added with the date and time.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>LogFile->__destruct ()</code> (Destructor)</h3>
+
+      <p>When the object is destroyed, the log file is closed.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>LogFile->logMessage ($strMessage)</code></h3>
+
+      <p>Appends the message to the open log file with a timestamp and IP address.</p>
+    </div>
   </body>
 </html>
