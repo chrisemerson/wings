@@ -49,10 +49,6 @@
       }//if
     }//function
 
-    public function multi_query ($strQuery) {
-      return false;
-    }//function
-
     public function escape_string ($strStringToEscape) {
       return mysql_real_escape_string($strStringToEscape, $this->resConnection);
     }//function

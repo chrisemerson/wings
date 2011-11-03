@@ -12,5 +12,70 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>The DirectQuery class allows you to connect to the database directly and execute queries on it, bypassing the ORM and
+    Models framework.</p>
+
+    <h2>Methods &amp; Properties</h2>
+
+    <div class="usage">
+      <h3><code>DirectQuery->__construct ()</code> (Constructor)</h3>
+
+      <p>Opens a new database connection and connects to the database using the information in
+      <span class="config"><a href="appconf.html">app.xml</a></span>.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>DirectQuery->query ($strSQL)</code></h3>
+
+      <p>Executes a query on the database and returns the results.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>DirectQuery->escape_string ($strString)</code></h3>
+
+      <p>Escapes a string according to the current database connection.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>DirectQuery->affected_rows</code></h3>
+
+      <p>Returns the number of affected rows from the last query.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>DirectQuery->insert_id</code></h3>
+
+      <p>Returns the Autonumber value of the last <code>INSERT</code> operation.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>DirectQuery->connect_errno</code></h3>
+
+      <p>Ruturns the error number of the connection attempt (if any). If no error occurred, ruturns 0.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>DirectQuery->connect_error</code></h3>
+
+      <p>Returns the error of the connection attempt (if any).</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>DirectQuery->errno</code></h3>
+
+      <p>Returns the error number of the last query (if any). If no error occurred, returns 0.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>DirectQuery->error</code></h3>
+
+      <p>Returns the error of the last query (if any).</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>DirectQuery->close ()</code></h3>
+
+      <p>Closes the database connection.</p>
+    </div>
   </body>
 </html>
