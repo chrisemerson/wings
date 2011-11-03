@@ -12,6 +12,48 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>This file defines the routes recognised by the framework, which are able to be routed to different parts of the
+    framework. It can use placeholders so that dynamic URIs can be used, and variables can be passed to the action that the
+    route uses. The basic syntax is as follows:</p>
+
+    <pre><code>&lt;route match="<var>route</var>"&gt;
+  &lt;redirect route="<var>newroute</var>"[ secure="<var>secure</var>"] /&gt;
+&lt;/route&gt;
+
+&lt;route match="<var>route</var>"&gt;
+  &lt;execute controller="<var>controller</var>"[ action="<var>action</var>"][ secure="<var>secure</var>"] /&gt;
+&lt;/route&gt;</code></pre>
+
+    <p>In the first example, anyone visiting the URI specified by <var>route</var> will be redirected to the route specified by
+    <var>newroute</var>. This allows you to send users elsewhere in the application without being dependent on where the
+    application is installed. You can specify a <code>secure</code> attribute with the value 'yes' or 'no' to force users to
+    https or http protocols. Omitting the attribute leaves the protocol unchanged.</p>
+
+    <p>Instead of specifying a new route to redirect to, you can instead specify a URI with the <code>uri</code> attribute,
+    which redirects to an external URI.</p>
+
+    <p>In the second example, anyone visiting the URI specified by <var>route</var> will be directed to the Controller specified
+    by <var>controller</var> and the method specified by <var>action</var>. If no action is specified, the <code>index()</code>
+    action of the controller will be used by default.</p>
+
+    <p>Routes can contain placeholders to represent dynamic parts of the uri. The available placeholders are:</p>
+
+    <dl>
+      <dt>{int}</dt>
+      <dd>Represents an integer</dd>
+
+      <dt>{integer}</dt>
+      <dd>Alias of {int}</dd>
+
+      <dt>{string}</dt>
+      <dd>A string - any character except "/"</dd>
+
+      <dt>{url}</dt>
+      <dd>A string that can include "/" as well</dd>
+    </dl>
+
+    <p>Some examples of routes can be found in the comments in the <span class="config">routes.xml</span> file.</p>
+
     <p>If you want to change any of the information in this file, only edit the version in
     <span class="folder">app/config/</span>. The version in <span class="folder">sys/config/</span> has no effect, it is only
     there as a backup of the default file contents should you need to revert to them.</p>
