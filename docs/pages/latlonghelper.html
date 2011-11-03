@@ -12,5 +12,47 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>This class is provided to perform calculations on latitudes and longitudes, such as calculating distances, headings
+    etc. All of the methods within it are static.</p>
+
+    <h2>Methods &amp; Properties</h2>
+
+    <div class="usage">
+      <h3><code>LatLongHelper::returnDistanceBetweenPoints ($decLat1, $decLong1, $decLat2, $decLong2)</code></h3>
+
+      <p>This method returns the distance between the specified points, in metres.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>LatLongHelper::returnHeadingBetweenPoints ($decLat1, $decLong1, $decLat2, $decLong2)</code></h3>
+
+      <p>This method returns the heading between the 2 specified points.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>LatLongHelper::returnPointGivenHeadingAndDistance ($decLat, $decLong, $decHeading, $decDistance)</code></h3>
+
+      <p>This method takes a point, a heading and a distance, and returns the new point as an associative array containing 'lat'
+      and 'long' indexes.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>LatLongHelper::returnRadialDistanceFromKM ($decKM)</code></h3>
+
+      <p>This method takes a distance in KM, and returns the angle subtended by that distance on the Earth's surface.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>LatLongHelper::returnPointOfCrossing ($decLine1Point1Lat, $decLine1Point1Long, $decLine1Point2Lat, $decLine1Point2Long, $decLine2Point1Lat, $decLine2Point1Long, $decLine2Point2Lat, $decLine2Point2Long)</code></h3>
+
+      <p>This method takes 4 points which represent 2 lines, and returns the point at which they cross.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>LatLongHelper::returnRatioOfBeforeToTotal ($decBeforeLat, $decBeforeLong, $decAfterLat, $decAfterLong, $decMiddleLat, $decMiddleLong)</code></h3>
+
+      <p>This function takes 3 points (ideally along a line), and returns the ratio of the distance between the 'Before' point
+      and 'Middle' point, and the 'Before' point and 'After' point.</p>
+    </div>
   </body>
 </html>
