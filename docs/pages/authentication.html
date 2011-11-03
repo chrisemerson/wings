@@ -12,5 +12,122 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>The authentication library handles logins, remembered logins and reauthentication in a secure way. It uses the principles
+    described in <a href="http://jaspan.com/improved_persistent_login_cookie_best_practice">http://jaspan.com/improved_persistent_login_cookie_best_practice</a>
+    in order to provide a very secure system for dealing with user registration and logins.</p>
+
+    <p>Additionally, logins can be remembered at multiple locations, you can forget logins at certain locations or log the user
+    out from all locations if needed. If a stolen cookie is detected, the user is logged out from all locations as a
+    precaution.</p>
+
+    <p>Additionally, the module can hook into any database layout (providing certain fields are present - although field names
+    don't matter), and options such as remembered login expiry time are configurable.</p>
+
+    <p>This library file is accessible from controllers automatically as <code>$this->auth</code>.</p>
+
+    <h2>Methods &amp; Properties</h2>
+
+    <div class="usage">
+      <h3><code>Authentication->__construct()</code> (Constructor)</h3>
+
+      <p>The constructor reads the config file, checks for a remembered login cookie and logs the user in if one exists.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Authentication->attemptLogin($strUsername, $strPassword, $blnRememberMe = false, $blnRedirectAfterLogin = true)</code></h3>
+
+      <p>Attempts a login with the details provided. You can optionally set the 3rd argument to 'true' to use the 'remember me'
+      feature at this location, and the 4th argument to 'false' to prevent the system autmatically redirecting the user after
+      login. This is useful if you need to do some further processing on a successful login, but before thoy are redirected.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Authentication->redirectAfterLogin($strDefaultRedirection = '')</code></h3>
+
+      <p>This is called automatically after a successful login, unless the user has prevented the redirect. If they have, they
+      can manually invoke this method to perform the redirection. If the user got to the login page by trying to visit a page
+      they couldn't access, they are sent back to the page they were originally trying to leek at. If not, they are sent to the
+      location specified by the $strDefaultRedirection parameter passed to this function, or the location in the config file if
+      it wasn't passed in.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Authentication->logout()</code></h3>
+
+      <p>Logs the user out at this location.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Authentication->isLoggedIn()</code></h3>
+
+      <p>Returns <code>true</code> if the user is logged in, and <code>false</code> if they are not.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Authentication->isAuthenticatedThisSession()</code></h3>
+
+      <p>Returns <code>true</code> if the user has re-authenticated in this session, and <code>false</code> if they have
+      not.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Authentication->requireLoggedIn($strURIToRedirectTo = '')</code></h3>
+
+      <p>Calling this signals to the class that a user needs to be logged in to access this page. It will check if the user is
+      already logged in, and if they are, do nothing. If they are not logged in, it will redirect the user to the URI set in the
+      config file. Alternatively, you can override where the user is redirected by passing in the $strURIToRedirectTo
+      argument.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Authentication->requireLoggedOut($strURIToRedirectTo = '')</code></h3>
+
+      <p>As above, but requires the user to be logged out.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Authentication->requireReAuthentication($strURIToRedirectTo = '')</code></h3>
+
+      <p>As above, but requires the user to be re-authenticated before continuing.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Authentication->getCurrentUser()</code></h3>
+
+      <p>Returns a model object of the current user. What this is called depends on your configuration.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Authentication->setUserPassword(&$objUser, $strPassword)</code></h3>
+
+      <p>Sets the password on the user model that you pass in. For example, you could write a <code>setPassword()</code> method
+      within the User model that contains the following:</p>
+
+      <pre><code>&lt;?php
+  class User extends BaseModel {
+    public function setPassword ($strPassword) {
+      $objAuthentication = new Authentication();
+      $objAuthentication->setUserPassword($this, $strPassword);
+    }//function
+  }//class</code></pre>
+
+      <p>This function is needed because the process of converting a password to a hash happens within the Authentication
+      class.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Authentication->checkUserPassword(&$objUser, $strPassword)</code></h3>
+
+      <p>This function checks the user password and returns either <code>true</code> if the correct password was supplied, or
+      <code>false</code> if not.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Authentication->clearAllRememberedLogins($intUserID = 0)</code></h3>
+
+      <p>A call to this methed will clear all the logins that the database has saved, effectively invalidating all the
+      remembered login cookies that are attached to the supplied user. If no User ID is supplied, the currently logged in user
+      is used.</p>
+    </div>
   </body>
 </html>
