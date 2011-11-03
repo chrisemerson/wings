@@ -8,9 +8,67 @@
   </head>
 
   <body>
-    <h1>Curl Class</h1>
+    <h1>CURL Class</h1>
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>This class is a wrapper for the cURL functionality in PHP that provides an object oriented interface to the library. cURL
+    must be installed in order to use this class.</p>
+
+    <p>When using this class, the <code>CURLOPT_RETURNTRANSFER</code> option is set to <code>true</code> automatically.</p>
+
+    <h2>Methods &amp; Properties</h2>
+
+    <div class="usage">
+      <h3><code>CURL->__construct($strURL = '')</code> (Constructor)</h3>
+
+      <p>Creates a new instance of the CURL class. You can optionally pass in a URL which will set the URL to be requested.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>CURL-><var>var</var></code></h3>
+
+      <p>Setting any property on the CURL object sets the option with that name. The full list of options can be found at
+      <a href="http://uk.php.net/manual/en/function.curl-setopt.php">http://uk.php.net/manual/en/function.curl-setopt.php</a>.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>CURL->set($arrOptions)</code></h3>
+
+      <p>The <code>set()</code> method allows you to set several options at the same time through an associative array.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>CURL->addHeader($strName, $strValue)</code></h3>
+
+      <p>This method lets you easily add request headers to the transfer. Later headers of the same name will override earlier
+      ones.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>CURL->exec()</code></h3>
+
+      <p>Initiates the request using the URL and options provided. It returns the response received.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>CURL->errno</code></h3>
+
+      <p>After a request, this contains the last error number if any, or 0 if no error occurred.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>CURL->error</code></h3>
+
+      <p>After a request, this contains the last error (if any).</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>CURL-><var>var</var></code></h3>
+
+      <p>After a request, getting a property allows you to get information about the last request. The full list of available
+      information can be found at
+      <a href="http://uk.php.net/manual/en/function.curl-getinfo.php">http://uk.php.net/manual/en/function.curl-getinfo.php</a>.</p>
+    </div>
   </body>
 </html>

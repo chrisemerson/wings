@@ -28,7 +28,7 @@
     }//function
 
     public function __set ($strName, $mixValue) {
-      curl_setopt($this->curlHandler, constant($strName), $mixValue);
+      curl_setopt($this->curlHandler, constant(uppercase($strName)), $mixValue);
     }//function
 
     public function addHeader ($strName, $strValue) {
