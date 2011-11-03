@@ -47,15 +47,15 @@
     }//function
 
     public function getErroredFields () {
-      $arrErrorMessages = array();
+      $arrErroredFields = array();
 
       $arrErrors = $this->getAllErrors();
 
       foreach ($arrErrors as $arrErrorInfo) {
-        $arrErrorMessages[] = $arrErrorInfo['field'];
+        $arrErroredFields[] = $arrErrorInfo['field'];
       }//foreach
 
-      return array_unique($arrErrorMessages);
+      return array_unique($arrErroredFields);
     }//function
 
     private function getAllErrors () {

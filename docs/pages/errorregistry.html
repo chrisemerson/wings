@@ -12,5 +12,63 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>The Error Registry acts as a central place to store errors for the current request, so they can all be displayed at once,
+    no matter what the source of the error was.</p>
+
+    <p>In addition, you can set the name of the field that errored, so when working with a form, you are able to tell if a
+    particular field has errored or not.</p>
+
+    <p>The <a href="inputfilter.html">InputFilter</a> class adds its errors to the ErrorRegistry when validating form input, so
+    they can be easily displayed, and classes can be applied to the field that errored.</p>
+
+    <p>The Errors in this class persist over every instance of the class, so many separate components can instantiate and use
+    this class. <a href="controllers.html">Controllers</a> can access this class automatically as
+    <code>$this->errors</code>.</p>
+
+    <h2>Methods &amp; Functions</h2>
+
+    <div class="usage">
+      <h3><code>ErrorRegistry->addError ($strMessage, $strField = '')</code></h3>
+
+      <p>This adds an error message to the registry. Optionally, you can also pass in a field name, which associates the error
+      with the named field.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>ErrorRegistry->getErrors ()</code></h3>
+
+      <p>Returns an array of the error messages added so far.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>ErrorRegistry->getFieldErrors ($strField)</code></h3>
+
+      <p>Returns an array of the error messages that have been associated with the named field.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>ErrorRegistry->isError ()</code></h3>
+
+      <p>Returns <code>true</code> if any error messages have been added so far, and <code>false</code> if not.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>ErrorRegistry->isFieldError ($strField)</code></h3>
+
+      <p>Returns <code>true</code> if any error messages have been associated with the named field, and <code>false</code> if
+      not.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>ErrorRegistry->getErroredFields ()</code></h3>
+
+      <p>Returns an array containing the names of all the fields that have had errors associated with them so far.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>ErrorRegistry->clearErrors ()</code></h3>
+
+      <p>Clears all the errors that have been entered so far.</p>
+    </div>
   </body>
 </html>
