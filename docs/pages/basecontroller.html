@@ -12,5 +12,19 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>This class serves as a base for all the controllers of the system, and provides them with their basic functionality. As a
+    result, it is abstract and cannot/should not be instantiated itself. It does not extend any other classes or implement any
+    interfaces.</p>
+
+    <h2>Basic Structure</h2>
+
+    <pre><code>abstract class BaseController {
+  protected $view = null;
+
+  public final function __construct ()
+  public function index ()
+  protected function renderView ()
+}//class</code></pre>
+
   </body>
 </html>

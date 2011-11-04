@@ -365,14 +365,9 @@
     }//function
   }//class
 
-  //For use when creating classes on the fly
-
-  class GenericModelClass extends BaseModel {}
-
   //Exceptions
 
   class DataMissingException extends Exception {}
   class FieldNotFoundException extends Exception {}
   class InvalidDataException extends Exception {}
-  class InvalidSchemaException extends Exception {}
   class NoDataFoundException extends Exception {}

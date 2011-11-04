@@ -1,6 +1,5 @@
 <?php
   abstract class Collection extends Schema implements Iterator, Countable, ArrayAccess {
-
     private $arrMembers = array();
     private $intPosition = 0;
     private $blnJustUnsetCurrent = false;

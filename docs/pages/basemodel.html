@@ -12,5 +12,39 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>This class serves as a base for all the models in the system, and provides them with their ORM functionality. It is
+    abstract and cannot be instantiated on its own. It extends the <a href="schema.html">Schema</a> class, which is reponsible
+    for providing this class with information about tables and columns from the Database.</p>
+
+    <p>Along with the <a href="collection.html">Collection</a> class, this class constitutes the ORM functionality for the
+    framework.</p>
+
+    <p>The BaseModel class also defines 4 exceptions.</p>
+
+    <h2>Basic Structure</h2>
+
+    <pre><code>abstract class BaseModel extends <a href="schema.html">Schema</a> {
+  private $arrCurrentData = array();
+  private $arrNewData = array();
+  private $blnSaved = false;
+
+  public function __construct ($mixPK = null)
+  public function __get ($strFieldName)
+  public function __set ($strFieldName, $strValue)
+  public function __call ($strMethodName, $arrArguments)
+  public function save ()
+  public function loadFromArray ($arrData)
+  public function loadFromDBArray ($arrData)
+  private function loadFromPK ($mixPK)
+  private function insertIntoDB ()
+  private function updateDB ()
+  public function delete ()
+  protected function isSavedData ()
+}//class
+
+class DataMissingException extends Exception {}
+class FieldNotFoundException extends Exception {}
+class InvalidDataException extends Exception {}
+class NoDataFoundException extends Exception {}</code></pre>
   </body>
 </html>

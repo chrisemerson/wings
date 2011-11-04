@@ -12,5 +12,34 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>This class serves as a base for all the views in the system, and provides them with their functionality and helper
+    functions. It is abstract and cannot be instantiated on its own.</p>
+
+    <p>Views in the framework are geared towards using the templating system provided (with methods such as
+    <code>loadTemplate()</code> and <code>render()</code>, but the you are under no obligation to use this functionality, and
+    can implement whatever technology you like in order to achieve the output you need.</p>
+
+    <p>All wiews must have a <code>render()</code> method, which is the trigger that causes the view to output its content. If
+    you don't provide one, the currently loaded template will be output as-is. If no template is loaded, an error will
+    occur.</p>
+
+
+    <h2>Basic Structure</h2>
+
+    <pre><code>abstract class BaseView {
+  protected $template;
+  private   $arrData = array();
+
+  protected function __construct ()
+  protected function loadTemplate ($strTemplateName, $mixMasterTemplateSetting = true)
+  public function render ()
+  public function __get ($strName)
+  public function __set ($strName, $mixValue)
+  public function __isset ($strName)
+  public function loadData ($mixNameOrArray, $strValue = "")
+  protected function passthrough ()
+  protected function passthroughAll ()
+  protected function coalesce ()
+}//class</code></pre>
   </body>
 </html>

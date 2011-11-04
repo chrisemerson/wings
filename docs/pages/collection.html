@@ -12,5 +12,34 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>This class serves as the base for all <a href="collections.html">collections</a> in the system, but should not be used
+    directly. Classes that use this base class are created automatically, on the fly. It should never be extended by the user,
+    but left to the framework. Because it is an abstract class, it cannot be instantiated directly. It provides collections with
+    their functionality, including iteration, array access and making it countable.</p>
+
+    <p>The Collection class extends <a href="schema.html">Schema</a> and implements the Iterator, Countable and ArrayAccess
+    interfaces.</p>
+
+    <pre><code>abstract class Collection extends <a href="schema.html">Schema</a> implements Iterator, Countable, ArrayAccess {
+  private $arrMembers = array();
+  private $intPosition = 0;
+  private $blnJustUnsetCurrent = false;
+
+  public function __construct ($strModelName, $strSQLString = '')
+  private function fetch ($strSQLString = '')
+  private function populate ($strQuery)
+  public function __set ($strName, $strValue)
+  public function __call ($strName, $arrArgs)
+  public function current ()
+  public function key ()
+  public function next ()
+  public function rewind ()
+  public function valid ()
+  public function count ()
+  public function offsetSet ($mixOffset, $mixValue)
+  public function offsetExists ($mixOffset)
+  public function offsetUnset ($mixOffset)
+  public function offsetGet ($mixOffset)
+}//class</code></pre>
   </body>
 </html>
