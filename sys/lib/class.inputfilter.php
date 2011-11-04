@@ -110,14 +110,6 @@
       return $this;
     }//function
 
-    public function isError () {
-      return $this->objErrorRegistry->isError();
-    }//function
-
-    public function getErrors () {
-      return $this->objErrorRegistry->getErrors();
-    }//function
-
     private function reset () {
       $this->strName = null;
       $this->strLabel = null;

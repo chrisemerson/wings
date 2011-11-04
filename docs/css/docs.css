@@ -21,6 +21,10 @@ dl dt {
   font-weight: bold;
 }
 
+dl.wide dt {
+  width: 30em;
+}
+
 pre {
   padding: .5em;
   border: 1px solid #aaaa00;
@@ -30,7 +34,8 @@ pre {
   margin: 1em auto;
 }
 
-code {
+code,
+samp {
   font-size: 1.2em;
 }
 

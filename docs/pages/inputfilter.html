@@ -12,5 +12,157 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>The InputFilter class provides a way of both accessing POST and GET variables, and validating them against a set of
+    rules. If there are any errors, it adds them to the Error Registry, and takes the error text from
+    <span class="config"><a href="errorsconf.html">errors.xml</a></span>.</p>
+
+    <p>The validation works through a number of in-built validation functions, which are shown at the bottom of this page.</p>
+
+    <p>Within a controller, the InputFilter is available through <code>$this->post</code> and <code>$this->get</code>, depending
+    on the input source you need to use. They are in fact 2 instances of the same class, with different options passed into the
+    constructor.</p>
+
+    <p>This class also implements the Iterator, ArrayAccess and Countable interfaces, so the object can be treated as an array
+    if required - much like $_POST and $_GET.</p>
+
+    <h2>Methods &amp; Properties</h2>
+
+    <div class="usage">
+      <h3><code>InputFilter->__construct($conInputType = INPUT_TYPE_POST)</code> (Constructor)</h3>
+
+      <p>The constructor takes a single argument, which defines whether the class works on the POST or GET variables. You can
+      pass in either <code>INPUT_TYPE_POST</code> or <code>INPUT_TYPE_GET</code>.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>InputFilter-><var>var</var></code></h3>
+
+      <p>Accessing a property of the class returns the value of the named variable. For example:</p>
+
+      <pre><code>&lt;?php
+  $objPost = new InputFilter(INPUT_TYPE_POST);
+  echo $objPost->test; //Equivalent to: echo $_POST['test'];</code></pre>
+
+      <p>You can also use <code>isset()</code> &amp; <code>unset()</code> on these properties, and set them to a new value.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>InputFilter-><var>var</var>($strLabel = null)[-><var>validation</var>()[...]]-><var>type</var></code></h3>
+
+      <p>You can also access input variables as though they were a function, providing a label as the only argument. This
+      returns the InputFilter class in a state that allows validation functions to be chained on to the end of the call. For
+      example:</p>
+
+      <pre><code>&lt;?php
+  $objPost = new InputFilter(INPUT_TYPE_POST);
+  echo $objPost->test('Test Field')->required()->s;</code></pre>
+
+      <p>The full list of available validation functions can be found below.</p>
+
+      <p>After retrieving the variable in this way, you must specify how you want the value returned as a single character
+      property name, as the last call in the chain. Available values are:</p>
+
+      <dl>
+        <dt>-&gt;h</dt>
+        <dd>HTML</dd>
+
+        <dt>-&gt;i</dt>
+        <dd>Integer</dd>
+
+        <dt>-&gt;s</dt>
+        <dd>Safe Text</dd>
+
+        <dt>-&gt;t</dt>
+        <dd>Text</dd>
+      </dl>
+
+      <p>Currently, the only one that does anything different is <code>i</code>. The rest all just return the string as-is.</p>
+    </div>
+
+    <p>You can pass additional arguments to the validation functions, and the value of these will be replaced in the error
+    messages as {<var>n</var>} where n is the argument number. For example:</p>
+
+    <pre><code>&lt;?php
+  $objPost = new InputFilter(INPUT_TYPE_POST);
+  $strTest = $objPost->test('Test')->unique('Test', 'example_field', 'Example Field')->s;</code></pre>
+
+  <p>If the error text was defined as <code>Someone has already taken this {3}</code>, the error message would end up as
+  <samp>Someone has already taken this Example Field</samp>, because 'Example Field' is the third argument passed to the
+  validation function.</p>
+
+    <h2>Available Validation Functions</h2>
+
+    <div class="ref">
+      <dl class="wide">
+        <dt>required ()</dt>
+        <dd>Checks that the field was entered.<dd>
+
+        <dt>requiredIf ($strControlField)</dt>
+        <dd>If the Control Field was entered, checks that this field was entered. If not, this does nothing.<dd>
+
+        <dt>is ($strStringToMatch)</dt>
+        <dd>Check that the field value matches a string.<dd>
+
+        <dt>matches ($strMatchField, $strMatchFieldLabel)</dt>
+        <dd>Check that the field value matches that of another field. Provide a label for the error message.<dd>
+
+        <dt>length ($intLength)</dt>
+        <dd>Check that the field value is a specific length.<dd>
+
+        <dt>lengthMin ($intLength)</dt>
+        <dd>Check that the field value is a specific length, or longer.<dd>
+
+        <dt>lengthMax ($intLength)</dt>
+        <dd>Check that the field value is a specific length, or shorter.<dd>
+
+        <dt>lengthBetween ($intMinLength, $intMaxLength)</dt>
+        <dd>Check that the field value length is between 2 values (inclusive).<dd>
+
+        <dt>alpha ()</dt>
+        <dd>Check that the field value consists of alphabetic characters only.<dd>
+
+        <dt>numeric ()</dt>
+        <dd>Check that the field value is numeric, using PHP's <code>is_numeric()</code> function.<dd>
+
+        <dt>alphaNumeric ()</dt>
+        <dd>Check that the field value consists of alphabetic characters or numbers only.<dd>
+
+        <dt>integer ()</dt>
+        <dd>Check that the field value is an integer. A leading '+' or '-' is allowed as long as there are digits following it.<dd>
+
+        <dt>integerMin ($intValue)</dt>
+        <dd>Check that the field value is an integer, and is at least the specified value.<dd>
+
+        <dt>integerMax ($intValue)</dt>
+        <dd>Check that the field value is an integer, and is at most the specified value.<dd>
+
+        <dt>integerBetween ($intMinValue, $intMaxValue)</dt>
+        <dd>Check that the field value is an integer, and is between the specified values (inclusive).<dd>
+
+        <dt>integerPositive ()</dt>
+        <dd>Check that the field value is a positive integer (&gt;= 1)<dd>
+
+        <dt>integerNegative ()</dt>
+        <dd>Check that the field value is a negative integer (&lt;= -1)<dd>
+
+        <dt>integerNonPositive ()</dt>
+        <dd>Check that the field value is a non-positive integer (&lt;= 0)<dd>
+
+        <dt>integerNonNegative ()</dt>
+        <dd>Check that the field value is a non-negative integer (&gt;= 0)<dd>
+
+        <dt>integerNonZero ()</dt>
+        <dd>Check that the field value is an integer, and not equal to 0.<dd>
+
+        <dt>regex ($strRegex)</dt>
+        <dd>Checks the field against a regular expression.<dd>
+
+        <dt>validEmail ()</dt>
+        <dd>Checks that the field value is a valid Email Address.<dd>
+
+        <dt>unique ($strModel, $strField)</dt>
+        <dd>Checks that the field value is unique within a database table. Pass the function a model name and a field name to check.<dd>
+      </dl>
+    </div>
   </body>
 </html>
