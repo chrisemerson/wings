@@ -12,5 +12,23 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>This class handles database connections, including reading the config, switching between different database drivers as
+    necessary, and providing functions to deal with transactions if they are required.</p>
+
+    <p>As an abstract class, it cannot be instantiated directly, but both the <a href="schema.html">Schema</a> class and the
+    <a href="directquery.html">DirectQuery</a> library class extend this class in order to offer their functionality.</p>
+
+    <h2>Basic Structure</h2>
+
+    <pre><code>class Dispatcher {
+  protected $dbConn;
+  protected $strTablePrefix;
+
+  protected function __construct ()
+  private function openDBConn ()
+  public function startTransaction ()
+  public function commit ()
+  public function rollback ()
+}//class</code></pre>
   </body>
 </html>

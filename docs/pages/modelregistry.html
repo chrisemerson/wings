@@ -12,5 +12,26 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>This class is responsible for reading the <span class="config"><a href="modelsconf.html">models.xml</a></span> config
+    file, and converting medel names to pluralised versions, or deriving table names from the model names.</p>
+
+    <p>It is used by the <a href="schema.html">Schema</a> class (and in turn the <a href="collection.html">Collection</a> and
+    <a href="basemodel.html">BaseModel</a> classes) in order to get information on whether something is a model, and which
+    database tables to look in for data.</p>
+
+    <h2>Basic Structure</h2>
+
+    <pre><code>class ModelRegistry {
+  public static $arrModelInfo;
+
+  public function __construct ()
+  private function loadModelInfo ()
+  public function isModel ($strModelName)
+  public function getPluralisedName ($strModelName)
+  public function getTableName ($strModelName)
+  public function getModelNameFromPlural ($strPlural)
+  private function pluraliseModelName ($strModelName)
+  private function convertPluralNameToTableName ($strPluralName)
+}//class</code></pre>
   </body>
 </html>

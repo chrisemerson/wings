@@ -12,5 +12,24 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>The Dispatcher class is responsible for interpreting the information in
+    <span class="config"><a href="routesconf.html">routes.xml</a></span> and deciding what the action taken should be depending
+    on the URL visited.</p>
+
+    <h2>Basic Structure</h2>
+
+    <pre><code>class Dispatcher {
+  private $strURI;
+  private $arrRoutes;
+  private $arrIndexAction;
+  private $arrNotFoundAction;
+
+  public function __construct ($strURI = '')
+  public function execute ()
+  private function loadRoutes ()
+  private function parseRoute ($objRoute)
+  private function dispatchRoute ($arrAction)
+  private function executeAction ($strController, $strAction = 'index', $arrParams = array())
+}//class</code></pre>
   </body>
 </html>
