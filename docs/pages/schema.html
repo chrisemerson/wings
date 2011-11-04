@@ -12,5 +12,36 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>The Schema class is responsible for interrogating the database about column names & types, as well as reading information
+    from the <span class="config"><a href="relationshipsconf.html">resationships.xml</a></span> config file and providing
+    relationship information to the <a href="basemodel.html">BaseModel</a> class.</p>
+
+    <p>It extends the <a href="database.html">Database</a> class and contains an instance of the
+    <a href="modelregistry.html">ModelRegistry</a> class to interrogate about model and table names. Both the
+    <a href="basemodel.html">BaseModel</a> and <a href="collection.html">Collection</a> classes extend this class.</p>
+
+    <h2>Basic Structure</h2>
+
+    <pre><code>class Schema {
+  protected $strModelName;
+  protected $objModelRegistry;
+  protected static $arrRelationships;
+  protected static $arrColumns;
+  protected $arrEmptyDataArray;
+
+  protected function __construct ()
+  private function loadRelationships ()
+  private function loadColumnInfo ()
+  protected function getTableName ()
+  protected function addTablePrefix ($strTableName)
+  protected function getDataType ($strFieldName)
+  protected function getPrimaryKeys ()
+  protected function isColumn ($strColumn)
+  protected function getColumnInfo ($strFieldName)
+  protected function getColumnList ()
+  protected function getRelationshipInfo ()
+  protected function prepareData ($strData, $strFieldName)
+}//class</code></pre>
+
   </body>
 </html>

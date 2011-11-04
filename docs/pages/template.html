@@ -12,5 +12,49 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>The Template class is used by Views to interpret and output .tpl files stored in the
+    <span class="folder">app/templates/</span> folder.</p>
+
+    <p>It is a standalone class that doesn't extend any other class, and isn't extended by any other class.</p>
+
+    <p>Additionally, it defines 4 Exceptions which are thrown by the class when certain errors occur.</p>
+
+    <pre><code>class Template {
+  private $strTemplateName;
+  private $arrOriginalTemplateLines = array();
+  private $arrVariables = array();
+  private $arrBlockInformation = array();
+  const RE_BLOCK_START = "/^\\s*<!--\\s*\\[\\s*([a-z0-9_-]+)\\s*(\\|\\s*([\\w,]+)\\s*)?\\]\\s*-->\\s*\$/i";
+  const RE_BLOCK_END = "/^\\s*<!--\\s*\\[\\s*\\/([a-z0-9_-]+)\\s*\\]\\s*-->\\s*\$/i";
+  const RE_INCLUDE = "/^(\\s*)<!--\\s*{\\s*([a-z0-9._-]+)\\s*}\\s*-->\\s*\$/i";
+  const RE_INCLUDE_VARIABLE = "/^(\\s*)<!--\\s*{\\s*{([a-z0-9._-]+)}\\s*}\\s*-->\\s*\$/i";
+  const RE_SLAVE_INCLUDE = "/^(\\s*)<!--\\s*<\\s*SLAVE\\s*>\\s*-->\\s*\$/i";
+
+  public function __construct ($strTemplateName, $mixMasterTemplateSetting = true)
+  private function applyMasterTemplate ($strMasterTemplate = null)
+  private function initialiseBlock ($strBlockName = "")
+  public function __set ($strName, $strValue)
+  public function setVar ($strName, $strValue)
+  public function assign ($mixNameOrArray, $strValue = "")
+  public function __get ($strName)
+  public function getVar ($strName)
+  public function __isset ($strName)
+  public function isVarSet ($strName)
+  public function __unset ($strName)
+  public function clearVar ($strName)
+  public function clearAllVars ()
+  public function parse ($strBlockName = "", $blnResetVars = false)
+  private function parseIncludes ($strBlockName = "")
+  public function returnOriginalContentLines ()
+  public function returnOutput ()
+  public function out ()
+  private function replaceVariables ($strTemplateContent)
+  private function applyOptions ($strBlockName = "")
+}//class
+
+class BlockFormattingException extends Exception {}
+class BlockNotFoundException extends Exception {}
+class InvalidIncludeRecursionException extends Exception {}
+class TemplateNotFoundException extends Exception {}</code></pre>
   </body>
 </html>
