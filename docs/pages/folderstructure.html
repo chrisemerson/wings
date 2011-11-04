@@ -13,7 +13,9 @@
     <a href="../index.html" class="back">&lt; Back</a>
 
     <p>The basic folder structure of PHP Wings is shown below. The layout encourages application specific code to be separated
-    from the framework code, in order to allow upgrading the framework to be as easy as possible.</p>
+    from the framework code, in order to allow upgrading the framework to be as easy as possible. You can move the
+    <span class="folder">app/</span> and <span class="folder">sys/</span> folders to anywhere on the system, as long as they are
+    in the same folder, and you update the location in the require_once line of <span class="file">httpdocs/index.php</span>.</p>
 
     <ul class="folders">
       <li>
@@ -53,9 +55,9 @@
             </ul>
           </li>
 
-          <li><strong>db/</strong> - A folder for use storing database patches and dumps</li>
+          <li><strong>db/</strong> - A folder for use storing database patches and dumps. Not used by the system, provided for convenience only, or can be deleted if not needed.</li>
 
-          <li><strong>docs/</strong> - This Folder - Documentation</li>
+          <li><strong>docs/</strong> - This Folder - Documentation. Not used by the system, can be deleted if needed.</li>
 
           <li><strong>httpdocs/</strong> - Publically Accessible folder - Apache should serve from here.
 

@@ -12,5 +12,107 @@
 
     <a href="../index.html" class="back">&lt; Back</a>
 
+    <p>The Application class contains a number of static methods that could be called on from anywhere. Mostly these are helper
+    methods and methods that return information from <span class="config"><a href="appconf.html">app.xml</a></span> - anything
+    that is useful to have globally in an application.</p>
+
+    <h2>Methods &amp; Properties</h2>
+
+    <div class="usage">
+      <h3><code>Application::getCurrentPageURI ($arrQSA = array())</code></h3>
+
+      <p>This method returns the URI of the current page. You can optionally pass in an array of key/value pairs to be added to
+      the query string already in the URI.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Application::getBaseURI ($blnSecure = false)</code></h3>
+
+      <p>This method returns the base URI of the application - the location in which it is installed. You can pass in an
+      argument which determines whether the URI is retuned with the http or https protocol used.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Application::getCurrentPageURIRelativeToBase ($arrQSA = array())</code></h3>
+
+      <p>This method returns the difference between the last 2 method calls - the current page URI without the base URI in front
+      of it! As with <code>getCurrentPageURI()</code>, you can pass an associative array of query string additions.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Application::getFullURI ($strPath = "/", $blnSecure = false)</code></h3>
+
+      <p>This method allows you to pass in a path relative to the base URI of the application, and recieve a full URI back. As
+      with <code>getBaseURI()</code>, you also need to pass in an argument which determines whether the protocal used is http or
+      https.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Application::getBasePath ()</code></h3>
+
+      <p>This returns the base path of the system, which is the folder that the <span class="folder">sys/</span> and
+      <span class="folder">app/</span> folders live in. For the most part, this is also the same path that
+      <span class="folder">httpdocs/</span> is in.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Application::getAppFilename ($strFilename)</code></h3>
+
+      <p>This method takes a filename (relative to the either the <span class="folder">sys/</span> or
+      <span class="folder">app/</span> folder), and returns a full filename. If the file is found within the
+      <span class="folder">app/</span> folder, this filename is returned. If not, it looks in the
+      <span class="folder">sys/</span> folder instead, and returns this filename if found. If the file is in neither location,
+      it returns false.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Application::isSecure ()</code></h3>
+
+      <p>Returns <code>true</code> if the page is being accessed over an https connection, <code>false</code> otherwise.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Application::doNotTrack ()</code></h3>
+
+      <p>Returns <code>true</code> if the user has checked the 'Do Not Track' option in their browser, <code>false</code>
+      otherwise.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Application::redirect ($strURL)</code></h3>
+
+      <p>Redirects the user to the given URI.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Application::getEnvironment ()</code></h3>
+
+      <p>Returns the current environment, as set by the <code>APP_ENVIRONMENT</code> server environment variable, or
+      <code>false</code> if it is not set.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Application::exitApp ($strMessage = "")</code></h3>
+
+      <p>Terminates processing of the application and stops output. This makes sure the session information is saved before
+      calling PHP's <code>exit()</code> function. You can optionally pass in a message which is output before the execution
+      stops.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Application::showError ($strErrorType, $mixErrorContent = '', $strLoggedError = '')</code></h3>
+
+      <p>Shows an error page, depending on what was passed in. Calls the <code>show<var>ErrorType</var>Error</code> action in
+      the ErrorController. For example, calling <code>Application::showError('404')</code> calls the
+      <code>ErrorController-&gt;show404Error()</code> action. The Error Content parameter is passed as a parameter to the
+      action. The Logged Error parameter currently does nothing.</p>
+    </div>
+
+    <div class="usage">
+      <h3><code>Application::handleUncaughtException ($exException)</code></h3>
+
+      <p>This is used internally as an exception handler to show an Error Page for uncaught exceptions, including display of the
+      debug backtrace.</p>
+    </div>
   </body>
 </html>
