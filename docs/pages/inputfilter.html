@@ -30,7 +30,7 @@
     <div class="usage">
       <h3><code>InputFilter->__construct($conInputType = INPUT_TYPE_POST)</code> (Constructor)</h3>
 
-      <p>The constructor takes a single argument, which defines whether the class works on the POST or GET variables. You can
+      <p>The constructor takes a single parameter, which defines whether the class works on the POST or GET variables. You can
       pass in either <code>INPUT_TYPE_POST</code> or <code>INPUT_TYPE_GET</code>.</p>
     </div>
 
@@ -49,7 +49,7 @@
     <div class="usage">
       <h3><code>InputFilter-><var>var</var>($strLabel = null)[-><var>validation</var>()[...]]-><var>type</var></code></h3>
 
-      <p>You can also access input variables as though they were a function, providing a label as the only argument. This
+      <p>You can also access input variables as though they were a function, providing a label as the only parameter. This
       returns the InputFilter class in a state that allows validation functions to be chained on to the end of the call. For
       example:</p>
 
@@ -79,15 +79,15 @@
       <p>Currently, the only one that does anything different is <code>i</code>. The rest all just return the string as-is.</p>
     </div>
 
-    <p>You can pass additional arguments to the validation functions, and the value of these will be replaced in the error
-    messages as {<var>n</var>} where n is the argument number. For example:</p>
+    <p>You can pass additional parameters to the validation functions, and the value of these will be replaced in the error
+    messages as {<var>n</var>} where n is the parameter number. For example:</p>
 
     <pre><code>&lt;?php
   $objPost = new InputFilter(INPUT_TYPE_POST);
   $strTest = $objPost->test('Test')->unique('Test', 'example_field', 'Example Field')->s;</code></pre>
 
   <p>If the error text was defined as <code>Someone has already taken this {3}</code>, the error message would end up as
-  <samp>Someone has already taken this Example Field</samp>, because 'Example Field' is the third argument passed to the
+  <samp>Someone has already taken this Example Field</samp>, because 'Example Field' is the third parameter passed to the
   validation function.</p>
 
     <h2>Available Validation Functions</h2>

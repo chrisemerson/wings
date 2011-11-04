@@ -36,8 +36,8 @@
     <div class="usage">
       <h3><code>Authentication->attemptLogin($strUsername, $strPassword, $blnRememberMe = false, $blnRedirectAfterLogin = true)</code></h3>
 
-      <p>Attempts a login with the details provided. You can optionally set the 3rd argument to 'true' to use the 'remember me'
-      feature at this location, and the 4th argument to 'false' to prevent the system autmatically redirecting the user after
+      <p>Attempts a login with the details provided. You can optionally set the 3rd parameter to 'true' to use the 'remember me'
+      feature at this location, and the 4th parameter to 'false' to prevent the system autmatically redirecting the user after
       login. This is useful if you need to do some further processing on a successful login, but before thoy are redirected.</p>
     </div>
 
@@ -76,7 +76,7 @@
       <p>Calling this signals to the class that a user needs to be logged in to access this page. It will check if the user is
       already logged in, and if they are, do nothing. If they are not logged in, it will redirect the user to the URI set in the
       config file. Alternatively, you can override where the user is redirected by passing in the $strURIToRedirectTo
-      argument.</p>
+      parameter.</p>
     </div>
 
     <div class="usage">
