@@ -1,5 +1,7 @@
 <?php
-  class HomeView extends MasterView {
+  namespace Wings\Views;
+
+  class HomeView extends System\MasterView {
     public function __construct () {
       $this->loadTemplate('home');
 

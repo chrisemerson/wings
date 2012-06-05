@@ -11,4 +11,5 @@
      <model name="ModelName" [plural="ModelNames"] [table="model_names"] /> -->
 
 <models>
+  <model name="User" />
 </models>

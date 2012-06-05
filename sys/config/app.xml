@@ -4,7 +4,7 @@
   <default>
     <uri>
       <host>dev</host>
-      <path>appframework/httpdocs</path>
+      <path>wings/httpdocs</path>
     </uri>
 
     <template>
@@ -24,7 +24,7 @@
 
     <cookie>
       <domain></domain>
-      <path>/appframework/httpdocs/</path>
+      <path>/wings/httpdocs/</path>
     </cookie>
   </default>
 

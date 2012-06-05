@@ -12,7 +12,7 @@
     </template>
 
     <db>
-      <uri>mysqli://app:*****@localhost/app</uri>
+      <uri>mysqli://test:test@localhost/test</uri>
       <prefix>app_</prefix>
     </db>
 

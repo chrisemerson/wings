@@ -41,11 +41,6 @@
     <unit code="USQT" name="US Quarts">1056.68821</unit>
   </group>
 
-  <group label="Angles">
-    <unit code="DEG" name="Degrees">57.2957795</unit>
-    <unit code="RAD" name="Radians">1</unit>
-  </group>
-
   <group label="Speed">
     <unit code="C" name="Speed Of Light">1</unit>
     <unit code="KT" name="Knots">582749918</unit>

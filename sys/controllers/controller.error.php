@@ -1,7 +1,9 @@
 <?php
-  /* Modify the text in this class, but do not remove or rename any of the functions! */
+  namespace Wings\Controllers;
 
-  class ErrorController extends BaseController {
+  use \Wings\Views\System\ErrorView;
+
+  class ErrorController extends \Wings\Lib\System\Controller {
     public function show404Error ($strErrorText = '') {
       $this->view = new ErrorView();
 
